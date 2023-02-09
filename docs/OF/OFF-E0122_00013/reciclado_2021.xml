@@ -1,0 +1,3153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+xmlns:html="http://www.w3.org/TR/REC-html40">
+<Worksheet ss:Name="Table1">
+	<Table>
+		<Column ss:Index="1" ss:AutoFitWidth="0" ss:Width="110"/>
+		<Row>
+			<Cell><Data ss:Type="String">lote</Data></Cell>
+			<Cell><Data ss:Type="String">peso</Data></Cell>
+		</Row>
+
+		<Row>
+			<Cell><Data ss:Type="String">20210102-01</Data></Cell>
+			<Cell><Data ss:Type="Number">478.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210102-02</Data></Cell>
+			<Cell><Data ss:Type="Number">403.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210102-03</Data></Cell>
+			<Cell><Data ss:Type="Number">512.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210102-04</Data></Cell>
+			<Cell><Data ss:Type="Number">458.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210102-05</Data></Cell>
+			<Cell><Data ss:Type="Number">447.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210103-01</Data></Cell>
+			<Cell><Data ss:Type="Number">439.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210103-02</Data></Cell>
+			<Cell><Data ss:Type="Number">373.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210103-04</Data></Cell>
+			<Cell><Data ss:Type="Number">431.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210103-05</Data></Cell>
+			<Cell><Data ss:Type="Number">518.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210103-06</Data></Cell>
+			<Cell><Data ss:Type="Number">423.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210104-01</Data></Cell>
+			<Cell><Data ss:Type="Number">447.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210104-02</Data></Cell>
+			<Cell><Data ss:Type="Number">458.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210104-03</Data></Cell>
+			<Cell><Data ss:Type="Number">424.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210104-04</Data></Cell>
+			<Cell><Data ss:Type="Number">469.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210104-05</Data></Cell>
+			<Cell><Data ss:Type="Number">488.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210105-01</Data></Cell>
+			<Cell><Data ss:Type="Number">464.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210105-02</Data></Cell>
+			<Cell><Data ss:Type="Number">399.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210105-03</Data></Cell>
+			<Cell><Data ss:Type="Number">374.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210105-04</Data></Cell>
+			<Cell><Data ss:Type="Number">512.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210105-05</Data></Cell>
+			<Cell><Data ss:Type="Number">472.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210106-01</Data></Cell>
+			<Cell><Data ss:Type="Number">412.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210106-02</Data></Cell>
+			<Cell><Data ss:Type="Number">442.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210106-03</Data></Cell>
+			<Cell><Data ss:Type="Number">402.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210106-04</Data></Cell>
+			<Cell><Data ss:Type="Number">448.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210107-01</Data></Cell>
+			<Cell><Data ss:Type="Number">489.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210107-02</Data></Cell>
+			<Cell><Data ss:Type="Number">440.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210107-03</Data></Cell>
+			<Cell><Data ss:Type="Number">504.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210107-04</Data></Cell>
+			<Cell><Data ss:Type="Number">446.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210108-01</Data></Cell>
+			<Cell><Data ss:Type="Number">438.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210108-02</Data></Cell>
+			<Cell><Data ss:Type="Number">524.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210108-03</Data></Cell>
+			<Cell><Data ss:Type="Number">377.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210109-01</Data></Cell>
+			<Cell><Data ss:Type="Number">381.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210109-02</Data></Cell>
+			<Cell><Data ss:Type="Number">391.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210109-03</Data></Cell>
+			<Cell><Data ss:Type="Number">500.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210109-04</Data></Cell>
+			<Cell><Data ss:Type="Number">480.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210109-05</Data></Cell>
+			<Cell><Data ss:Type="Number">468.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210110-01</Data></Cell>
+			<Cell><Data ss:Type="Number">437.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210110-02</Data></Cell>
+			<Cell><Data ss:Type="Number">449.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210110-03</Data></Cell>
+			<Cell><Data ss:Type="Number">458.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210110-04</Data></Cell>
+			<Cell><Data ss:Type="Number">485.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210111-01</Data></Cell>
+			<Cell><Data ss:Type="Number">455.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210111-02</Data></Cell>
+			<Cell><Data ss:Type="Number">479.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210111-03</Data></Cell>
+			<Cell><Data ss:Type="Number">457.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210111-04</Data></Cell>
+			<Cell><Data ss:Type="Number">423.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210111-05</Data></Cell>
+			<Cell><Data ss:Type="Number">413.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210112-01</Data></Cell>
+			<Cell><Data ss:Type="Number">433.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210112-02</Data></Cell>
+			<Cell><Data ss:Type="Number">492.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210112-03</Data></Cell>
+			<Cell><Data ss:Type="Number">482.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210112-04</Data></Cell>
+			<Cell><Data ss:Type="Number">433.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210112-05</Data></Cell>
+			<Cell><Data ss:Type="Number">466.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210113-01</Data></Cell>
+			<Cell><Data ss:Type="Number">385.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210113-02</Data></Cell>
+			<Cell><Data ss:Type="Number">424.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210113-03</Data></Cell>
+			<Cell><Data ss:Type="Number">463.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210113-04</Data></Cell>
+			<Cell><Data ss:Type="Number">436.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210113-05</Data></Cell>
+			<Cell><Data ss:Type="Number">465.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210114-01</Data></Cell>
+			<Cell><Data ss:Type="Number">503.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210114-02</Data></Cell>
+			<Cell><Data ss:Type="Number">524.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210114-03</Data></Cell>
+			<Cell><Data ss:Type="Number">476.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210114-04</Data></Cell>
+			<Cell><Data ss:Type="Number">463.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210114-05</Data></Cell>
+			<Cell><Data ss:Type="Number">473.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210115-01</Data></Cell>
+			<Cell><Data ss:Type="Number">510.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210115-02</Data></Cell>
+			<Cell><Data ss:Type="Number">383.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210115-03</Data></Cell>
+			<Cell><Data ss:Type="Number">463.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210115-04</Data></Cell>
+			<Cell><Data ss:Type="Number">409.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210116-01</Data></Cell>
+			<Cell><Data ss:Type="Number">437.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210116-02</Data></Cell>
+			<Cell><Data ss:Type="Number">439.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210116-03</Data></Cell>
+			<Cell><Data ss:Type="Number">452.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210116-04</Data></Cell>
+			<Cell><Data ss:Type="Number">532.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210116-05</Data></Cell>
+			<Cell><Data ss:Type="Number">423.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210117-01</Data></Cell>
+			<Cell><Data ss:Type="Number">406.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210117-02</Data></Cell>
+			<Cell><Data ss:Type="Number">423.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210117-03</Data></Cell>
+			<Cell><Data ss:Type="Number">414.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210117-05</Data></Cell>
+			<Cell><Data ss:Type="Number">447.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210117-06</Data></Cell>
+			<Cell><Data ss:Type="Number">474.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210118-01</Data></Cell>
+			<Cell><Data ss:Type="Number">421.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210118-02</Data></Cell>
+			<Cell><Data ss:Type="Number">518.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210118-03</Data></Cell>
+			<Cell><Data ss:Type="Number">395.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210118-04</Data></Cell>
+			<Cell><Data ss:Type="Number">433.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210118-05</Data></Cell>
+			<Cell><Data ss:Type="Number">508.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210119-01</Data></Cell>
+			<Cell><Data ss:Type="Number">464.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210119-02</Data></Cell>
+			<Cell><Data ss:Type="Number">426.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210119-03</Data></Cell>
+			<Cell><Data ss:Type="Number">392.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210119-04</Data></Cell>
+			<Cell><Data ss:Type="Number">446.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210120-01</Data></Cell>
+			<Cell><Data ss:Type="Number">451.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210120-02</Data></Cell>
+			<Cell><Data ss:Type="Number">389.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210120-03</Data></Cell>
+			<Cell><Data ss:Type="Number">414.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210120-04</Data></Cell>
+			<Cell><Data ss:Type="Number">404.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210121-01</Data></Cell>
+			<Cell><Data ss:Type="Number">436.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210121-02</Data></Cell>
+			<Cell><Data ss:Type="Number">403.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210122-01</Data></Cell>
+			<Cell><Data ss:Type="Number">401.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210122-02</Data></Cell>
+			<Cell><Data ss:Type="Number">314.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210122-03</Data></Cell>
+			<Cell><Data ss:Type="Number">480.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210123-01</Data></Cell>
+			<Cell><Data ss:Type="Number">438.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210123-02</Data></Cell>
+			<Cell><Data ss:Type="Number">412.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210123-03</Data></Cell>
+			<Cell><Data ss:Type="Number">475.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210126-01</Data></Cell>
+			<Cell><Data ss:Type="Number">451.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210127-01</Data></Cell>
+			<Cell><Data ss:Type="Number">413.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210127-02</Data></Cell>
+			<Cell><Data ss:Type="Number">493.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210127-03</Data></Cell>
+			<Cell><Data ss:Type="Number">379.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210127-04</Data></Cell>
+			<Cell><Data ss:Type="Number">406.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210127-05</Data></Cell>
+			<Cell><Data ss:Type="Number">423.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210128-01</Data></Cell>
+			<Cell><Data ss:Type="Number">456.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210128-02</Data></Cell>
+			<Cell><Data ss:Type="Number">410.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210128-03</Data></Cell>
+			<Cell><Data ss:Type="Number">404.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210128-04</Data></Cell>
+			<Cell><Data ss:Type="Number">358.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210128-05</Data></Cell>
+			<Cell><Data ss:Type="Number">250.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210128-06</Data></Cell>
+			<Cell><Data ss:Type="Number">387.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210129-01</Data></Cell>
+			<Cell><Data ss:Type="Number">470.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210129-02</Data></Cell>
+			<Cell><Data ss:Type="Number">438.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210129-03</Data></Cell>
+			<Cell><Data ss:Type="Number">407.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210129-04</Data></Cell>
+			<Cell><Data ss:Type="Number">395.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210130-01</Data></Cell>
+			<Cell><Data ss:Type="Number">485.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210130-02</Data></Cell>
+			<Cell><Data ss:Type="Number">448.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210130-04</Data></Cell>
+			<Cell><Data ss:Type="Number">471.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210131-01</Data></Cell>
+			<Cell><Data ss:Type="Number">415.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210131-02</Data></Cell>
+			<Cell><Data ss:Type="Number">464.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210131-03</Data></Cell>
+			<Cell><Data ss:Type="Number">430.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210131-04</Data></Cell>
+			<Cell><Data ss:Type="Number">352.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210201-01</Data></Cell>
+			<Cell><Data ss:Type="Number">372.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210201-02</Data></Cell>
+			<Cell><Data ss:Type="Number">400.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210201-03</Data></Cell>
+			<Cell><Data ss:Type="Number">339.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210201-04</Data></Cell>
+			<Cell><Data ss:Type="Number">255.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210202-01</Data></Cell>
+			<Cell><Data ss:Type="Number">360.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210202-02</Data></Cell>
+			<Cell><Data ss:Type="Number">424.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210202-03</Data></Cell>
+			<Cell><Data ss:Type="Number">371.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210202-04</Data></Cell>
+			<Cell><Data ss:Type="Number">420.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210202-05</Data></Cell>
+			<Cell><Data ss:Type="Number">415.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210203-01</Data></Cell>
+			<Cell><Data ss:Type="Number">438.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210203-02</Data></Cell>
+			<Cell><Data ss:Type="Number">456.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210203-03</Data></Cell>
+			<Cell><Data ss:Type="Number">445.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210204-01</Data></Cell>
+			<Cell><Data ss:Type="Number">482.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210204-02</Data></Cell>
+			<Cell><Data ss:Type="Number">442.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210204-03</Data></Cell>
+			<Cell><Data ss:Type="Number">422.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210204-04</Data></Cell>
+			<Cell><Data ss:Type="Number">467.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210204-05</Data></Cell>
+			<Cell><Data ss:Type="Number">447.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210205-01</Data></Cell>
+			<Cell><Data ss:Type="Number">482.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210205-02</Data></Cell>
+			<Cell><Data ss:Type="Number">437.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210205-03</Data></Cell>
+			<Cell><Data ss:Type="Number">370.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210205-04</Data></Cell>
+			<Cell><Data ss:Type="Number">472.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210205-05</Data></Cell>
+			<Cell><Data ss:Type="Number">390.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210205-06</Data></Cell>
+			<Cell><Data ss:Type="Number">461.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210206-01</Data></Cell>
+			<Cell><Data ss:Type="Number">409.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210206-02</Data></Cell>
+			<Cell><Data ss:Type="Number">488.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210206-03</Data></Cell>
+			<Cell><Data ss:Type="Number">475.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210207-01</Data></Cell>
+			<Cell><Data ss:Type="Number">437.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210207-02</Data></Cell>
+			<Cell><Data ss:Type="Number">465.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210207-03</Data></Cell>
+			<Cell><Data ss:Type="Number">429.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210207-04</Data></Cell>
+			<Cell><Data ss:Type="Number">479.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210208-01</Data></Cell>
+			<Cell><Data ss:Type="Number">448.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210208-02</Data></Cell>
+			<Cell><Data ss:Type="Number">502.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210208-03</Data></Cell>
+			<Cell><Data ss:Type="Number">470.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210208-04</Data></Cell>
+			<Cell><Data ss:Type="Number">429.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210209-01</Data></Cell>
+			<Cell><Data ss:Type="Number">450.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210209-02</Data></Cell>
+			<Cell><Data ss:Type="Number">445.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210209-03</Data></Cell>
+			<Cell><Data ss:Type="Number">422.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210209-04</Data></Cell>
+			<Cell><Data ss:Type="Number">422.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210210-01</Data></Cell>
+			<Cell><Data ss:Type="Number">450.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210210-02</Data></Cell>
+			<Cell><Data ss:Type="Number">460.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210210-03</Data></Cell>
+			<Cell><Data ss:Type="Number">450.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210210-04</Data></Cell>
+			<Cell><Data ss:Type="Number">402.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210211-01</Data></Cell>
+			<Cell><Data ss:Type="Number">407.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210211-02</Data></Cell>
+			<Cell><Data ss:Type="Number">391.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210211-04</Data></Cell>
+			<Cell><Data ss:Type="Number">458.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210211-05</Data></Cell>
+			<Cell><Data ss:Type="Number">461.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210211-06</Data></Cell>
+			<Cell><Data ss:Type="Number">418.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210212-01</Data></Cell>
+			<Cell><Data ss:Type="Number">437.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210212-02</Data></Cell>
+			<Cell><Data ss:Type="Number">392.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210212-03</Data></Cell>
+			<Cell><Data ss:Type="Number">466.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210212-04</Data></Cell>
+			<Cell><Data ss:Type="Number">451.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210213-01</Data></Cell>
+			<Cell><Data ss:Type="Number">427.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210213-02</Data></Cell>
+			<Cell><Data ss:Type="Number">387.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210214-01</Data></Cell>
+			<Cell><Data ss:Type="Number">422.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210214-02</Data></Cell>
+			<Cell><Data ss:Type="Number">462.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210216-01</Data></Cell>
+			<Cell><Data ss:Type="Number">475.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210216-02</Data></Cell>
+			<Cell><Data ss:Type="Number">431.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210217-01</Data></Cell>
+			<Cell><Data ss:Type="Number">462.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210217-02</Data></Cell>
+			<Cell><Data ss:Type="Number">436.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210217-03</Data></Cell>
+			<Cell><Data ss:Type="Number">458.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210218-01</Data></Cell>
+			<Cell><Data ss:Type="Number">475.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210218-02</Data></Cell>
+			<Cell><Data ss:Type="Number">410.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210218-03</Data></Cell>
+			<Cell><Data ss:Type="Number">424.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210219-04</Data></Cell>
+			<Cell><Data ss:Type="Number">464.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210219-05</Data></Cell>
+			<Cell><Data ss:Type="Number">437.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210219-01</Data></Cell>
+			<Cell><Data ss:Type="Number">460.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210219-02</Data></Cell>
+			<Cell><Data ss:Type="Number">435.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210219-03</Data></Cell>
+			<Cell><Data ss:Type="Number">451.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210220-01</Data></Cell>
+			<Cell><Data ss:Type="Number">442.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210220-02</Data></Cell>
+			<Cell><Data ss:Type="Number">404.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210220-03</Data></Cell>
+			<Cell><Data ss:Type="Number">423.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210220-04</Data></Cell>
+			<Cell><Data ss:Type="Number">473.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210221-01</Data></Cell>
+			<Cell><Data ss:Type="Number">446.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210222-01</Data></Cell>
+			<Cell><Data ss:Type="Number">395.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210222-02</Data></Cell>
+			<Cell><Data ss:Type="Number">394.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210222-03</Data></Cell>
+			<Cell><Data ss:Type="Number">433.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210223-01</Data></Cell>
+			<Cell><Data ss:Type="Number">430.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210223-02</Data></Cell>
+			<Cell><Data ss:Type="Number">435.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210223-03</Data></Cell>
+			<Cell><Data ss:Type="Number">401.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210224-04</Data></Cell>
+			<Cell><Data ss:Type="Number">455.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210224-05</Data></Cell>
+			<Cell><Data ss:Type="Number">502.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210225-01</Data></Cell>
+			<Cell><Data ss:Type="Number">462.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210225-02</Data></Cell>
+			<Cell><Data ss:Type="Number">464.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210225-03</Data></Cell>
+			<Cell><Data ss:Type="Number">400.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210226-01</Data></Cell>
+			<Cell><Data ss:Type="Number">438.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210226-02</Data></Cell>
+			<Cell><Data ss:Type="Number">400.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210227-01</Data></Cell>
+			<Cell><Data ss:Type="Number">373.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210227-02</Data></Cell>
+			<Cell><Data ss:Type="Number">441.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210227-03</Data></Cell>
+			<Cell><Data ss:Type="Number">384.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210227-04</Data></Cell>
+			<Cell><Data ss:Type="Number">510.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210227-05</Data></Cell>
+			<Cell><Data ss:Type="Number">361.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210228-01</Data></Cell>
+			<Cell><Data ss:Type="Number">421.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210228-02</Data></Cell>
+			<Cell><Data ss:Type="Number">503.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210228-03</Data></Cell>
+			<Cell><Data ss:Type="Number">464.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210228-04</Data></Cell>
+			<Cell><Data ss:Type="Number">437.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210228-05</Data></Cell>
+			<Cell><Data ss:Type="Number">420.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210301-01</Data></Cell>
+			<Cell><Data ss:Type="Number">534.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210301-02</Data></Cell>
+			<Cell><Data ss:Type="Number">450.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210301-03</Data></Cell>
+			<Cell><Data ss:Type="Number">339.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210301-04</Data></Cell>
+			<Cell><Data ss:Type="Number">495.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210302-01</Data></Cell>
+			<Cell><Data ss:Type="Number">601.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210302-02</Data></Cell>
+			<Cell><Data ss:Type="Number">674.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210302-03</Data></Cell>
+			<Cell><Data ss:Type="Number">610.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210302-04</Data></Cell>
+			<Cell><Data ss:Type="Number">625.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210303-01</Data></Cell>
+			<Cell><Data ss:Type="Number">581.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210303-02</Data></Cell>
+			<Cell><Data ss:Type="Number">436.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210304-01</Data></Cell>
+			<Cell><Data ss:Type="Number">641.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210304-02</Data></Cell>
+			<Cell><Data ss:Type="Number">544.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210304-03</Data></Cell>
+			<Cell><Data ss:Type="Number">395.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210304-04</Data></Cell>
+			<Cell><Data ss:Type="Number">570.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210305-01</Data></Cell>
+			<Cell><Data ss:Type="Number">441.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210305-02</Data></Cell>
+			<Cell><Data ss:Type="Number">545.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210305-03</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210306-01</Data></Cell>
+			<Cell><Data ss:Type="Number">617.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210306-02</Data></Cell>
+			<Cell><Data ss:Type="Number">578.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210306-03</Data></Cell>
+			<Cell><Data ss:Type="Number">640.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210306-04</Data></Cell>
+			<Cell><Data ss:Type="Number">575.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210307-01</Data></Cell>
+			<Cell><Data ss:Type="Number">673.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210307-02</Data></Cell>
+			<Cell><Data ss:Type="Number">610.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210307-03</Data></Cell>
+			<Cell><Data ss:Type="Number">630.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210308-01</Data></Cell>
+			<Cell><Data ss:Type="Number">661.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210308-02</Data></Cell>
+			<Cell><Data ss:Type="Number">630.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210309-01</Data></Cell>
+			<Cell><Data ss:Type="Number">623.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210310-01</Data></Cell>
+			<Cell><Data ss:Type="Number">441.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210311-01</Data></Cell>
+			<Cell><Data ss:Type="Number">565.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210312-01</Data></Cell>
+			<Cell><Data ss:Type="Number">695.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210312-02</Data></Cell>
+			<Cell><Data ss:Type="Number">703.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210313-01</Data></Cell>
+			<Cell><Data ss:Type="Number">720.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210313-02</Data></Cell>
+			<Cell><Data ss:Type="Number">560.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210313-03</Data></Cell>
+			<Cell><Data ss:Type="Number">601.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210314-01</Data></Cell>
+			<Cell><Data ss:Type="Number">683.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210314-02</Data></Cell>
+			<Cell><Data ss:Type="Number">683.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210315-01</Data></Cell>
+			<Cell><Data ss:Type="Number">610.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210315-02</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210316-01</Data></Cell>
+			<Cell><Data ss:Type="Number">386.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210316-02</Data></Cell>
+			<Cell><Data ss:Type="Number">561.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210316-03</Data></Cell>
+			<Cell><Data ss:Type="Number">675.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210316-04</Data></Cell>
+			<Cell><Data ss:Type="Number">652.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210316-05</Data></Cell>
+			<Cell><Data ss:Type="Number">742.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210317-01</Data></Cell>
+			<Cell><Data ss:Type="Number">660.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210317-02</Data></Cell>
+			<Cell><Data ss:Type="Number">653.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210318-01</Data></Cell>
+			<Cell><Data ss:Type="Number">735.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210318-02</Data></Cell>
+			<Cell><Data ss:Type="Number">625.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210318-03</Data></Cell>
+			<Cell><Data ss:Type="Number">646.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210319-01</Data></Cell>
+			<Cell><Data ss:Type="Number">567.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210319-02</Data></Cell>
+			<Cell><Data ss:Type="Number">590.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210319-03</Data></Cell>
+			<Cell><Data ss:Type="Number">696.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210320-01</Data></Cell>
+			<Cell><Data ss:Type="Number">559.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210320-02</Data></Cell>
+			<Cell><Data ss:Type="Number">591.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210321-01</Data></Cell>
+			<Cell><Data ss:Type="Number">585.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210321-02</Data></Cell>
+			<Cell><Data ss:Type="Number">687.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210322-01</Data></Cell>
+			<Cell><Data ss:Type="Number">630.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210322-02</Data></Cell>
+			<Cell><Data ss:Type="Number">715.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210323-01</Data></Cell>
+			<Cell><Data ss:Type="Number">460.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210323-02</Data></Cell>
+			<Cell><Data ss:Type="Number">684.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210324-01</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210324-02</Data></Cell>
+			<Cell><Data ss:Type="Number">687.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210324-03</Data></Cell>
+			<Cell><Data ss:Type="Number">602.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210325-01</Data></Cell>
+			<Cell><Data ss:Type="Number">650.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210325-02</Data></Cell>
+			<Cell><Data ss:Type="Number">682.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210326-01</Data></Cell>
+			<Cell><Data ss:Type="Number">669.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210326-02</Data></Cell>
+			<Cell><Data ss:Type="Number">610.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210327-01</Data></Cell>
+			<Cell><Data ss:Type="Number">682.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210328-01</Data></Cell>
+			<Cell><Data ss:Type="Number">634.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210328-02</Data></Cell>
+			<Cell><Data ss:Type="Number">510.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210329-01</Data></Cell>
+			<Cell><Data ss:Type="Number">673.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210329-02</Data></Cell>
+			<Cell><Data ss:Type="Number">605.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210330-01</Data></Cell>
+			<Cell><Data ss:Type="Number">666.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210330-02</Data></Cell>
+			<Cell><Data ss:Type="Number">647.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210331-01</Data></Cell>
+			<Cell><Data ss:Type="Number">660.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210331-02</Data></Cell>
+			<Cell><Data ss:Type="Number">749.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210331-03</Data></Cell>
+			<Cell><Data ss:Type="Number">605.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210401-01</Data></Cell>
+			<Cell><Data ss:Type="Number">606.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210401-02</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210402-01</Data></Cell>
+			<Cell><Data ss:Type="Number">647.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210402-02</Data></Cell>
+			<Cell><Data ss:Type="Number">670.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210403-01</Data></Cell>
+			<Cell><Data ss:Type="Number">631.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210403-02</Data></Cell>
+			<Cell><Data ss:Type="Number">670.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210404-01</Data></Cell>
+			<Cell><Data ss:Type="Number">586.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210404-02</Data></Cell>
+			<Cell><Data ss:Type="Number">610.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210404-03</Data></Cell>
+			<Cell><Data ss:Type="Number">685.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210405-01</Data></Cell>
+			<Cell><Data ss:Type="Number">605.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210405-02</Data></Cell>
+			<Cell><Data ss:Type="Number">635.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210406-01</Data></Cell>
+			<Cell><Data ss:Type="Number">619.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210406-02</Data></Cell>
+			<Cell><Data ss:Type="Number">635.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210407-01</Data></Cell>
+			<Cell><Data ss:Type="Number">608.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210407-02</Data></Cell>
+			<Cell><Data ss:Type="Number">697.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210408-01</Data></Cell>
+			<Cell><Data ss:Type="Number">701.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210408-02</Data></Cell>
+			<Cell><Data ss:Type="Number">715.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210408-03</Data></Cell>
+			<Cell><Data ss:Type="Number">680.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210409-01</Data></Cell>
+			<Cell><Data ss:Type="Number">717.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210409-02</Data></Cell>
+			<Cell><Data ss:Type="Number">189.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210410-01</Data></Cell>
+			<Cell><Data ss:Type="Number">720.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210410-02</Data></Cell>
+			<Cell><Data ss:Type="Number">576.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210411-01</Data></Cell>
+			<Cell><Data ss:Type="Number">704.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210411-02</Data></Cell>
+			<Cell><Data ss:Type="Number">672.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210411-03</Data></Cell>
+			<Cell><Data ss:Type="Number">585.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210412-01</Data></Cell>
+			<Cell><Data ss:Type="Number">691.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210412-02</Data></Cell>
+			<Cell><Data ss:Type="Number">503.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210413-01</Data></Cell>
+			<Cell><Data ss:Type="Number">626.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210413-02</Data></Cell>
+			<Cell><Data ss:Type="Number">546.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210413-03</Data></Cell>
+			<Cell><Data ss:Type="Number">674.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210414-01</Data></Cell>
+			<Cell><Data ss:Type="Number">610.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210414-02</Data></Cell>
+			<Cell><Data ss:Type="Number">536.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210414-03</Data></Cell>
+			<Cell><Data ss:Type="Number">567.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210415-01</Data></Cell>
+			<Cell><Data ss:Type="Number">592.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210416-01</Data></Cell>
+			<Cell><Data ss:Type="Number">635.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210416-02</Data></Cell>
+			<Cell><Data ss:Type="Number">585.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210416-03</Data></Cell>
+			<Cell><Data ss:Type="Number">632.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210417-01</Data></Cell>
+			<Cell><Data ss:Type="Number">624.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210417-02</Data></Cell>
+			<Cell><Data ss:Type="Number">540.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210418-01</Data></Cell>
+			<Cell><Data ss:Type="Number">641.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210418-02</Data></Cell>
+			<Cell><Data ss:Type="Number">461.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210418-03</Data></Cell>
+			<Cell><Data ss:Type="Number">491.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210419-01</Data></Cell>
+			<Cell><Data ss:Type="Number">461.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210419-02</Data></Cell>
+			<Cell><Data ss:Type="Number">627.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210419-03</Data></Cell>
+			<Cell><Data ss:Type="Number">686.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210420-01</Data></Cell>
+			<Cell><Data ss:Type="Number">600.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210420-02</Data></Cell>
+			<Cell><Data ss:Type="Number">653.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210421-01</Data></Cell>
+			<Cell><Data ss:Type="Number">610.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210421-02</Data></Cell>
+			<Cell><Data ss:Type="Number">595.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210421-03</Data></Cell>
+			<Cell><Data ss:Type="Number">580.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210422-01</Data></Cell>
+			<Cell><Data ss:Type="Number">600.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210422-02</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210423-01</Data></Cell>
+			<Cell><Data ss:Type="Number">656.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210423-02</Data></Cell>
+			<Cell><Data ss:Type="Number">660.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210424-01</Data></Cell>
+			<Cell><Data ss:Type="Number">656.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210424-02</Data></Cell>
+			<Cell><Data ss:Type="Number">690.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210425-01</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210425-02</Data></Cell>
+			<Cell><Data ss:Type="Number">709.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210426-01</Data></Cell>
+			<Cell><Data ss:Type="Number">642.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210426-02</Data></Cell>
+			<Cell><Data ss:Type="Number">694.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210427-01</Data></Cell>
+			<Cell><Data ss:Type="Number">639.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210427-02</Data></Cell>
+			<Cell><Data ss:Type="Number">670.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210427-03</Data></Cell>
+			<Cell><Data ss:Type="Number">482.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210428-01</Data></Cell>
+			<Cell><Data ss:Type="Number">653.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210428-02</Data></Cell>
+			<Cell><Data ss:Type="Number">618.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210429-01</Data></Cell>
+			<Cell><Data ss:Type="Number">635.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210429-02</Data></Cell>
+			<Cell><Data ss:Type="Number">650.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210430-01</Data></Cell>
+			<Cell><Data ss:Type="Number">605.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210430-02</Data></Cell>
+			<Cell><Data ss:Type="Number">680.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210430-03</Data></Cell>
+			<Cell><Data ss:Type="Number">625.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210501-01</Data></Cell>
+			<Cell><Data ss:Type="Number">615.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210501-02</Data></Cell>
+			<Cell><Data ss:Type="Number">646.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210502-01</Data></Cell>
+			<Cell><Data ss:Type="Number">652.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210502-02</Data></Cell>
+			<Cell><Data ss:Type="Number">625.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210503-01</Data></Cell>
+			<Cell><Data ss:Type="Number">625.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210504-01</Data></Cell>
+			<Cell><Data ss:Type="Number">685.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210505-01</Data></Cell>
+			<Cell><Data ss:Type="Number">666.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210505-02</Data></Cell>
+			<Cell><Data ss:Type="Number">681.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210505-03</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210506-01</Data></Cell>
+			<Cell><Data ss:Type="Number">650.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210506-02</Data></Cell>
+			<Cell><Data ss:Type="Number">590.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210506-03</Data></Cell>
+			<Cell><Data ss:Type="Number">587.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210507-01</Data></Cell>
+			<Cell><Data ss:Type="Number">565.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210507-02</Data></Cell>
+			<Cell><Data ss:Type="Number">644.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210507-03</Data></Cell>
+			<Cell><Data ss:Type="Number">769.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210508-01</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210508-02</Data></Cell>
+			<Cell><Data ss:Type="Number">646.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210508-03</Data></Cell>
+			<Cell><Data ss:Type="Number">681.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210509-01</Data></Cell>
+			<Cell><Data ss:Type="Number">615.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210509-02</Data></Cell>
+			<Cell><Data ss:Type="Number">635.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210510-01</Data></Cell>
+			<Cell><Data ss:Type="Number">660.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210510-02</Data></Cell>
+			<Cell><Data ss:Type="Number">715.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210510-03</Data></Cell>
+			<Cell><Data ss:Type="Number">640.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210511-01</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210511-02</Data></Cell>
+			<Cell><Data ss:Type="Number">630.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210512-01</Data></Cell>
+			<Cell><Data ss:Type="Number">554.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210512-02</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210512-03</Data></Cell>
+			<Cell><Data ss:Type="Number">675.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210513-01</Data></Cell>
+			<Cell><Data ss:Type="Number">605.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210514-01</Data></Cell>
+			<Cell><Data ss:Type="Number">715.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210514-02</Data></Cell>
+			<Cell><Data ss:Type="Number">715.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210514-03</Data></Cell>
+			<Cell><Data ss:Type="Number">721.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210515-01</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210515-02</Data></Cell>
+			<Cell><Data ss:Type="Number">621.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210516-01</Data></Cell>
+			<Cell><Data ss:Type="Number">640.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210516-02</Data></Cell>
+			<Cell><Data ss:Type="Number">625.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210517-01</Data></Cell>
+			<Cell><Data ss:Type="Number">606.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210517-02</Data></Cell>
+			<Cell><Data ss:Type="Number">640.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210518-01</Data></Cell>
+			<Cell><Data ss:Type="Number">620.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210518-02</Data></Cell>
+			<Cell><Data ss:Type="Number">637.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210519-01</Data></Cell>
+			<Cell><Data ss:Type="Number">685.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210519-02</Data></Cell>
+			<Cell><Data ss:Type="Number">634.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210520-01</Data></Cell>
+			<Cell><Data ss:Type="Number">638.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210520-02</Data></Cell>
+			<Cell><Data ss:Type="Number">630.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210521-01</Data></Cell>
+			<Cell><Data ss:Type="Number">617.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210521-02</Data></Cell>
+			<Cell><Data ss:Type="Number">639.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210522-01</Data></Cell>
+			<Cell><Data ss:Type="Number">615.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210522-02</Data></Cell>
+			<Cell><Data ss:Type="Number">675.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210522-03</Data></Cell>
+			<Cell><Data ss:Type="Number">644.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210523-01</Data></Cell>
+			<Cell><Data ss:Type="Number">435.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210523-02</Data></Cell>
+			<Cell><Data ss:Type="Number">635.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210523-03</Data></Cell>
+			<Cell><Data ss:Type="Number">422.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210524-01</Data></Cell>
+			<Cell><Data ss:Type="Number">695.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210524-02</Data></Cell>
+			<Cell><Data ss:Type="Number">473.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210524-03</Data></Cell>
+			<Cell><Data ss:Type="Number">430.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210525-01</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210525-02</Data></Cell>
+			<Cell><Data ss:Type="Number">440.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210525-03</Data></Cell>
+			<Cell><Data ss:Type="Number">657.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210525-04</Data></Cell>
+			<Cell><Data ss:Type="Number">685.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210526-01</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210526-02</Data></Cell>
+			<Cell><Data ss:Type="Number">674.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210527-01</Data></Cell>
+			<Cell><Data ss:Type="Number">593.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210527-02</Data></Cell>
+			<Cell><Data ss:Type="Number">610.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210527-03</Data></Cell>
+			<Cell><Data ss:Type="Number">680.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210528-01</Data></Cell>
+			<Cell><Data ss:Type="Number">630.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210528-02</Data></Cell>
+			<Cell><Data ss:Type="Number">650.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210529-01</Data></Cell>
+			<Cell><Data ss:Type="Number">670.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210529-02</Data></Cell>
+			<Cell><Data ss:Type="Number">670.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210530-01</Data></Cell>
+			<Cell><Data ss:Type="Number">479.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210530-02</Data></Cell>
+			<Cell><Data ss:Type="Number">485.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210530-03</Data></Cell>
+			<Cell><Data ss:Type="Number">470.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210531-01</Data></Cell>
+			<Cell><Data ss:Type="Number">482.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210531-02</Data></Cell>
+			<Cell><Data ss:Type="Number">471.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210531-03</Data></Cell>
+			<Cell><Data ss:Type="Number">493.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210601-01</Data></Cell>
+			<Cell><Data ss:Type="Number">443.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210601-02</Data></Cell>
+			<Cell><Data ss:Type="Number">700.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210601-03</Data></Cell>
+			<Cell><Data ss:Type="Number">677.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210602-01</Data></Cell>
+			<Cell><Data ss:Type="Number">667.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210602-02</Data></Cell>
+			<Cell><Data ss:Type="Number">660.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210602-03</Data></Cell>
+			<Cell><Data ss:Type="Number">423.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210602-04</Data></Cell>
+			<Cell><Data ss:Type="Number">400.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210603-01</Data></Cell>
+			<Cell><Data ss:Type="Number">630.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210603-02</Data></Cell>
+			<Cell><Data ss:Type="Number">440.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210603-03</Data></Cell>
+			<Cell><Data ss:Type="Number">359.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210604-01</Data></Cell>
+			<Cell><Data ss:Type="Number">600.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210604-02</Data></Cell>
+			<Cell><Data ss:Type="Number">645.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210604-03</Data></Cell>
+			<Cell><Data ss:Type="Number">559.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210605-01</Data></Cell>
+			<Cell><Data ss:Type="Number">555.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210605-02</Data></Cell>
+			<Cell><Data ss:Type="Number">626.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210606-01</Data></Cell>
+			<Cell><Data ss:Type="Number">560.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210606-02</Data></Cell>
+			<Cell><Data ss:Type="Number">628.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210607-01</Data></Cell>
+			<Cell><Data ss:Type="Number">662.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210607-02</Data></Cell>
+			<Cell><Data ss:Type="Number">562.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210607-03</Data></Cell>
+			<Cell><Data ss:Type="Number">636.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210608-01</Data></Cell>
+			<Cell><Data ss:Type="Number">649.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210608-02</Data></Cell>
+			<Cell><Data ss:Type="Number">448.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210608-03</Data></Cell>
+			<Cell><Data ss:Type="Number">627.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210609-01</Data></Cell>
+			<Cell><Data ss:Type="Number">715.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210609-02</Data></Cell>
+			<Cell><Data ss:Type="Number">685.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210610-01</Data></Cell>
+			<Cell><Data ss:Type="Number">650.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210610-02</Data></Cell>
+			<Cell><Data ss:Type="Number">675.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210611-01</Data></Cell>
+			<Cell><Data ss:Type="Number">683.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210611-02</Data></Cell>
+			<Cell><Data ss:Type="Number">575.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210611-03</Data></Cell>
+			<Cell><Data ss:Type="Number">527.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210612-01</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210613-01</Data></Cell>
+			<Cell><Data ss:Type="Number">672.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210613-02</Data></Cell>
+			<Cell><Data ss:Type="Number">494.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210613-03</Data></Cell>
+			<Cell><Data ss:Type="Number">631.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210614-01</Data></Cell>
+			<Cell><Data ss:Type="Number">692.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210614-02</Data></Cell>
+			<Cell><Data ss:Type="Number">634.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210614-03</Data></Cell>
+			<Cell><Data ss:Type="Number">606.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210615-01</Data></Cell>
+			<Cell><Data ss:Type="Number">544.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210615-02</Data></Cell>
+			<Cell><Data ss:Type="Number">426.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210615-03</Data></Cell>
+			<Cell><Data ss:Type="Number">715.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210616-01</Data></Cell>
+			<Cell><Data ss:Type="Number">675.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210616-02</Data></Cell>
+			<Cell><Data ss:Type="Number">466.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210616-03</Data></Cell>
+			<Cell><Data ss:Type="Number">755.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210617-01</Data></Cell>
+			<Cell><Data ss:Type="Number">715.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210617-02</Data></Cell>
+			<Cell><Data ss:Type="Number">705.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210617-03</Data></Cell>
+			<Cell><Data ss:Type="Number">685.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210618-01</Data></Cell>
+			<Cell><Data ss:Type="Number">621.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210618-02</Data></Cell>
+			<Cell><Data ss:Type="Number">701.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210618-03</Data></Cell>
+			<Cell><Data ss:Type="Number">628.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210619-01</Data></Cell>
+			<Cell><Data ss:Type="Number">615.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210619-02</Data></Cell>
+			<Cell><Data ss:Type="Number">671.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210620-01</Data></Cell>
+			<Cell><Data ss:Type="Number">513.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210620-02</Data></Cell>
+			<Cell><Data ss:Type="Number">583.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210620-03</Data></Cell>
+			<Cell><Data ss:Type="Number">430.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210621-01</Data></Cell>
+			<Cell><Data ss:Type="Number">595.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210622-01</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210622-02</Data></Cell>
+			<Cell><Data ss:Type="Number">675.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210622-03</Data></Cell>
+			<Cell><Data ss:Type="Number">583.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210623-01</Data></Cell>
+			<Cell><Data ss:Type="Number">651.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210623-02</Data></Cell>
+			<Cell><Data ss:Type="Number">575.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210624-01</Data></Cell>
+			<Cell><Data ss:Type="Number">660.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210701-01</Data></Cell>
+			<Cell><Data ss:Type="Number">683.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210701-02</Data></Cell>
+			<Cell><Data ss:Type="Number">615.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210702-01</Data></Cell>
+			<Cell><Data ss:Type="Number">620.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210702-02</Data></Cell>
+			<Cell><Data ss:Type="Number">633.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210702-03</Data></Cell>
+			<Cell><Data ss:Type="Number">643.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210703-01</Data></Cell>
+			<Cell><Data ss:Type="Number">599.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210703-02</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210703-03</Data></Cell>
+			<Cell><Data ss:Type="Number">645.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210704-01</Data></Cell>
+			<Cell><Data ss:Type="Number">693.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210704-02</Data></Cell>
+			<Cell><Data ss:Type="Number">648.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210705-01</Data></Cell>
+			<Cell><Data ss:Type="Number">520.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210705-02</Data></Cell>
+			<Cell><Data ss:Type="Number">680.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210705-03</Data></Cell>
+			<Cell><Data ss:Type="Number">481.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210705-04</Data></Cell>
+			<Cell><Data ss:Type="Number">633.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210706-01</Data></Cell>
+			<Cell><Data ss:Type="Number">640.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210706-02</Data></Cell>
+			<Cell><Data ss:Type="Number">458.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210706-03</Data></Cell>
+			<Cell><Data ss:Type="Number">641.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210707-01</Data></Cell>
+			<Cell><Data ss:Type="Number">642.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210707-02</Data></Cell>
+			<Cell><Data ss:Type="Number">678.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210708-01</Data></Cell>
+			<Cell><Data ss:Type="Number">695.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210708-02</Data></Cell>
+			<Cell><Data ss:Type="Number">670.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210709-01</Data></Cell>
+			<Cell><Data ss:Type="Number">675.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210709-02</Data></Cell>
+			<Cell><Data ss:Type="Number">640.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210710-01</Data></Cell>
+			<Cell><Data ss:Type="Number">535.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210710-02</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210710-03</Data></Cell>
+			<Cell><Data ss:Type="Number">692.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210711-01</Data></Cell>
+			<Cell><Data ss:Type="Number">652.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210711-02</Data></Cell>
+			<Cell><Data ss:Type="Number">750.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210712-01</Data></Cell>
+			<Cell><Data ss:Type="Number">680.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210712-02</Data></Cell>
+			<Cell><Data ss:Type="Number">667.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210713-01</Data></Cell>
+			<Cell><Data ss:Type="Number">607.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210713-02</Data></Cell>
+			<Cell><Data ss:Type="Number">617.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210713-03</Data></Cell>
+			<Cell><Data ss:Type="Number">668.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210714-01</Data></Cell>
+			<Cell><Data ss:Type="Number">645.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210714-02</Data></Cell>
+			<Cell><Data ss:Type="Number">701.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210715-01</Data></Cell>
+			<Cell><Data ss:Type="Number">682.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210715-02</Data></Cell>
+			<Cell><Data ss:Type="Number">668.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210716-01</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210716-02</Data></Cell>
+			<Cell><Data ss:Type="Number">708.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210717-01</Data></Cell>
+			<Cell><Data ss:Type="Number">638.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210717-02</Data></Cell>
+			<Cell><Data ss:Type="Number">694.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210718-01</Data></Cell>
+			<Cell><Data ss:Type="Number">737.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210718-02</Data></Cell>
+			<Cell><Data ss:Type="Number">682.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210719-01</Data></Cell>
+			<Cell><Data ss:Type="Number">640.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210720-01</Data></Cell>
+			<Cell><Data ss:Type="Number">687.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210721-01</Data></Cell>
+			<Cell><Data ss:Type="Number">675.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210721-02</Data></Cell>
+			<Cell><Data ss:Type="Number">684.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210721-03</Data></Cell>
+			<Cell><Data ss:Type="Number">615.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210722-01</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210722-02</Data></Cell>
+			<Cell><Data ss:Type="Number">604.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210723-01</Data></Cell>
+			<Cell><Data ss:Type="Number">603.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210723-02</Data></Cell>
+			<Cell><Data ss:Type="Number">630.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210723-03</Data></Cell>
+			<Cell><Data ss:Type="Number">539.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210724-01</Data></Cell>
+			<Cell><Data ss:Type="Number">620.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210724-02</Data></Cell>
+			<Cell><Data ss:Type="Number">648.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210725-01</Data></Cell>
+			<Cell><Data ss:Type="Number">723.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210725-02</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210725-03</Data></Cell>
+			<Cell><Data ss:Type="Number">630.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210726-01</Data></Cell>
+			<Cell><Data ss:Type="Number">683.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210726-02</Data></Cell>
+			<Cell><Data ss:Type="Number">432.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210727-01</Data></Cell>
+			<Cell><Data ss:Type="Number">706.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210727-02</Data></Cell>
+			<Cell><Data ss:Type="Number">670.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210727-03</Data></Cell>
+			<Cell><Data ss:Type="Number">586.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210728-01</Data></Cell>
+			<Cell><Data ss:Type="Number">592.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210728-02</Data></Cell>
+			<Cell><Data ss:Type="Number">675.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210729-01</Data></Cell>
+			<Cell><Data ss:Type="Number">514.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210729-02</Data></Cell>
+			<Cell><Data ss:Type="Number">645.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210729-03</Data></Cell>
+			<Cell><Data ss:Type="Number">573.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210730-01</Data></Cell>
+			<Cell><Data ss:Type="Number">629.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210730-02</Data></Cell>
+			<Cell><Data ss:Type="Number">645.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210731-01</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210731-02</Data></Cell>
+			<Cell><Data ss:Type="Number">660.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210801-01</Data></Cell>
+			<Cell><Data ss:Type="Number">643.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210801-02</Data></Cell>
+			<Cell><Data ss:Type="Number">668.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210802-01</Data></Cell>
+			<Cell><Data ss:Type="Number">585.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210802-02</Data></Cell>
+			<Cell><Data ss:Type="Number">628.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210803-01</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210803-02</Data></Cell>
+			<Cell><Data ss:Type="Number">500.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210804-01</Data></Cell>
+			<Cell><Data ss:Type="Number">690.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210804-02</Data></Cell>
+			<Cell><Data ss:Type="Number">535.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210804-03</Data></Cell>
+			<Cell><Data ss:Type="Number">580.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210805-01</Data></Cell>
+			<Cell><Data ss:Type="Number">686.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210805-02</Data></Cell>
+			<Cell><Data ss:Type="Number">683.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210806-01</Data></Cell>
+			<Cell><Data ss:Type="Number">645.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210807-01</Data></Cell>
+			<Cell><Data ss:Type="Number">680.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210807-02</Data></Cell>
+			<Cell><Data ss:Type="Number">660.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210807-03</Data></Cell>
+			<Cell><Data ss:Type="Number">668.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210808-01</Data></Cell>
+			<Cell><Data ss:Type="Number">700.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210917-01</Data></Cell>
+			<Cell><Data ss:Type="Number">608.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210917-02</Data></Cell>
+			<Cell><Data ss:Type="Number">502.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210918-01</Data></Cell>
+			<Cell><Data ss:Type="Number">518.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210918-02</Data></Cell>
+			<Cell><Data ss:Type="Number">483.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210918-03</Data></Cell>
+			<Cell><Data ss:Type="Number">463.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210919-01</Data></Cell>
+			<Cell><Data ss:Type="Number">570.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210919-02</Data></Cell>
+			<Cell><Data ss:Type="Number">445.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210920-01</Data></Cell>
+			<Cell><Data ss:Type="Number">500.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210920-02</Data></Cell>
+			<Cell><Data ss:Type="Number">440.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210920-03</Data></Cell>
+			<Cell><Data ss:Type="Number">400.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210921-01</Data></Cell>
+			<Cell><Data ss:Type="Number">562.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210921-02</Data></Cell>
+			<Cell><Data ss:Type="Number">540.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210921-03</Data></Cell>
+			<Cell><Data ss:Type="Number">493.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210922-01</Data></Cell>
+			<Cell><Data ss:Type="Number">680.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210922-02</Data></Cell>
+			<Cell><Data ss:Type="Number">450.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210922-03</Data></Cell>
+			<Cell><Data ss:Type="Number">418.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210923-01</Data></Cell>
+			<Cell><Data ss:Type="Number">460.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210923-02</Data></Cell>
+			<Cell><Data ss:Type="Number">612.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210924-01</Data></Cell>
+			<Cell><Data ss:Type="Number">637.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210924-02</Data></Cell>
+			<Cell><Data ss:Type="Number">572.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210924-03</Data></Cell>
+			<Cell><Data ss:Type="Number">572.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210925-01</Data></Cell>
+			<Cell><Data ss:Type="Number">648.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210925-02</Data></Cell>
+			<Cell><Data ss:Type="Number">565.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210926-01</Data></Cell>
+			<Cell><Data ss:Type="Number">500.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210926-02</Data></Cell>
+			<Cell><Data ss:Type="Number">450.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210926-03</Data></Cell>
+			<Cell><Data ss:Type="Number">491.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210927-01</Data></Cell>
+			<Cell><Data ss:Type="Number">600.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210927-02</Data></Cell>
+			<Cell><Data ss:Type="Number">542.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210927-03</Data></Cell>
+			<Cell><Data ss:Type="Number">610.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210928-01</Data></Cell>
+			<Cell><Data ss:Type="Number">542.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210928-02</Data></Cell>
+			<Cell><Data ss:Type="Number">610.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210929-01</Data></Cell>
+			<Cell><Data ss:Type="Number">655.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210929-02</Data></Cell>
+			<Cell><Data ss:Type="Number">647.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210929-03</Data></Cell>
+			<Cell><Data ss:Type="Number">620.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210930-01</Data></Cell>
+			<Cell><Data ss:Type="Number">630.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210930-02</Data></Cell>
+			<Cell><Data ss:Type="Number">637.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20210930-03</Data></Cell>
+			<Cell><Data ss:Type="Number">565.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211001-01</Data></Cell>
+			<Cell><Data ss:Type="Number">582.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211001-02</Data></Cell>
+			<Cell><Data ss:Type="Number">615.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211001-03</Data></Cell>
+			<Cell><Data ss:Type="Number">485.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211002-01</Data></Cell>
+			<Cell><Data ss:Type="Number">587.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211002-02</Data></Cell>
+			<Cell><Data ss:Type="Number">455.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211002-03</Data></Cell>
+			<Cell><Data ss:Type="Number">407.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211003-01</Data></Cell>
+			<Cell><Data ss:Type="Number">500.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211003-02</Data></Cell>
+			<Cell><Data ss:Type="Number">480.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211004-01</Data></Cell>
+			<Cell><Data ss:Type="Number">485.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211004-02</Data></Cell>
+			<Cell><Data ss:Type="Number">400.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211005-01</Data></Cell>
+			<Cell><Data ss:Type="Number">495.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211005-02</Data></Cell>
+			<Cell><Data ss:Type="Number">405.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211006-01</Data></Cell>
+			<Cell><Data ss:Type="Number">465.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211007-01</Data></Cell>
+			<Cell><Data ss:Type="Number">590.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211007-02</Data></Cell>
+			<Cell><Data ss:Type="Number">605.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211008-01</Data></Cell>
+			<Cell><Data ss:Type="Number">620.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211008-02</Data></Cell>
+			<Cell><Data ss:Type="Number">565.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211008-03</Data></Cell>
+			<Cell><Data ss:Type="Number">471.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211009-01</Data></Cell>
+			<Cell><Data ss:Type="Number">611.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211009-02</Data></Cell>
+			<Cell><Data ss:Type="Number">495.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211010-01</Data></Cell>
+			<Cell><Data ss:Type="Number">591.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211010-02</Data></Cell>
+			<Cell><Data ss:Type="Number">475.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211011-01</Data></Cell>
+			<Cell><Data ss:Type="Number">555.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211012-01</Data></Cell>
+			<Cell><Data ss:Type="Number">663.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211012-02</Data></Cell>
+			<Cell><Data ss:Type="Number">475.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211013-01</Data></Cell>
+			<Cell><Data ss:Type="Number">620.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211014-01</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211015-01</Data></Cell>
+			<Cell><Data ss:Type="Number">565.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211016-01</Data></Cell>
+			<Cell><Data ss:Type="Number">519.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211016-02</Data></Cell>
+			<Cell><Data ss:Type="Number">561.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211017-01</Data></Cell>
+			<Cell><Data ss:Type="Number">535.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211017-02</Data></Cell>
+			<Cell><Data ss:Type="Number">535.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211018-01</Data></Cell>
+			<Cell><Data ss:Type="Number">613.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211018-02</Data></Cell>
+			<Cell><Data ss:Type="Number">528.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211019-01</Data></Cell>
+			<Cell><Data ss:Type="Number">575.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211019-02</Data></Cell>
+			<Cell><Data ss:Type="Number">694.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211020-01</Data></Cell>
+			<Cell><Data ss:Type="Number">610.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211020-02</Data></Cell>
+			<Cell><Data ss:Type="Number">690.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211021-01</Data></Cell>
+			<Cell><Data ss:Type="Number">611.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211021-02</Data></Cell>
+			<Cell><Data ss:Type="Number">683.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211022-01</Data></Cell>
+			<Cell><Data ss:Type="Number">500.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211022-02</Data></Cell>
+			<Cell><Data ss:Type="Number">760.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211022-03</Data></Cell>
+			<Cell><Data ss:Type="Number">540.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211023-01</Data></Cell>
+			<Cell><Data ss:Type="Number">706.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211023-02</Data></Cell>
+			<Cell><Data ss:Type="Number">575.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211024-01</Data></Cell>
+			<Cell><Data ss:Type="Number">445.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211024-02</Data></Cell>
+			<Cell><Data ss:Type="Number">464.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211025-01</Data></Cell>
+			<Cell><Data ss:Type="Number">607.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211025-02</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211026-01</Data></Cell>
+			<Cell><Data ss:Type="Number">505.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211026-02</Data></Cell>
+			<Cell><Data ss:Type="Number">560.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211027-01</Data></Cell>
+			<Cell><Data ss:Type="Number">475.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211027-02</Data></Cell>
+			<Cell><Data ss:Type="Number">501.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211027-03</Data></Cell>
+			<Cell><Data ss:Type="Number">563.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211029-01</Data></Cell>
+			<Cell><Data ss:Type="Number">562.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211029-02</Data></Cell>
+			<Cell><Data ss:Type="Number">523.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211029-03</Data></Cell>
+			<Cell><Data ss:Type="Number">563.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211030-01</Data></Cell>
+			<Cell><Data ss:Type="Number">555.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211030-02</Data></Cell>
+			<Cell><Data ss:Type="Number">526.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211030-03</Data></Cell>
+			<Cell><Data ss:Type="Number">637.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211031-01</Data></Cell>
+			<Cell><Data ss:Type="Number">546.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211101-01</Data></Cell>
+			<Cell><Data ss:Type="Number">635.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211101-02</Data></Cell>
+			<Cell><Data ss:Type="Number">571.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211102-01</Data></Cell>
+			<Cell><Data ss:Type="Number">635.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211102-02</Data></Cell>
+			<Cell><Data ss:Type="Number">690.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211103-01</Data></Cell>
+			<Cell><Data ss:Type="Number">656.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211103-02</Data></Cell>
+			<Cell><Data ss:Type="Number">560.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211104-01</Data></Cell>
+			<Cell><Data ss:Type="Number">470.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211104-02</Data></Cell>
+			<Cell><Data ss:Type="Number">575.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211105-01</Data></Cell>
+			<Cell><Data ss:Type="Number">696.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211105-02</Data></Cell>
+			<Cell><Data ss:Type="Number">657.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211106-01</Data></Cell>
+			<Cell><Data ss:Type="Number">632.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211106-02</Data></Cell>
+			<Cell><Data ss:Type="Number">541.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211107-01</Data></Cell>
+			<Cell><Data ss:Type="Number">542.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211107-02</Data></Cell>
+			<Cell><Data ss:Type="Number">447.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211107-03</Data></Cell>
+			<Cell><Data ss:Type="Number">515.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211108-01</Data></Cell>
+			<Cell><Data ss:Type="Number">570.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211108-02</Data></Cell>
+			<Cell><Data ss:Type="Number">515.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211108-03</Data></Cell>
+			<Cell><Data ss:Type="Number">511.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211109-01</Data></Cell>
+			<Cell><Data ss:Type="Number">500.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211109-02</Data></Cell>
+			<Cell><Data ss:Type="Number">510.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211109-03</Data></Cell>
+			<Cell><Data ss:Type="Number">535.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211110-01</Data></Cell>
+			<Cell><Data ss:Type="Number">571.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211110-02</Data></Cell>
+			<Cell><Data ss:Type="Number">465.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211110-03</Data></Cell>
+			<Cell><Data ss:Type="Number">515.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211110-04</Data></Cell>
+			<Cell><Data ss:Type="Number">486.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211111-01</Data></Cell>
+			<Cell><Data ss:Type="Number">515.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211111-02</Data></Cell>
+			<Cell><Data ss:Type="Number">510.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211112-01</Data></Cell>
+			<Cell><Data ss:Type="Number">553.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211112-02</Data></Cell>
+			<Cell><Data ss:Type="Number">530.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211113-01</Data></Cell>
+			<Cell><Data ss:Type="Number">628.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211113-02</Data></Cell>
+			<Cell><Data ss:Type="Number">665.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211114-01</Data></Cell>
+			<Cell><Data ss:Type="Number">464.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211114-02</Data></Cell>
+			<Cell><Data ss:Type="Number">664.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211114-03</Data></Cell>
+			<Cell><Data ss:Type="Number">515.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211115-01</Data></Cell>
+			<Cell><Data ss:Type="Number">423.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211115-02</Data></Cell>
+			<Cell><Data ss:Type="Number">629.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211116-01</Data></Cell>
+			<Cell><Data ss:Type="Number">465.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211116-02</Data></Cell>
+			<Cell><Data ss:Type="Number">560.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211117-01</Data></Cell>
+			<Cell><Data ss:Type="Number">500.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211117-02</Data></Cell>
+			<Cell><Data ss:Type="Number">541.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211118-01</Data></Cell>
+			<Cell><Data ss:Type="Number">650.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211118-02</Data></Cell>
+			<Cell><Data ss:Type="Number">462.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211119-01</Data></Cell>
+			<Cell><Data ss:Type="Number">480.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211119-02</Data></Cell>
+			<Cell><Data ss:Type="Number">615.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211120-01</Data></Cell>
+			<Cell><Data ss:Type="Number">585.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211120-02</Data></Cell>
+			<Cell><Data ss:Type="Number">654.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211121-01</Data></Cell>
+			<Cell><Data ss:Type="Number">633.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211121-02</Data></Cell>
+			<Cell><Data ss:Type="Number">673.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211122-01</Data></Cell>
+			<Cell><Data ss:Type="Number">585.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211123-01</Data></Cell>
+			<Cell><Data ss:Type="Number">694.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211124-01</Data></Cell>
+			<Cell><Data ss:Type="Number">540.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211124-02</Data></Cell>
+			<Cell><Data ss:Type="Number">625.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211125-01</Data></Cell>
+			<Cell><Data ss:Type="Number">565.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211126-01</Data></Cell>
+			<Cell><Data ss:Type="Number">583.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211127-01</Data></Cell>
+			<Cell><Data ss:Type="Number">485.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211127-02</Data></Cell>
+			<Cell><Data ss:Type="Number">585.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211127-03</Data></Cell>
+			<Cell><Data ss:Type="Number">490.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211128-01</Data></Cell>
+			<Cell><Data ss:Type="Number">607.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211128-02</Data></Cell>
+			<Cell><Data ss:Type="Number">683.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211129-01</Data></Cell>
+			<Cell><Data ss:Type="Number">605.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211130-01</Data></Cell>
+			<Cell><Data ss:Type="Number">581.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211130-02</Data></Cell>
+			<Cell><Data ss:Type="Number">417.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211130-03</Data></Cell>
+			<Cell><Data ss:Type="Number">648.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211201-01</Data></Cell>
+			<Cell><Data ss:Type="Number">552.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211201-02</Data></Cell>
+			<Cell><Data ss:Type="Number">669.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211202-01</Data></Cell>
+			<Cell><Data ss:Type="Number">495.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211202-02</Data></Cell>
+			<Cell><Data ss:Type="Number">551.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211202-03</Data></Cell>
+			<Cell><Data ss:Type="Number">523.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211203-01</Data></Cell>
+			<Cell><Data ss:Type="Number">513.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211204-01</Data></Cell>
+			<Cell><Data ss:Type="Number">563.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211205-01</Data></Cell>
+			<Cell><Data ss:Type="Number">485.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211205-02</Data></Cell>
+			<Cell><Data ss:Type="Number">596.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211206-01</Data></Cell>
+			<Cell><Data ss:Type="Number">613.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211207-01</Data></Cell>
+			<Cell><Data ss:Type="Number">659.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211207-02</Data></Cell>
+			<Cell><Data ss:Type="Number">565.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211208-01</Data></Cell>
+			<Cell><Data ss:Type="Number">573.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211209-01</Data></Cell>
+			<Cell><Data ss:Type="Number">671.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211209-02</Data></Cell>
+			<Cell><Data ss:Type="Number">635.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211210-01</Data></Cell>
+			<Cell><Data ss:Type="Number">650.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211211-01</Data></Cell>
+			<Cell><Data ss:Type="Number">591.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211211-02</Data></Cell>
+			<Cell><Data ss:Type="Number">533.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211211-03</Data></Cell>
+			<Cell><Data ss:Type="Number">613.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211212-01</Data></Cell>
+			<Cell><Data ss:Type="Number">660.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211212-02</Data></Cell>
+			<Cell><Data ss:Type="Number">616.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211213-01</Data></Cell>
+			<Cell><Data ss:Type="Number">347.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211213-02</Data></Cell>
+			<Cell><Data ss:Type="Number">615.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211214-01</Data></Cell>
+			<Cell><Data ss:Type="Number">572.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211214-02</Data></Cell>
+			<Cell><Data ss:Type="Number">595.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211214-03</Data></Cell>
+			<Cell><Data ss:Type="Number">615.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211215-01</Data></Cell>
+			<Cell><Data ss:Type="Number">596.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211215-02</Data></Cell>
+			<Cell><Data ss:Type="Number">507.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211216-01</Data></Cell>
+			<Cell><Data ss:Type="Number">645.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211216-02</Data></Cell>
+			<Cell><Data ss:Type="Number">553.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211216-03</Data></Cell>
+			<Cell><Data ss:Type="Number">631.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211217-01</Data></Cell>
+			<Cell><Data ss:Type="Number">495.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211217-02</Data></Cell>
+			<Cell><Data ss:Type="Number">452.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211218-01</Data></Cell>
+			<Cell><Data ss:Type="Number">510.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211220-01</Data></Cell>
+			<Cell><Data ss:Type="Number">490.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211220-02</Data></Cell>
+			<Cell><Data ss:Type="Number">556.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211221-01</Data></Cell>
+			<Cell><Data ss:Type="Number">629.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211222-01</Data></Cell>
+			<Cell><Data ss:Type="Number">511.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211222-02</Data></Cell>
+			<Cell><Data ss:Type="Number">708.00</Data></Cell>
+		</Row>
+		<Row>
+			<Cell><Data ss:Type="String">20211223-01</Data></Cell>
+			<Cell><Data ss:Type="Number">627.00</Data></Cell>
+		</Row>	</Table>
+</Worksheet>
+</Workbook>
