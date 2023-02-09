@@ -19,7 +19,6 @@ import GridLayout from './GridLayout';
 
 const NotFound = lazy(() => import('./404'));
 const Main = lazy(() => import('./Main'));
-const NumPad = lazy(() => import('./NumPad'));
 
 
 export const MediaContext = React.createContext({});
@@ -40,7 +39,6 @@ const RenderRouter = () => {
             path: '/',
             element: <Main/>,
             children: [
-                { path: "numpad", element: <Suspense fallback={<Spin />}><NumPad /></Suspense> },
                 // { path: "validateReellings", element: <Suspense fallback={<Spin />}><BobinagensValidarList /></Suspense> }, //TO REMOVE
                 // { path: "bobines/validarlist", element: <Suspense fallback={<Spin />}><BobinesValidarList /></Suspense> },
                 // { path: "ofabricolist", element: <Suspense fallback={<Spin />}><OFabricoList /></Suspense> },

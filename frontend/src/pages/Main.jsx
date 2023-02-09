@@ -12,7 +12,9 @@ import Logo from 'assets/logo.svg';
 
 const StyledButton = styled(Button)`
 	font-weight:700;
-	width:60px!important;
+	width:100px!important;
+	height:50px!important;
+	font-size:20px;
 `;
 
 
@@ -89,20 +91,22 @@ export default ({ }) => {
 
 
 	return (<>
-		<Container style={{ fontWeight: 700 }}>
-			<Row gutterWidth={2} style={{ height: "50px", margin: "20px 0px 40px 0px", alignItems: "center" }}>
+		<Container fluid style={{ fontWeight: 700 }}>
+			<Row gutterWidth={2} style={{ margin: "20px 0px 40px 0px", alignItems: "center" }}>
 				<Col></Col>
 				<Col>
 					<Row nogutter>
 						<Col></Col>
-						<Col xs="content" style={{ marginRight: "10px", alignSelf: "center" }}><Logo style={{ width: "133px", height: "32px" }} /></Col>
-						<Col xs="content" style={{ fontSize: "16px", fontWeight: 400, alignSelf: "start", paddingTop: "4px" }}>{dateState.toLocaleDateString('pt-PT', {
+						<Col xs="content" style={{ alignSelf: "center" }}><Logo style={{ width: "133px", height: "32px" }} /></Col>
+						<Col></Col>
+					</Row>
+					<Row nogutter>
+						<Col style={{ fontSize: "16px", fontWeight: 400, textAlign: "center"}}>{dateState.toLocaleDateString('pt-PT', {
 							day: '2-digit',
 							month: 'long',
 							year: 'numeric'
 						})}
 						</Col>
-						<Col></Col>
 					</Row>
 					<Row nogutter><Col style={{ fontSize: "24px", fontWeight: 700, textAlign: "center" }}>
 						{dateState.toLocaleTimeString('pt-PT', {
@@ -111,9 +115,20 @@ export default ({ }) => {
 							second: '2-digit'
 						})}</Col></Row>
 				</Col>
+				<Col>
+					{!snapshot && <Webcam
+						audio={false}
+						height={180}
+						ref={webcamRef}
+						screenshotFormat="image/jpeg"
+						width={320}
+						videoConstraints={videoConstraints}
+					/>}
+					{snapshot && <img height={180} src={snapshot} />}
+				</Col>
 				<Col></Col>
 			</Row>
-			<Row gutterWidth={2} style={{ height: "188px" }}>
+			{/* <Row gutterWidth={2} style={{ height: "188px" }}>
 				<Col></Col>
 				<Col xs="content" style={{}}>
 					{!snapshot && <Webcam
@@ -124,13 +139,13 @@ export default ({ }) => {
 						width={320}
 						videoConstraints={videoConstraints}
 					/>}
-					{snapshot && <img src={snapshot} />}
+					{snapshot && <img height={180} src={snapshot} />}
 				</Col>
 				<Col></Col>
-			</Row>
-			<Row gutterWidth={2} style={{ height: "50px", marginBottom: "10px" }}>
+			</Row> */}
+			<Row gutterWidth={2} style={{ marginBottom: "10px" }}>
 				<Col></Col>
-				<Col xs="content" style={{ fontSize: "40px" }}>{num}</Col>
+				<Col xs="content" style={{ minWidth:"310px", fontSize: "40px", border:"solid 2px #1890ff", borderRadius:"3px",textAlign:"center" }}><span style={{color:"#8c8c8c"}}>F0</span>{num}</Col>
 				<Col></Col>
 			</Row>
 			{!snapshot && <><Row gutterWidth={2}>
