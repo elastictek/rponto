@@ -93,7 +93,7 @@ export default ({ }) => {
 
 	return (<>
 		<Container fluid style={{ fontWeight: 700 }}>
-			<Row gutterWidth={2} style={{ margin: "20px 0px 10px 0px", alignItems: "center" }}>
+			<Row gutterWidth={2} style={{ margin: "50px 0px 10px 0px", alignItems: "center" }}>
 				<Col></Col>
 				<Col style={{display:"flex",justifyContent:"center"}}>
 					<Row gutterWidth={15}>
@@ -121,11 +121,11 @@ export default ({ }) => {
 						<Col xs="content">
 							{!snapshot && <Webcam
 								audio={false}
-								height={180}
 								ref={webcamRef}
+								height={180}
 								screenshotFormat="image/jpeg"
-								width={320}
 								videoConstraints={videoConstraints}
+								style={{border:"solid 1px #f0f0f0",borderRadius:"5px",}}
 							/>}
 							{snapshot && <img height={180} src={snapshot} />}
 						</Col>
@@ -150,7 +150,7 @@ export default ({ }) => {
 			</Row> */}
 			{!snapshot && <Row gutterWidth={2} style={{height:"60px"}}>
 				<Col></Col>
-				<Col xs="content" style={{ fontSize: "35px", fontWeight: 500 }}>Introduza o número de funcionário:</Col>
+				<Col xs="content" style={{ fontSize: "25px", fontWeight: 600 }}>Introduza o número de funcionário:</Col>
 				<Col></Col>
 			</Row>
 			}
