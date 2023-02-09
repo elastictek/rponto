@@ -140,9 +140,9 @@ export default ({ }) => {
 								height={180}
 								screenshotFormat="image/jpeg"
 								videoConstraints={videoConstraints}
-								style={{ border: "solid 1px #f0f0f0", borderRadius: "5px",boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}
+								style={{ borderRadius: "5px",boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}
 							/>}
-							{snapshot && <img style={{ border: "solid 1px #f0f0f0", borderRadius: "5px",boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }} height={180} src={snapshot} />}
+							{snapshot && <img style={{ borderRadius: "5px",boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }} height={180} src={snapshot} />}
 						</Col>
 					</Row>
 				</Col>
