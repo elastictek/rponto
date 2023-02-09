@@ -675,8 +675,8 @@ class SqlServerSql(BaseSql):
 
     def dml(self, typeDml, data, table=None, filterParameters=None, returning=None, encloseColumns=False, ignoreKeys=[]):
         "Compute insert/update/delete items and statement"
+        print("dml0")
         ret = BaseSql.Dml()
-        return None
         filter = None
         if filterParameters is not None:
             if isinstance(filterParameters,dict):
@@ -704,13 +704,16 @@ class SqlServerSql(BaseSql):
         ks = list(data.keys())
         ret.columns = self.columns(ks, encloseColumns, False)
         if typeDml == TypeDml.INSERT:
+            print("dml1")
             for i, c in enumerate(ks):
                 if (c in ignoreKeys):
                     ret.tags.append(data.get(c))
                 else:
                     ret.tags.append(f'%({c})s')
                     ret.parameters[c] = data.get(c)
+            print("dml2")
             if table is not None:
+                print("dml3")
                 _cols = f'({",".join(ret.columns)})' if len(ret.columns)>0 else ''
                 _values = f'VALUES({",".join(ret.tags)})' if len(ret.columns)>0 else 'DEFAULT VALUES'
                 if returning is None:

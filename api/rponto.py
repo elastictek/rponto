@@ -61,29 +61,84 @@ def Sql(request, format=None):
 def SetUser(request, format=None):
     connection = connections[connMssqlName].cursor()    
     data = request.data['parameters']
-    f = Filters(request.data['filter'])
-    f.setParameters({
-        "REFNUM_0": {"value": lambda v: f"=={v.get('num')}", "field": lambda k, v: f'e.{k}'}
-    }, True)
-    f.where(False,"and")
-    f.auto()
-    f.value("and")
-    parameters = {**f.parameters}
-    dql = dbmssql.dql(request.data, False,False,[])
-    sql = lambda: (
-        f"""
-            select DISTINCT e.REFNUM_0, NAM_0,SRN_0 FROM x3peoplesql.PEOPLELTEK.EMPLOID e 
-            JOIN x3peoplesql.PEOPLELTEK.EMPLOCTR c on c.REFNUM_0 = e.REFNUM_0 
-            WHERE c.PROPRF_0 = 'STD' {f.text}
-            {dql.limit}
-        """
-    )
-    response = dbmssql.executeSimpleList(sql, connection, parameters)
-
-    if len(response["rows"])>0:
-        ts = datetime.now().strftime("%Y%m%d.%H%M%S")
-        with open(f"sn.{ts}.jpg", "wb") as fh:
-            fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
-
-    print(response)
-    return Response(response)
+    filter = request.data['filter']
+    try:
+        if "save" in data and data["save"]==True:
+            hsh = data.get("hsh") if data.get("hsh") is not None else None
+            if hsh is None:
+                ts = datetime.now()
+                with open(f"""sn.{ts.strftime("%Y%m%d.%H%M%S")}.jpg""", "wb") as fh:
+                    fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
+                f = Filters({"num": filter["num"],"dts": ts.strftime("%Y-%m-%d") })
+                f.where()
+                f.add(f'num = :num', True)
+                f.add(f'dts = :dts', True)
+                f.value("and")
+                reg = dbmssql.executeSimpleList(lambda: (f'SELECT * from rponto.dbo.time_registration {f.text}'), connection, f.parameters)['rows']
+                if len(reg)==0:
+                    dti = {
+                        "num":f.parameters["num"],
+                        "nt": 1,
+                        "hsh":hashlib.md5(f"""{f.parameters["num"]}-{ts.strftime("%Y-%m-%d")}""".encode('utf-8')).hexdigest(),
+                        "dts":ts.strftime("%Y-%m-%d"),
+                        "dt":datetime.strptime(data["timestamp"],"%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d"),
+                        f"ss_01":ts.strftime("%Y-%m-%d %H:%M:%S"),
+                        f"ts_01":data["timestamp"],
+                        f"ty_01":"in",
+                    }
+                    dml = dbmssql.dml(TypeDml.INSERT, dti, "rponto.dbo.time_registration",None,None,False)
+                    dbmssql.execute(dml.statement, connection, dml.parameters)
+                    return Response({"status":"success","hsh":dti.get("hsh")})
+                else:               
+                    nt = reg[0].get("nt")
+                    if nt==8:
+                        raise Exception("Atingiu o número máximo de registos! Por favor entre em contacto com os Recursos Humanos.")
+                    dti = {
+                        "nt": nt+1,
+                        f"ss_{str(nt+1).zfill(2)}":ts.strftime("%Y-%m-%d %H:%M:%S"),
+                        f"ts_{str(nt+1).zfill(2)}":data["timestamp"],
+                        f"ty_{str(nt+1).zfill(2)}":"in" if reg[0].get(f"ty_{str(nt).zfill(2)}") == "out" else "out"
+                    }
+                    f = Filters({"num": filter["num"],"hsh": reg[0].get("hsh") })
+                    f.where()
+                    f.add(f'num = :num', True)
+                    f.add(f'hsh = :hsh', True)
+                    f.value("and")
+                    dml = dbmssql.dml(TypeDml.UPDATE, dti, "rponto.dbo.time_registration",f.parameters,None,False)
+                    dbmssql.execute(dml.statement, connection, dml.parameters)
+                    return Response({"status":"success","hsh":reg[0].get("hsh")})
+            else:
+                f = Filters({"num": filter["num"],"hsh": hsh })
+                f.where()
+                f.add(f'num = :num', True)
+                f.add(f'hsh = :hsh', True)
+                f.value("and")
+                reg = dbmssql.executeSimpleList(lambda: (f'SELECT * from rponto.dbo.time_registration {f.text}'), connection, f.parameters)['rows']
+                if len(reg)>0:
+                    nt = reg[0].get("nt")
+                    dti = {f"ty_{str(nt).zfill(2)}":data.get("type")}
+                    dml = dbmssql.dml(TypeDml.UPDATE, dti, "rponto.dbo.time_registration",f.parameters,None,False)
+                    dbmssql.execute(dml.statement, connection, dml.parameters)
+                    return Response({"status":"success"})
+        else:
+            f = Filters(request.data['filter'])
+            f.setParameters({
+                "REFNUM_0": {"value": lambda v: f"=={v.get('num')}", "field": lambda k, v: f'e.{k}'}
+            }, True)
+            f.where(False,"and")
+            f.auto()
+            f.value("and")
+            parameters = {**f.parameters}
+            dql = dbmssql.dql(request.data, False,False,[])
+            sql = lambda: (
+                f"""
+                    select DISTINCT e.REFNUM_0, NAM_0,SRN_0 FROM x3peoplesql.PEOPLELTEK.EMPLOID e 
+                    JOIN x3peoplesql.PEOPLELTEK.EMPLOCTR c on c.REFNUM_0 = e.REFNUM_0 
+                    WHERE c.PROPRF_0 = 'STD' {f.text}
+                    {dql.limit}
+                """
+            )
+            response = dbmssql.executeSimpleList(sql, connection, parameters)
+            return Response(response)
+    except Exception as error:
+        return Response({"status": "error", "title": str(error)})
