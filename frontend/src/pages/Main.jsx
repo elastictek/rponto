@@ -3,7 +3,7 @@ import { Route, Routes, useRoutes, BrowserRouter, Navigate, Outlet, useLocation 
 import { Button, Spin, Form, Space, Input, InputNumber, Tooltip, Menu, Collapse, Typography, Modal, Select, Tag, DatePicker, Alert, Drawer, Checkbox } from "antd";
 import { Container, Row, Col } from 'react-grid-system';
 import styled from 'styled-components';
-import { EnterOutlined, RedoOutlined, WarningTwoTone } from '@ant-design/icons';
+import { EnterOutlined, RedoOutlined, WarningTwoTone, CloseCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import Webcam from "react-webcam";
 import { useSubmitting } from "utils";
 import { API_URL } from "config";
@@ -12,8 +12,8 @@ import Logo from 'assets/logo.svg';
 
 const StyledButton = styled(Button)`
 	font-weight:700;
-	width:130px!important;
-	height:60px!important;
+	width:150px!important;
+	height:70px!important;
 	font-size:25px;
 `;
 
@@ -256,8 +256,8 @@ export default ({ }) => {
 				</Row>
 				<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
 					<Col></Col>
-					<Col xs="content"><Button onClick={() => confirm(true)} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "green", color: "#fff" }}>Confirmo</Button></Col>
-					<Col xs="content"><Button onClick={() => confirm(false)} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "red", color: "#fff" }}>Não confirmo</Button></Col>
+					<Col xs="content"><Button onClick={() => confirm(true)} icon={<CheckCircleOutlined style={{fontSize:"80px"}} />} shape='circle' style={{ minWidth: "130px", minHeight: "130px", color: "green" }}></Button></Col>
+					<Col xs="content"><Button onClick={() => confirm(false)} icon={<CloseCircleOutlined style={{fontSize:"80px"}}/>} shape='circle' style={{ minWidth: "130px", minHeight: "130px", color: "red" }}></Button></Col>
 					<Col></Col>
 				</Row>
 			</>}
