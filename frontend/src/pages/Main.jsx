@@ -30,6 +30,7 @@ export default ({ }) => {
 	const [nome, setNome] = useState('');
 	const [error, setError] = useState({ status: false, text: '' });
 	const [snapshot, setSnapshot] = useState();
+	const [confirmed, setConfirmed] = useState(false);
 	const [dateState, setDateState] = useState(new Date());
 	const [date, setDate] = useState();
 	const webcamRef = React.useRef(null);
@@ -81,6 +82,7 @@ export default ({ }) => {
 		setNome("");
 		setError({ status: false, text: "" });
 		setDate(null);
+		setConfirmed(false);
 	}
 
 	const onClick = (v) => {
@@ -95,25 +97,35 @@ export default ({ }) => {
 		}
 	}
 
-	const confirm = async (t) => {
+	const onFinish = async (t) => {
 		if (timeout.current) {
 			clearTimeout(timeout.current);
 		}
 		timeout.current = null;
 		submitting.trigger();
-			try {
-				let id="aaaaaaaaaaaaaaaaaaa";
-				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: {}, parameters: { method: "Confirm", id } });
-				if (response.data.status !== "error" && response.data?.rows?.length > 0) {
-					reset();
-				} else {
-					setError({ status: true, text: "O número que indicou não existe!" });
-					submitting.end();
-				}
-			} catch (e) {
-				setError({ status: true, text: e.message });
+		try {
+			let id = "aaaaaaaaaaaaaaaaaaa";
+			let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: {}, parameters: { method: "Confirm", id } });
+			if (response.data.status !== "error" && response.data?.rows?.length > 0) {
+				reset();
+			} else {
+				setError({ status: true, text: "xxxxxxxxxxxxxxxx" });
 				submitting.end();
-			};
+			}
+		} catch (e) {
+			setError({ status: true, text: e.message });
+			submitting.end();
+		};
+	}
+
+	const confirm = (v) => {
+		if (v === true) {
+			setConfirmed(true);
+		}
+		else {
+			reset();
+		}
+
 	}
 
 
@@ -236,7 +248,20 @@ export default ({ }) => {
 					<Col></Col>
 				</Row>
 			</>}
-			{nome && <>
+			{(nome && !confirmed) && <>
+				<Row>
+					<Col></Col>
+					<Col xs="content" style={{ fontWeight: 200, fontSize: "30px" }}>Confirma que é {nome}?</Col>
+					<Col></Col>
+				</Row>
+				<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
+					<Col></Col>
+					<Col xs="content"><Button onClick={() => confirm(true)} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "green", color: "#fff" }}>Confirmo</Button></Col>
+					<Col xs="content"><Button onClick={() => confirm(false)} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "red", color: "#fff" }}>Não confirmo</Button></Col>
+					<Col></Col>
+				</Row>
+			</>}
+			{(nome && confirmed) && <>
 				<Row>
 					<Col></Col>
 					<Col xs="content" style={{ fontWeight: 200, fontSize: "30px" }}>Olá {nome}</Col>
@@ -244,8 +269,8 @@ export default ({ }) => {
 				</Row>
 				<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
 					<Col></Col>
-					<Col xs="content"><Button onClick={() => confirm('in')} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "green", color: "#fff" }}>Entrada</Button></Col>
-					<Col xs="content"><Button onClick={() => confirm("out")} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "red", color: "#fff" }}>Saída</Button></Col>
+					<Col xs="content"><Button onClick={() => onFinish('in')} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "green", color: "#fff" }}>Entrada</Button></Col>
+					<Col xs="content"><Button onClick={() => onFinish("out")} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "red", color: "#fff" }}>Saída</Button></Col>
 					<Col></Col>
 				</Row>
 				<Row>
