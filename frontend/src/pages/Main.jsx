@@ -54,7 +54,7 @@ export default ({ }) => {
 			submitting.trigger();
 			try {
 				const vals = { num: `F${num.padStart(5, '0')}` };
-				setNum(num.padStart(4, '0'));
+				setNum(num.padStart(3, '0'));
 				const _ds = dateState
 				setDate(_ds);
 				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", snapshot: imageSrc, timestamp: _ds } });
