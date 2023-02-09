@@ -31,6 +31,7 @@ export default ({ }) => {
 	const [error, setError] = useState({ status: false, text: '' });
 	const [snapshot, setSnapshot] = useState();
 	const [dateState, setDateState] = useState(new Date());
+	const [date, setDate] = useState();
 	const webcamRef = React.useRef(null);
 
 	const loadInterval = async () => {
@@ -53,8 +54,9 @@ export default ({ }) => {
 			try {
 				const vals = { num: `F${num.padStart(5, '0')}` };
 				setNum(num.padStart(4, '0'));
-				console.log(vals);
-				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", snapshot: imageSrc, timestamp: dateState } });
+				const _ds = dateState
+				setDate(_ds);
+				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", snapshot: imageSrc, timestamp: _ds } });
 				if (response.data.status !== "error" && response.data?.rows?.length > 0) {
 					setNome(`${response.data.rows[0].SRN_0} ${response.data.rows[0].NAM_0}`);
 				} else {
@@ -75,6 +77,7 @@ export default ({ }) => {
 		setSnapshot(null);
 		setNome("");
 		setError({ status: false, text: "" });
+		setDate(null);
 	}
 
 	const onClick = (v) => {
@@ -95,28 +98,40 @@ export default ({ }) => {
 		<Container fluid style={{ fontWeight: 700 }}>
 			<Row gutterWidth={2} style={{ margin: "50px 0px 10px 0px", alignItems: "center" }}>
 				<Col></Col>
-				<Col style={{display:"flex",justifyContent:"center"}}>
+				<Col style={{ display: "flex", justifyContent: "center" }}>
 					<Row gutterWidth={15}>
-						<Col xs="content" style={{alignSelf:"center"}}>
+						<Col xs="content" style={{ alignSelf: "center" }}>
 							<Row nogutter>
 								<Col></Col>
 								<Col xs="content" style={{ alignSelf: "center" }}><Logo style={{ width: "200px", height: "48px" }} /></Col>
 								<Col></Col>
 							</Row>
 							<Row nogutter>
-								<Col style={{ fontSize: "16px", fontWeight: 400, textAlign: "center" }}>{dateState.toLocaleDateString('pt-PT', {
-									day: '2-digit',
-									month: 'long',
-									year: 'numeric'
-								})}
+								<Col style={{ fontSize: "16px", fontWeight: 400, textAlign: "center" }}>
+									{!date && dateState.toLocaleDateString('pt-PT', {
+										day: '2-digit',
+										month: 'long',
+										year: 'numeric'
+									})}
+									{date && date.toLocaleDateString('pt-PT', {
+										day: '2-digit',
+										month: 'long',
+										year: 'numeric'
+									})}
 								</Col>
 							</Row>
 							<Row nogutter><Col style={{ fontSize: "24px", fontWeight: 700, textAlign: "center" }}>
-								{dateState.toLocaleTimeString('pt-PT', {
+								{!date && dateState.toLocaleTimeString('pt-PT', {
 									hour: '2-digit',
 									minute: '2-digit',
 									second: '2-digit'
-								})}</Col></Row>
+								})}
+								{date && date.toLocaleTimeString('pt-PT', {
+									hour: '2-digit',
+									minute: '2-digit',
+									second: '2-digit'
+								})}
+							</Col></Row>
 						</Col>
 						<Col xs="content">
 							{!snapshot && <Webcam
@@ -125,9 +140,9 @@ export default ({ }) => {
 								height={180}
 								screenshotFormat="image/jpeg"
 								videoConstraints={videoConstraints}
-								style={{border:"solid 1px #f0f0f0",borderRadius:"5px",}}
+								style={{ border: "solid 1px #f0f0f0", borderRadius: "5px",boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}
 							/>}
-							{snapshot && <img height={180} src={snapshot} />}
+							{snapshot && <img style={{ border: "solid 1px #f0f0f0", borderRadius: "5px",boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }} height={180} src={snapshot} />}
 						</Col>
 					</Row>
 				</Col>
@@ -148,13 +163,13 @@ export default ({ }) => {
 				</Col>
 				<Col></Col>
 			</Row> */}
-			{!snapshot && <Row gutterWidth={2} style={{height:"60px"}}>
+			{!snapshot && <Row gutterWidth={2} style={{ height: "60px" }}>
 				<Col></Col>
 				<Col xs="content" style={{ fontSize: "25px", fontWeight: 600 }}>Introduza o número de funcionário:</Col>
 				<Col></Col>
 			</Row>
 			}
-			{snapshot && <Row gutterWidth={2} style={{height:"60px"}}>
+			{snapshot && <Row gutterWidth={2} style={{ height: "60px" }}>
 				<Col></Col>
 				<Col xs="content" style={{ fontSize: "35px", fontWeight: 500 }}></Col>
 				<Col></Col>
@@ -205,8 +220,8 @@ export default ({ }) => {
 				</Row>
 				<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
 					<Col></Col>
-					<Col xs="content"><Button shape='circle' style={{minWidth:"100px",minHeight:"100px",background:"green", color:"#fff"}}>Entrada</Button></Col>
-					<Col xs="content"><Button shape='circle' style={{minWidth:"100px",minHeight:"100px",background:"red", color:"#fff"}}>Saída</Button></Col>
+					<Col xs="content"><Button shape='circle' style={{ minWidth: "100px", minHeight: "100px", background: "green", color: "#fff" }}>Entrada</Button></Col>
+					<Col xs="content"><Button shape='circle' style={{ minWidth: "100px", minHeight: "100px", background: "red", color: "#fff" }}>Saída</Button></Col>
 					<Col></Col>
 				</Row>
 				<Row>
