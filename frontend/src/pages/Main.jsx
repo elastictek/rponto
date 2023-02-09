@@ -52,6 +52,7 @@ export default ({ }) => {
 			submitting.trigger();
 			try {
 				const vals = { num: `F${num.padStart(5, '0')}` };
+				setNum(num.padStart(4, '0'));
 				console.log(vals);
 				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", snapshot: imageSrc, timestamp: dateState } });
 				if (response.data.status !== "error" && response.data?.rows?.length > 0) {
@@ -92,39 +93,43 @@ export default ({ }) => {
 
 	return (<>
 		<Container fluid style={{ fontWeight: 700 }}>
-			<Row gutterWidth={2} style={{ margin: "20px 0px 40px 0px", alignItems: "center" }}>
+			<Row gutterWidth={2} style={{ margin: "20px 0px 10px 0px", alignItems: "center" }}>
 				<Col></Col>
-				<Col>
-					<Row nogutter>
-						<Col></Col>
-						<Col xs="content" style={{ alignSelf: "center" }}><Logo style={{ width: "133px", height: "32px" }} /></Col>
-						<Col></Col>
-					</Row>
-					<Row nogutter>
-						<Col style={{ fontSize: "16px", fontWeight: 400, textAlign: "center"}}>{dateState.toLocaleDateString('pt-PT', {
-							day: '2-digit',
-							month: 'long',
-							year: 'numeric'
-						})}
+				<Col style={{display:"flex",justifyContent:"center"}}>
+					<Row gutterWidth={15}>
+						<Col xs="content" style={{alignSelf:"center"}}>
+							<Row nogutter>
+								<Col></Col>
+								<Col xs="content" style={{ alignSelf: "center" }}><Logo style={{ width: "200px", height: "48px" }} /></Col>
+								<Col></Col>
+							</Row>
+							<Row nogutter>
+								<Col style={{ fontSize: "16px", fontWeight: 400, textAlign: "center" }}>{dateState.toLocaleDateString('pt-PT', {
+									day: '2-digit',
+									month: 'long',
+									year: 'numeric'
+								})}
+								</Col>
+							</Row>
+							<Row nogutter><Col style={{ fontSize: "24px", fontWeight: 700, textAlign: "center" }}>
+								{dateState.toLocaleTimeString('pt-PT', {
+									hour: '2-digit',
+									minute: '2-digit',
+									second: '2-digit'
+								})}</Col></Row>
+						</Col>
+						<Col xs="content">
+							{!snapshot && <Webcam
+								audio={false}
+								height={180}
+								ref={webcamRef}
+								screenshotFormat="image/jpeg"
+								width={320}
+								videoConstraints={videoConstraints}
+							/>}
+							{snapshot && <img height={180} src={snapshot} />}
 						</Col>
 					</Row>
-					<Row nogutter><Col style={{ fontSize: "24px", fontWeight: 700, textAlign: "center" }}>
-						{dateState.toLocaleTimeString('pt-PT', {
-							hour: '2-digit',
-							minute: '2-digit',
-							second: '2-digit'
-						})}</Col></Row>
-				</Col>
-				<Col>
-					{!snapshot && <Webcam
-						audio={false}
-						height={180}
-						ref={webcamRef}
-						screenshotFormat="image/jpeg"
-						width={320}
-						videoConstraints={videoConstraints}
-					/>}
-					{snapshot && <img height={180} src={snapshot} />}
 				</Col>
 				<Col></Col>
 			</Row>
@@ -143,9 +148,21 @@ export default ({ }) => {
 				</Col>
 				<Col></Col>
 			</Row> */}
+			{!snapshot && <Row gutterWidth={2} style={{height:"60px"}}>
+				<Col></Col>
+				<Col xs="content" style={{ fontSize: "35px", fontWeight: 500 }}>Introduza o número de funcionário:</Col>
+				<Col></Col>
+			</Row>
+			}
+			{snapshot && <Row gutterWidth={2} style={{height:"60px"}}>
+				<Col></Col>
+				<Col xs="content" style={{ fontSize: "35px", fontWeight: 500 }}></Col>
+				<Col></Col>
+			</Row>
+			}
 			<Row gutterWidth={2} style={{ marginBottom: "10px" }}>
 				<Col></Col>
-				<Col xs="content" style={{ minWidth:"310px", fontSize: "40px", border:"solid 2px #1890ff", borderRadius:"3px",textAlign:"center" }}><span style={{color:"#8c8c8c"}}>F0</span>{num}</Col>
+				<Col xs="content" style={{ minWidth: "310px", fontSize: "40px", border: "solid 2px #1890ff", borderRadius: "3px", textAlign: "center" }}><span style={{ color: "#8c8c8c" }}>F0</span>{num}</Col>
 				<Col></Col>
 			</Row>
 			{!snapshot && <><Row gutterWidth={2}>
@@ -186,10 +203,10 @@ export default ({ }) => {
 					<Col xs="content" style={{ fontWeight: 200, fontSize: "30px" }}>Olá {nome}</Col>
 					<Col></Col>
 				</Row>
-				<Row style={{ margin: "20px 0px" }} gutterWidth={5}>
+				<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
 					<Col></Col>
-					<Col xs="content"><Button>Estou a Entrar</Button></Col>
-					<Col xs="content"><Button>Estou a Sair</Button></Col>
+					<Col xs="content"><Button shape='circle' style={{minWidth:"100px",minHeight:"100px",background:"green", color:"#fff"}}>Entrada</Button></Col>
+					<Col xs="content"><Button shape='circle' style={{minWidth:"100px",minHeight:"100px",background:"red", color:"#fff"}}>Saída</Button></Col>
 					<Col></Col>
 				</Row>
 				<Row>
