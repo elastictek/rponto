@@ -12,9 +12,9 @@ import Logo from 'assets/logo.svg';
 
 const StyledButton = styled(Button)`
 	font-weight:700;
-	width:100px!important;
-	height:50px!important;
-	font-size:20px;
+	width:130px!important;
+	height:60px!important;
+	font-size:25px;
 `;
 
 
@@ -33,6 +33,7 @@ export default ({ }) => {
 	const [dateState, setDateState] = useState(new Date());
 	const [date, setDate] = useState();
 	const webcamRef = React.useRef(null);
+	const timeout = React.useRef(null);
 
 	const loadInterval = async () => {
 		const request = (async () => setDateState(new Date()));
@@ -59,6 +60,7 @@ export default ({ }) => {
 				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", snapshot: imageSrc, timestamp: _ds } });
 				if (response.data.status !== "error" && response.data?.rows?.length > 0) {
 					setNome(`${response.data.rows[0].SRN_0} ${response.data.rows[0].NAM_0}`);
+					timeout.current = setTimeout(reset, 10000);
 				} else {
 					setError({ status: true, text: "O número que indicou não existe!" });
 					submitting.end();
@@ -73,6 +75,7 @@ export default ({ }) => {
 	);
 
 	const reset = () => {
+		console.log("entreieieieieieieieie")
 		setNum('');
 		setSnapshot(null);
 		setNome("");
@@ -90,6 +93,27 @@ export default ({ }) => {
 				setNum(prev => `${prev}${v}`);
 			}
 		}
+	}
+
+	const confirm = async (t) => {
+		if (timeout.current) {
+			clearTimeout(timeout.current);
+		}
+		timeout.current = null;
+		submitting.trigger();
+			try {
+				let id="aaaaaaaaaaaaaaaaaaa";
+				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: {}, parameters: { method: "Confirm", id } });
+				if (response.data.status !== "error" && response.data?.rows?.length > 0) {
+					reset();
+				} else {
+					setError({ status: true, text: "O número que indicou não existe!" });
+					submitting.end();
+				}
+			} catch (e) {
+				setError({ status: true, text: e.message });
+				submitting.end();
+			};
 	}
 
 
@@ -140,9 +164,9 @@ export default ({ }) => {
 								height={180}
 								screenshotFormat="image/jpeg"
 								videoConstraints={videoConstraints}
-								style={{ borderRadius: "5px",boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}
+								style={{ borderRadius: "5px", boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }}
 							/>}
-							{snapshot && <img style={{ borderRadius: "5px",boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }} height={180} src={snapshot} />}
+							{snapshot && <img style={{ borderRadius: "5px", boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }} height={180} src={snapshot} />}
 						</Col>
 					</Row>
 				</Col>
@@ -165,7 +189,7 @@ export default ({ }) => {
 			</Row> */}
 			{!snapshot && <Row gutterWidth={2} style={{ height: "60px" }}>
 				<Col></Col>
-				<Col xs="content" style={{ fontSize: "25px", fontWeight: 600 }}>Introduza o número de funcionário:</Col>
+				<Col xs="content" style={{ fontSize: "30px", fontWeight: 600 }}>Introduza o número de funcionário:</Col>
 				<Col></Col>
 			</Row>
 			}
@@ -177,7 +201,7 @@ export default ({ }) => {
 			}
 			<Row gutterWidth={2} style={{ marginBottom: "10px" }}>
 				<Col></Col>
-				<Col xs="content" style={{ minWidth: "310px", fontSize: "40px", border: "solid 2px #1890ff", borderRadius: "3px", textAlign: "center" }}><span style={{ color: "#8c8c8c" }}>F0</span>{num}</Col>
+				<Col xs="content" style={{ minWidth: "310px", fontSize: "40px", border: "solid 2px #1890ff", borderRadius: "3px", textAlign: "center" }}><span style={{ color: "#8c8c8c" }}>F00</span>{num}</Col>
 				<Col></Col>
 			</Row>
 			{!snapshot && <><Row gutterWidth={2}>
@@ -220,8 +244,8 @@ export default ({ }) => {
 				</Row>
 				<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
 					<Col></Col>
-					<Col xs="content"><Button shape='circle' style={{ minWidth: "100px", minHeight: "100px", background: "green", color: "#fff" }}>Entrada</Button></Col>
-					<Col xs="content"><Button shape='circle' style={{ minWidth: "100px", minHeight: "100px", background: "red", color: "#fff" }}>Saída</Button></Col>
+					<Col xs="content"><Button onClick={() => confirm('in')} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "green", color: "#fff" }}>Entrada</Button></Col>
+					<Col xs="content"><Button onClick={() => confirm("out")} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "red", color: "#fff" }}>Saída</Button></Col>
 					<Col></Col>
 				</Row>
 				<Row>
