@@ -263,8 +263,8 @@ export default ({ }) => {
 				<Row gutterWidth={2} style={{ height: "60px", marginTop: "30px", marginBottom: "30px" }}>
 					<Col></Col>
 					{!snapshot && <Col xs="content" style={{ fontSize: "30px", fontWeight: 700 }}>MARQUE O NÚMERO DE COLABORADOR</Col>}
-					{(nome && !confirmed) && <Col xs="content" style={{ fontWeight: 200, fontSize: "30px" }}>Confirma que é <span style={{ fontWeight: 600 }}>{nome}</span>?</Col>}
-					{(nome && confirmed) && <Col xs="content" style={{ fontWeight: 200, fontSize: "30px" }}>Olá {nome}</Col>}
+					{(nome && !confirmed) && <Col xs="content" style={{ fontWeight: 200, fontSize: "25px" }}>Confirma que é <span style={{ fontWeight: 600 }}>{nome}</span>?</Col>}
+					{(nome && confirmed) && <Col xs="content" style={{ fontWeight: 200, fontSize: "25px" }}>Olá {nome}</Col>}
 					<Col></Col>
 				</Row>
 
