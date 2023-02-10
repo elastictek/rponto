@@ -48,8 +48,6 @@ dbmssql = DBSql(connections[connMssqlName].alias)
 
 @api_view(['POST'])
 @renderer_classes([JSONRenderer])
-@authentication_classes([SessionAuthentication])
-@permission_classes([IsAuthenticated])
 def Sql(request, format=None):
     if "parameters" in request.data and "method" in request.data["parameters"]:
         method=request.data["parameters"]["method"]
