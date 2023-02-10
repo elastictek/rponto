@@ -38,6 +38,7 @@ from sistema.settings.appSettings import AppSettings
 import time
 import requests
 import psycopg2
+import face_recognition
 
 connGatewayName = "postgres"
 connMssqlName = "sqlserver"
@@ -60,6 +61,7 @@ def SetUser(request, format=None):
     connection = connections[connMssqlName].cursor()    
     data = request.data['parameters']
     filter = request.data['filter']
+
     try:
         if "save" in data and data["save"]==True:
             hsh = data.get("hsh") if data.get("hsh") is not None else None
@@ -78,6 +80,30 @@ def SetUser(request, format=None):
                 with open(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""", "wb") as fh:
                     fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
                 
+                files = []
+                for i in os.listdir("../fotos"):
+                    if os.path.isfile(os.path.join("../fotos",i)) and filter["num"] in i:
+                        files.append(i)
+                        break
+                if len(files)>0:
+                    known_image = face_recognition.load_image_file(os.path.join("../fotos",files[0]))
+                    unknown_image = face_recognition.load_image_file(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""")
+
+                    known_encoding = face_recognition.face_encodings(known_image)[0]
+                    unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
+                    results = face_recognition.compare_faces([known_encoding], unknown_encoding)
+
+
+
+
+                print("PICTURESSSSSSSS")
+                #print(known_encoding)
+                print("---------------------------")
+                #print(unknown_encoding)
+                print("uuuuuuuuuuuuuuuuuuuuuuuuuu")
+                print(results)
+                #print(unknown_image)
+
                 f = Filters({"num": filter["num"],"dts": ts.strftime("%Y-%m-%d") })
                 f.where()
                 f.add(f'num = :num', True)
