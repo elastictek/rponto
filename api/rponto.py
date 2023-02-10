@@ -82,18 +82,19 @@ def SetUser(request, format=None):
                 
                 files = []
                 for i in os.listdir("../fotos"):
-                    if os.path.isfile(os.path.join("../fotos",i)) and filter["num"] in i:
+                    if os.path.isfile(os.path.join("../fotos",i)) and i.startswith(filter["num"]):
                         files.append(i)
                         break
                 if len(files)>0:
-                    known_image = face_recognition.load_image_file(os.path.join("../fotos",files[0]))
-                    unknown_image = face_recognition.load_image_file(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""")
-
-                    known_encoding = face_recognition.face_encodings(known_image)[0]
-                    unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
                     print("FACE RECON")    
                     print(os.path.join("../fotos",files[0]))
                     print(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""")
+                    known_image = face_recognition.load_image_file(os.path.join("../fotos",files[0]))
+                    unknown_image = face_recognition.load_image_file(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""")
+                    print("################################")
+                    known_encoding = face_recognition.face_encodings(known_image)[0]
+                    unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
+                    print("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
                     results = face_recognition.compare_faces([known_encoding], unknown_encoding)
                     print(results)
 
