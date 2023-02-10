@@ -85,6 +85,8 @@ def SetUser(request, format=None):
                     if os.path.isfile(os.path.join("../fotos",i)) and i.startswith(filter["num"]):
                         files.append(i)
                         break
+                img = None
+                result = None
                 if len(files)>0:
                     print("FACE RECON")    
                     print(os.path.join("../fotos",files[0]))
@@ -97,8 +99,11 @@ def SetUser(request, format=None):
                     unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
                     print("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
                     results = face_recognition.compare_faces([known_encoding], unknown_encoding)
+                    img=files[0]
+                    if len(results)>0:
+                        result=results[0]
                     print(results)
-
+                    
                 f = Filters({"num": filter["num"],"dts": ts.strftime("%Y-%m-%d") })
                 f.where()
                 f.add(f'num = :num', True)
@@ -118,7 +123,7 @@ def SetUser(request, format=None):
                     }
                     dml = dbmssql.dml(TypeDml.INSERT, dti, "rponto.dbo.time_registration",None,None,False)
                     dbmssql.execute(dml.statement, connection, dml.parameters)
-                    return Response({"status":"success","hsh":dti.get("hsh")})
+                    return Response({"status":"success","hsh":dti.get("hsh"),"img":img,"result":result})
                 else:               
                     nt = reg[0].get("nt")
                     if nt==8:
@@ -129,14 +134,14 @@ def SetUser(request, format=None):
                         f"ts_{str(nt+1).zfill(2)}":data["timestamp"],
                         f"ty_{str(nt+1).zfill(2)}":"in" if reg[0].get(f"ty_{str(nt).zfill(2)}") == "out" else "out"
                     }
-                    f = Filters({"num": filter["num"],"hsh": reg[0].get("hsh") })
+                    f = Filters({"num": filter["num"],"hsh": reg[0].get("hsh")})
                     f.where()
                     f.add(f'num = :num', True)
                     f.add(f'hsh = :hsh', True)
                     f.value("and")
                     dml = dbmssql.dml(TypeDml.UPDATE, dti, "rponto.dbo.time_registration",f.parameters,None,False)
                     dbmssql.execute(dml.statement, connection, dml.parameters)
-                    return Response({"status":"success","hsh":reg[0].get("hsh")})
+                    return Response({"status":"success","hsh":reg[0].get("hsh"),"img":img,"result":result})
             else:
                 f = Filters({"num": filter["num"],"hsh": hsh })
                 f.where()

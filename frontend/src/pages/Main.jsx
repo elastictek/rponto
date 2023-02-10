@@ -40,7 +40,8 @@ export default ({ }) => {
 		dateInterval: new Date(),
 		date: null,
 		hsh: null,
-		type: null
+		type: null,
+		recon: null
 	});
 
 	const loadInterval = async () => {
@@ -69,7 +70,9 @@ export default ({ }) => {
 				});
 				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", snapshot: imageSrc, timestamp: dayjs(_ds).format(DATETIME_FORMAT) } });
 				if (response.data.status !== "error" && response.data?.rows?.length > 0) {
-					updateData(draft => { draft.nome = `${response.data.rows[0].SRN_0} ${response.data.rows[0].NAM_0}` });
+					updateData(draft => {
+						draft.nome = `${response.data.rows[0].SRN_0} ${response.data.rows[0].NAM_0}`;
+					});
 				} else {
 					updateData(draft => { draft.error = { status: true, text: "O número que indicou não existe!" } });
 				}
@@ -97,6 +100,7 @@ export default ({ }) => {
 			draft.date = null;
 			draft.type = null;
 			draft.error = { status: false, text: "" };
+			draft.recon = null;
 		});
 		submitting.end();
 	}
@@ -120,9 +124,11 @@ export default ({ }) => {
 				const vals = { num: `F${data.num.padStart(5, '0')}` };
 				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", save: true, snapshot: data.snapshot, timestamp: dayjs(data.date).format(DATETIME_FORMAT) } });
 				if (response.data.status !== "error" && response.data.hsh) {
+					console.log(response.data, "?????????????")
 					updateData(draft => {
 						draft.confirmed = true;
-						draft.hsh = response.data.hsh
+						draft.hsh = response.data.hsh;
+						draft.recon = response.data.result;
 					});
 					timeout.current = setTimeout(reset, 10000);
 				} else {
@@ -261,13 +267,12 @@ export default ({ }) => {
 									videoConstraints={videoConstraints}
 									style={{ borderRadius: "5px", /* boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" */ }}
 								/>}
-								{data.snapshot && <img style={{ borderRadius: "5px", boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }} height={180} src={data.snapshot} />}
+								{data.snapshot && <img style={{ borderRadius: "5px", ...(data.recon === true || data.recon === false) && { boxShadow: data.recon === true ? "rgba(18, 168, 35, 0.8) 10px 10px 3px" : "rgba(248, 178, 17, 0.8) 10px 10px 3px" } }} height={180} src={data.snapshot} />}
 							</Col>
 						</Row>
 					</Col>
 					<Col></Col>
 				</Row>
-
 
 				<Row gutterWidth={2} style={{ height: "60px", marginTop: "30px", marginBottom: "30px" }}>
 					<Col></Col>
