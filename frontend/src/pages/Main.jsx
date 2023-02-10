@@ -20,6 +20,73 @@ const StyledButton = styled(Button)`
 `;
 
 
+const StyledAlert = styled.div`
+	.ant-alert{
+		display:flex;
+		align-items:center;		
+	}
+	.ant-alert-message{
+		font-size:16px;
+		margin-bottom:0px;
+		font-weight:600;
+	}
+
+`;
+
+const Spin01 = styled.div`
+.spinner {
+	margin: 5px auto 0;
+	width: 70px;
+	text-align: center;
+  }
+  
+  .spinner > div {
+	width: 18px;
+	height: 18px;
+	background-color: #333;
+  
+	border-radius: 100%;
+	display: inline-block;
+	-webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+	animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  }
+  
+  .spinner .bounce1 {
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+  }
+  
+  .spinner .bounce2 {
+	-webkit-animation-delay: -0.16s;
+	animation-delay: -0.16s;
+  }
+  
+  @-webkit-keyframes sk-bouncedelay {
+	0%, 80%, 100% { -webkit-transform: scale(0) }
+	40% { -webkit-transform: scale(1.0) }
+  }
+  
+  @keyframes sk-bouncedelay {
+	0%, 80%, 100% { 
+	  -webkit-transform: scale(0);
+	  transform: scale(0);
+	} 40% { 
+	  -webkit-transform: scale(1.0);
+	  transform: scale(1.0);
+	}
+  }
+`;
+
+const Spinner01 = () => {
+	return (<Spin01> <div className="spinner">
+		<div className="bounce1"></div>
+		<div className="bounce2"></div>
+		<div className="bounce3"></div>
+	</div></Spin01>);
+}
+
+
+
 const videoConstraints = {
 	width: 1280,
 	height: 720,
@@ -71,10 +138,10 @@ export default ({ }) => {
 				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", snapshot: imageSrc, timestamp: dayjs(_ds).format(DATETIME_FORMAT) } });
 				if (response.data.status !== "error" && response.data?.rows?.length > 0) {
 					updateData(draft => {
-						draft.nome = `${response.data.rows[0].SRN_0} ${response.data.rows[0].NAM_0}`;
+						draft.nome = `${response.data.rows[0].SRN_0} ${response.data.rows[0].NAM_0.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())}`;
 					});
 				} else {
-					updateData(draft => { draft.error = { status: true, text: "O número que indicou não existe!" } });
+					updateData(draft => { draft.error = { status: true, text: "O número que indicou não existe! Por favor entre em contacto com os Recursos Humanos." } });
 				}
 				submitting.end();
 			} catch (e) {
@@ -124,7 +191,6 @@ export default ({ }) => {
 				const vals = { num: `F${data.num.padStart(5, '0')}` };
 				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", save: true, snapshot: data.snapshot, timestamp: dayjs(data.date).format(DATETIME_FORMAT) } });
 				if (response.data.status !== "error" && response.data.hsh) {
-					console.log(response.data, "?????????????")
 					updateData(draft => {
 						draft.confirmed = true;
 						draft.hsh = response.data.hsh;
@@ -158,7 +224,7 @@ export default ({ }) => {
 				updateData(draft => { draft.type = t });
 				timeout.current = setTimeout(reset, 10000);
 			} else {
-				updateData(draft => { draft.error = { status: true, text: "Ocorreu um erro no registo." } });
+				updateData(draft => { draft.error = { status: true, text: "Ocorreu um erro no registo! Por favor entre em contacto com os Recursos Humanos." } });
 				submitting.end();
 			}
 		} catch (e) {
@@ -169,7 +235,6 @@ export default ({ }) => {
 
 	return (<>
 		<Container fluid style={{ fontWeight: 700 }}>
-
 			{data.type &&
 				<Row nogutter style={{ height: "70vh", display: "flex", alignItems: "center" }}>
 					<Col>
@@ -262,109 +327,130 @@ export default ({ }) => {
 									minScreenshotHeight={720}
 									audio={false}
 									ref={webcamRef}
-									height={180}
+
+									height={320}
 									screenshotFormat="image/jpeg"
 									videoConstraints={videoConstraints}
 									style={{ borderRadius: "5px", /* boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" */ }}
 								/>}
-								{data.snapshot && <img style={{ borderRadius: "5px", ...(data.recon === true || data.recon === false) && { boxShadow: data.recon === true ? "rgba(18, 168, 35, 0.8) 10px 10px 3px" : "rgba(248, 178, 17, 0.8) 10px 10px 3px" } }} height={180} src={data.snapshot} />}
+								{data.snapshot && <img style={{ borderRadius: "5px", ...(data.recon === true || data.recon === false) && { boxShadow: data.recon === true ? "rgba(18, 168, 35, 0.8) 10px 10px 3px" : "rgba(248, 178, 17, 0.8) 10px 10px 3px" } }} height={320} src={data.snapshot} />}
 							</Col>
 						</Row>
 					</Col>
 					<Col></Col>
 				</Row>
 
-				<Row gutterWidth={2} style={{ height: "60px", marginTop: "30px", marginBottom: "30px" }}>
+
+				{(submitting.state) &&
+					<Row gutterWidth={2} style={{ height: "60px", marginTop: "30px", marginBottom: "30px" }}>
+						<Col></Col>
+						{(data.nome && !data.confirmed) && <Col xs="content" style={{ fontWeight: 200, fontSize: "25px" }}>Aguarde um momento <Spinner01 /></Col>}
+						<Col></Col>
+					</Row>
+				}
+
+				{data.error.status === true && <Row gutterWidth={2} style={{ alignItems: "center", fontWeight: 400 }}>
 					<Col></Col>
-					{!data.snapshot && <Col xs="content" style={{ fontSize: "30px", fontWeight: 700 }}>MARQUE O NÚMERO DE COLABORADOR</Col>}
-					{(data.nome && !data.confirmed) && <Col xs="content" style={{ fontWeight: 200, fontSize: "25px" }}>Confirma que é <span style={{ fontWeight: 600 }}>{data.nome}</span>?</Col>}
-					{(data.nome && data.confirmed) && <Col xs="content" style={{ fontWeight: 200, fontSize: "25px" }}>Olá {data.nome}</Col>}
+					<Col xs="content">
+						<StyledAlert>
+							<Alert
+								banner
+								message="Erro no registo"
+								showIcon
+								description={data.error.text}
+								type="error"
+								action={<Button disabled={submitting.state} onClick={reset} size="small" type="link" danger>Tentar novamente</Button>}
+							/>
+						</StyledAlert>
+					</Col>
 					<Col></Col>
-				</Row>
+				</Row>}
 
 
-				<Row gutterWidth={2} style={{ marginBottom: "10px" }}>
-					<Col></Col>
-					<Col xs="content" style={{ minWidth: "454px", fontSize: "40px", border: "solid 2px #d9d9d9", borderRadius: "3px", textAlign: "center" }}><span style={{ color: "#8c8c8c" }}>F00</span>{data.num}</Col>
-					<Col></Col>
-				</Row>
-				{!data.snapshot && <><Row gutterWidth={2}>
-					<Col></Col>
-					<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(1)} size="large">1</StyledButton></Col>
-					<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(2)} size="large">2</StyledButton></Col>
-					<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(3)} size="large">3</StyledButton></Col>
-					<Col></Col>
-				</Row>
-					<Row gutterWidth={2}>
+
+				{(!submitting.state && !data.error.status) && <>
+
+
+					<Row gutterWidth={2} style={{ height: "60px", marginTop: "30px", marginBottom: "30px" }}>
 						<Col></Col>
-						<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(4)} size="large">4</StyledButton></Col>
-						<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(5)} size="large">5</StyledButton></Col>
-						<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(6)} size="large">6</StyledButton></Col>
+						{!data.snapshot && <Col xs="content" style={{ fontSize: "30px", fontWeight: 700 }}>MARQUE O NÚMERO DE COLABORADOR</Col>}
+						{(data.nome && !data.confirmed) && <Col xs="content" style={{ fontWeight: 200, fontSize: "25px", display: "flex", flexDirection: "column", alignItems: "center" }}>Confirma que é <div><span style={{ fontWeight: 600 }}>{data.nome}</span>?</div></Col>}
+						{(data.nome && data.confirmed) && <Col xs="content" style={{ fontWeight: 200, fontSize: "25px", display: "flex", flexDirection: "column", alignItems: "center" }}>Olá <div><span style={{ fontWeight: 600 }}>{data.nome}</span></div></Col>}
 						<Col></Col>
 					</Row>
-					<Row gutterWidth={2}>
+
+
+					{!data.nome && <Row gutterWidth={2} style={{ marginBottom: "10px" }}>
 						<Col></Col>
-						<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(7)} size="large">7</StyledButton></Col>
-						<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(8)} size="large">8</StyledButton></Col>
-						<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(9)} size="large">9</StyledButton></Col>
-						<Col></Col>
-					</Row>
-					<Row gutterWidth={2}>
-						<Col></Col>
-						<Col xs="content"><StyledButton disabled={data.snapshot || submitting.state} onClick={() => onClick('C')} size="large">C</StyledButton></Col>
-						<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(0)} size="large">0</StyledButton></Col>
-						<Col xs="content">
-							{!data.snapshot && <StyledButton disabled={!parseInt(data.num) || submitting.state} onClick={capture} icon={<EnterOutlined />} size="large" />}
-							{data.snapshot && <StyledButton disabled={submitting.state} onClick={reset} icon={<RedoOutlined />} size="large" />}
-						</Col>
+						<Col xs="content" style={{ minWidth: "454px", fontSize: "40px", border: "solid 2px #d9d9d9", borderRadius: "3px", textAlign: "center" }}><span style={{ color: "#8c8c8c" }}>F00</span>{data.num}</Col>
 						<Col></Col>
 					</Row>
-				</>}
-				{(data.nome && !data.confirmed) && <>
-					{/* <Row>
+					}
+					{!data.snapshot && <><Row gutterWidth={2}>
+						<Col></Col>
+						<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(1)} size="large">1</StyledButton></Col>
+						<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(2)} size="large">2</StyledButton></Col>
+						<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(3)} size="large">3</StyledButton></Col>
+						<Col></Col>
+					</Row>
+						<Row gutterWidth={2}>
+							<Col></Col>
+							<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(4)} size="large">4</StyledButton></Col>
+							<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(5)} size="large">5</StyledButton></Col>
+							<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(6)} size="large">6</StyledButton></Col>
+							<Col></Col>
+						</Row>
+						<Row gutterWidth={2}>
+							<Col></Col>
+							<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(7)} size="large">7</StyledButton></Col>
+							<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(8)} size="large">8</StyledButton></Col>
+							<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(9)} size="large">9</StyledButton></Col>
+							<Col></Col>
+						</Row>
+						<Row gutterWidth={2}>
+							<Col></Col>
+							<Col xs="content"><StyledButton disabled={data.snapshot || submitting.state} onClick={() => onClick('C')} size="large">C</StyledButton></Col>
+							<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(0)} size="large">0</StyledButton></Col>
+							<Col xs="content">
+								{!data.snapshot && <StyledButton disabled={!parseInt(data.num) || submitting.state} onClick={capture} icon={<EnterOutlined />} size="large" />}
+								{data.snapshot && <StyledButton disabled={submitting.state} onClick={reset} icon={<RedoOutlined />} size="large" />}
+							</Col>
+							<Col></Col>
+						</Row>
+					</>}
+					{(data.nome && !data.confirmed) && <>
+						{/* <Row>
 						<Col></Col>
 						<Col xs="content" style={{ fontWeight: 200, fontSize: "30px" }}>Confirma que é <span style={{ fontWeight: 600 }}>{data.nome}</span>?</Col>
 						<Col></Col>
 					</Row> */}
-					<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
-						<Col></Col>
-						<Col xs="content"><Button disabled={submitting.state} onClick={() => onConfirm(true)} icon={<CheckCircleOutlined style={{ fontSize: "80px" }} />} shape='circle' style={{ border: "none", minWidth: "130px", minHeight: "130px", color: "green" }}></Button></Col>
-						<Col xs="content"><Button disabled={submitting.state} onClick={() => onConfirm(false)} icon={<CloseCircleOutlined style={{ fontSize: "80px" }} />} shape='circle' style={{ border: "none", minWidth: "130px", minHeight: "130px", color: "red" }}></Button></Col>
-						<Col></Col>
-					</Row>
-				</>}
-				{(data.nome && data.confirmed) && <>
-					{/* <Row>
+						<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
+							<Col></Col>
+							<Col xs="content"><Button disabled={submitting.state} onClick={() => onConfirm(true)} icon={<CheckCircleOutlined style={{ fontSize: "80px" }} />} shape='circle' style={{ border: "none", minWidth: "130px", minHeight: "130px", color: "#52c41a" }}></Button></Col>
+							<Col xs="content"><Button disabled={submitting.state} onClick={() => onConfirm(false)} icon={<CloseCircleOutlined style={{ fontSize: "80px" }} />} shape='circle' style={{ border: "none", minWidth: "130px", minHeight: "130px", color: "#f5222d" }}></Button></Col>
+							<Col></Col>
+						</Row>
+					</>}
+					{(data.nome && data.confirmed) && <>
+						{/* <Row>
 						<Col></Col>
 						<Col xs="content" style={{ fontWeight: 200, fontSize: "30px" }}>Olá {data.nome}</Col>
 						<Col></Col>
 					</Row> */}
-					<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
-						<Col></Col>
-						<Col xs="content"><Button disabled={submitting.state} onClick={() => onFinish('in')} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "green", color: "#fff" }}>Entrada</Button></Col>
-						<Col xs="content"><Button disabled={submitting.state} onClick={() => onFinish("out")} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "red", color: "#fff" }}>Saída</Button></Col>
-						<Col></Col>
-					</Row>
-					<Row>
-						<Col></Col>
-						<Col xs="content"><Button disabled={submitting.state} type='link' size="large" onClick={reset} style={{}}>Eu não sou {data.nome}</Button></Col>
-						<Col></Col>
-					</Row>
-				</>}
-				{data.error.status === true && <Row gutterWidth={2} style={{ alignItems: "center", fontWeight: 400 }}>
-					<Col></Col>
-					<Col xs="content">
-						<Alert
-							banner
-							message="Erro no registo"
-							showIcon
-							description={data.error.text}
-							type="error"
-							action={<Button disabled={submitting.state} onClick={reset} size="small" type="link" danger>Tentar novamente</Button>}
-						/>
-					</Col>
-					<Col></Col>
-				</Row>}
+						<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
+							<Col></Col>
+							<Col xs="content"><Button disabled={submitting.state} onClick={() => onFinish('in')} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "#52c41a", color: "#fff",fontSize:"20px" }}>Entrada</Button></Col>
+							<Col xs="content"><Button disabled={submitting.state} onClick={() => onFinish("out")} shape='circle' style={{ minWidth: "130px", minHeight: "130px", background: "#f5222d", color: "#fff",fontSize:"20px" }}>Saída</Button></Col>
+							<Col></Col>
+						</Row>
+						<Row>
+							<Col></Col>
+							<Col xs="content"><Button disabled={submitting.state} type='link' size="large" onClick={reset} style={{}}>Eu não sou {data.nome}</Button></Col>
+							<Col></Col>
+						</Row>
+					</>}
+				</>
+				}
 			</>}
 		</Container>
 	</>

@@ -98,7 +98,7 @@ def SetUser(request, format=None):
                     print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
                     unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
                     print("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
-                    results = face_recognition.compare_faces([known_encoding], unknown_encoding)
+                    results = face_recognition.compare_faces([known_encoding], unknown_encoding,tolerance=0.54)
                     img=files[0]
                     if len(results)>0:
                         result=results[0]
