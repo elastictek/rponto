@@ -243,6 +243,8 @@ export default ({ }) => {
 							</Col>
 							<Col xs="content">
 								{!snapshot && <Webcam
+									minScreenshotWidth={1280}
+									minScreenshotHeight={720}
 									audio={false}
 									ref={webcamRef}
 									height={180}
