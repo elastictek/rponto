@@ -91,18 +91,11 @@ def SetUser(request, format=None):
 
                     known_encoding = face_recognition.face_encodings(known_image)[0]
                     unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
+                    print("FACE RECON")    
+                    print(os.path.join("../fotos",files[0]))
+                    print(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""")
                     results = face_recognition.compare_faces([known_encoding], unknown_encoding)
-
-
-
-
-                print("PICTURESSSSSSSS")
-                #print(known_encoding)
-                print("---------------------------")
-                #print(unknown_encoding)
-                print("uuuuuuuuuuuuuuuuuuuuuuuuuu")
-                print(results)
-                #print(unknown_image)
+                    print(results)
 
                 f = Filters({"num": filter["num"],"dts": ts.strftime("%Y-%m-%d") })
                 f.where()
