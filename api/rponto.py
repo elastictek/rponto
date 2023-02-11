@@ -93,11 +93,11 @@ def SetUser(request, format=None):
                     print(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""")
                     known_image = face_recognition.load_image_file(os.path.join("../fotos",files[0]))
                     unknown_image = face_recognition.load_image_file(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""")
-                    print("################################")
                     known_encoding = face_recognition.face_encodings(known_image)[0]
-                    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-                    unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
-                    print("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
+                    unknown_encoding = face_recognition.face_encodings(unknown_image)
+                    if len(unknown_encoding)==0:
+                         return Response({"status": "error", "title": "Não foi reconhecida nenhuma face!"})
+                    unknown_encoding = unknown_encoding[0]
                     results = face_recognition.compare_faces([known_encoding], unknown_encoding,tolerance=0.54)
                     img=files[0]
                     if len(results)>0:
