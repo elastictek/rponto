@@ -16,6 +16,7 @@ import mimetypes
 from datetime import datetime, timedelta
 # import cups
 import os, tempfile
+import pickle
 
 from pyodbc import Cursor, Error, connect, lowercase
 from datetime import datetime
@@ -57,6 +58,30 @@ def Sql(request, format=None):
         return response
     return Response({})
 
+def loadFaces(path,sync=False):
+
+    if os.path.isfile(os.path.join("faces.dictionary")) or sync==True:
+        with open('faces.dictionary', 'rb') as faces_file:
+            return pickle.load(faces_file)
+    else:
+        faces ={"matrix": [], "nums": []}
+        for filename in os.listdir(path):
+            f = os.path.join(path, filename)
+            if os.path.isfile(f):
+                ki = face_recognition.load_image_file(f)
+                faces.get("matrix").append(face_recognition.face_encodings(ki)[0])
+                faces.get("nums").append(filename.split('_')[0])
+        with open('faces.dictionary', 'wb') as faces_file:
+            pickle.dump(faces, faces_file)
+        return faces
+
+def filePathByNum(path,num):
+     for i in os.listdir(path):
+        if os.path.isfile(os.path.join(path,i)) and i.startswith(num):
+            return os.path.join("media",i)
+            
+
+
 def SetUser(request, format=None):
     connection = connections[connMssqlName].cursor()    
     data = request.data['parameters']
@@ -80,29 +105,56 @@ def SetUser(request, format=None):
                 with open(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""", "wb") as fh:
                     fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
                 
-                files = []
-                for i in os.listdir("../fotos"):
-                    if os.path.isfile(os.path.join("../fotos",i)) and i.startswith(filter["num"]):
-                        files.append(i)
-                        break
-                img = None
+                # files = []
+                # for i in os.listdir("../fotos"):
+                #     if os.path.isfile(os.path.join("../fotos",i)) and i.startswith(filter["num"]):
+                #         files.append(os.path.join("../fotos",i))
+                #         break
+                # img = None
                 result = None
-                if len(files)>0:
-                    print("FACE RECON")    
-                    print(os.path.join("../fotos",files[0]))
-                    print(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""")
-                    known_image = face_recognition.load_image_file(os.path.join("../fotos",files[0]))
-                    unknown_image = face_recognition.load_image_file(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""")
-                    known_encoding = face_recognition.face_encodings(known_image)[0]
-                    unknown_encoding = face_recognition.face_encodings(unknown_image)
-                    if len(unknown_encoding)==0:
-                         return Response({"status": "error", "title": "Não foi reconhecida nenhuma face!"})
-                    unknown_encoding = unknown_encoding[0]
-                    results = face_recognition.compare_faces([known_encoding], unknown_encoding,tolerance=0.54)
-                    img=files[0]
+                filepath = filePathByNum("../fotos",filter["num"])
+                faces = loadFaces("../fotos")
+                # if len(files)>0:
+                #     print("FACE RECON")    
+                #     print(files[0])
+                #     print(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""")
+                #     known_image = face_recognition.load_image_file(files[0])
+                #     known_encoding = face_recognition.face_encodings(known_image)[0]
+                unknown_image = face_recognition.load_image_file(f"""docs/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""")
+                unknown_encoding = face_recognition.face_encodings(unknown_image)
+                if len(unknown_encoding)==0:
+                        return Response({"status": "error", "title": "Não foi reconhecida nenhuma face!"})
+                unknown_encoding = unknown_encoding[0]
+
+                try:
+                    results = face_recognition.compare_faces([faces.get("matrix")[faces.get("nums").index(filter["num"])]], unknown_encoding,tolerance=0.53)
                     if len(results)>0:
                         result=results[0]
-                    print(results)
+                except ValueError:
+                    return Response({"status": "error", "title": "O funcionário não existe na base de dados do sistema!"})
+                
+                    
+                valid_nums = []
+                valid_filepaths = []
+                valid_names = []
+                if result==False:
+                    print("A face não corresponde....")
+                    results = face_recognition.compare_faces(faces.get("matrix"), unknown_encoding,tolerance=0.53)
+                    valid_indexes = [i for i, x in enumerate(results) if x]
+                    for x in valid_indexes:
+                        valid_nums.append(faces.get("nums")[x])
+                        valid_filepaths.append(filePathByNum('../fotos',faces.get("nums")[x]))
+                    if len(valid_nums):
+                        sql = lambda: (
+                            f"""
+                                select DISTINCT e.REFNUM_0, NAM_0,SRN_0 FROM x3peoplesql.PEOPLELTEK.EMPLOID e 
+                                JOIN x3peoplesql.PEOPLELTEK.EMPLOCTR c on c.REFNUM_0 = e.REFNUM_0 
+                                WHERE c.PROPRF_0 = 'STD' AND e.REFNUM_0 IN ({','.join(f"'{w}'" for w in valid_nums)})
+                            """
+                        )
+                        response = dbmssql.executeSimpleList(sql, connection, {})
+                        if len(response["rows"])>0:
+                            valid_names=response["rows"]
                     
                 f = Filters({"num": filter["num"],"dts": ts.strftime("%Y-%m-%d") })
                 f.where()
@@ -123,7 +175,7 @@ def SetUser(request, format=None):
                     }
                     dml = dbmssql.dml(TypeDml.INSERT, dti, "rponto.dbo.time_registration",None,None,False)
                     dbmssql.execute(dml.statement, connection, dml.parameters)
-                    return Response({"status":"success","hsh":dti.get("hsh"),"img":img,"result":result})
+                    return Response({"status":"success","hsh":dti.get("hsh"),"img":filepath,"result":result,"valid_nums":valid_nums,"valid_filepaths":valid_filepaths,"valid_names":valid_names})
                 else:               
                     nt = reg[0].get("nt")
                     if nt==8:
@@ -141,7 +193,7 @@ def SetUser(request, format=None):
                     f.value("and")
                     dml = dbmssql.dml(TypeDml.UPDATE, dti, "rponto.dbo.time_registration",f.parameters,None,False)
                     dbmssql.execute(dml.statement, connection, dml.parameters)
-                    return Response({"status":"success","hsh":reg[0].get("hsh"),"img":img,"result":result})
+                    return Response({"status":"success","hsh":reg[0].get("hsh"),"img":filepath,"result":result,"valid_nums":valid_nums,"valid_filepaths":valid_filepaths,"valid_names":valid_names})
             else:
                 f = Filters({"num": filter["num"],"hsh": hsh })
                 f.where()
@@ -176,4 +228,5 @@ def SetUser(request, format=None):
             response = dbmssql.executeSimpleList(sql, connection, parameters)
             return Response(response)
     except Exception as error:
+        print(error)
         return Response({"status": "error", "title": str(error)})
