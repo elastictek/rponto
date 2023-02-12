@@ -212,7 +212,9 @@ export default ({ }) => {
 						draft.valid_filepaths = response.data?.valid_filepaths;
 						draft.valid_names = response.data?.valid_names;
 					});
-					//timeout.current = setTimeout(reset, 10000);
+					if (!response.data?.valid_nums || response.data?.valid_nums?.length===0){
+						timeout.current = setTimeout(reset, 10000);
+					}
 				} else {
 					updateData(draft => { draft.error = { status: true, text: response.data?.title } });
 				}
