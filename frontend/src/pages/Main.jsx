@@ -201,7 +201,6 @@ export default ({ }) => {
 				const vals = { num: `F${data.num.padStart(5, '0')}` };
 				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", save: true, snapshot: data.snapshot, timestamp: dayjs(data.date).format(DATETIME_FORMAT) } });
 				if (response.data.status !== "error" && response.data.hsh) {
-					console.log("confirmedddddd--->", response)
 					updateData(draft => {
 						draft.post = true;
 						draft.confirmed = true;
@@ -212,15 +211,17 @@ export default ({ }) => {
 						draft.valid_filepaths = response.data?.valid_filepaths;
 						draft.valid_names = response.data?.valid_names;
 					});
-					if (!response.data?.valid_nums || response.data?.valid_nums?.length===0){
+					if (!response.data?.valid_nums || response.data?.valid_nums?.length === 0) {
 						timeout.current = setTimeout(reset, 10000);
 					}
 				} else {
 					updateData(draft => { draft.error = { status: true, text: response.data?.title } });
+					timeout.current = setTimeout(reset, 15000);
 				}
 				submitting.end();
 			} catch (e) {
 				updateData(draft => { draft.error = { status: true, text: e.message } });
+				timeout.current = setTimeout(reset, 15000);
 				submitting.end();
 			};
 		}
@@ -376,10 +377,10 @@ export default ({ }) => {
 					<Col xs="content">
 						<StyledAlert>
 							<Alert
-								banner
-								message="Erro no registo"
+								style={{ margin: "10px 0px", padding: "20px" }}
+								message={<div style={{ fontSize: "16px", fontWeight: 400 }}><span style={{ fontWeight: 700 }}>Erro!</span></div>}
 								showIcon
-								description={data.error.text}
+								description={<div style={{ fontSize: "18px"}}>{data.error.text}</div>}
 								type="error"
 								action={<Button disabled={submitting.state} onClick={reset} size="small" type="link" danger>Tentar novamente</Button>}
 							/>

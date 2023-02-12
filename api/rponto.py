@@ -60,7 +60,7 @@ def Sql(request, format=None):
 
 def loadFaces(path,sync=False):
 
-    if os.path.isfile(os.path.join("faces.dictionary")) or sync==True:
+    if os.path.isfile(os.path.join("faces.dictionary")) and sync==False:
         with open('faces.dictionary', 'rb') as faces_file:
             return pickle.load(faces_file)
     else:
@@ -127,7 +127,7 @@ def SetUser(request, format=None):
                 unknown_encoding = unknown_encoding[0]
 
                 try:
-                    results = face_recognition.compare_faces([faces.get("matrix")[faces.get("nums").index(filter["num"])]], unknown_encoding,tolerance=0.53)
+                    results = face_recognition.compare_faces([faces.get("matrix")[faces.get("nums").index(filter["num"])]], unknown_encoding,tolerance=0.33)
                     if len(results)>0:
                         result=results[0]
                 except ValueError:
@@ -139,7 +139,7 @@ def SetUser(request, format=None):
                 valid_names = []
                 if result==False:
                     print("A face não corresponde....")
-                    results = face_recognition.compare_faces(faces.get("matrix"), unknown_encoding,tolerance=0.53)
+                    results = face_recognition.compare_faces(faces.get("matrix"), unknown_encoding,tolerance=0.33)
                     valid_indexes = [i for i, x in enumerate(results) if x]
                     for x in valid_indexes:
                         valid_nums.append(faces.get("nums")[x])
