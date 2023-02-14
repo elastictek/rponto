@@ -16,9 +16,13 @@ import YScroll from "components/YScroll";
 import { fetch, fetchPost } from "utils/fetch";
 import { API_URL, ROOT_URL } from "config";
 import GridLayout from './GridLayout';
+import axios from 'axios';
+
 
 const NotFound = lazy(() => import('./404'));
 const Main = lazy(() => import('./Main'));
+const Login = lazy(() => import('./Login'));
+const RegistosRH = lazy(() => import('./RegistosRH'));
 
 
 export const MediaContext = React.createContext({});
@@ -36,48 +40,18 @@ export const AppContext = React.createContext({});
 const RenderRouter = () => {
     let element = useRoutes([
         {
-            path: '/',
-            element: <Main/>,
+            path: '/app',
+            element: <Outlet />,
             children: [
-                // { path: "validateReellings", element: <Suspense fallback={<Spin />}><BobinagensValidarList /></Suspense> }, //TO REMOVE
-                // { path: "bobines/validarlist", element: <Suspense fallback={<Spin />}><BobinesValidarList /></Suspense> },
-                // { path: "ofabricolist", element: <Suspense fallback={<Spin />}><OFabricoList /></Suspense> },
-                // { path: "sorders", element: <Suspense fallback={<Spin />}><SOrders /></Suspense> },
-                // { path: "pick", element: <Suspense fallback={<Spin />}><FormPickMP /></Suspense> },
-                // { path: "paletes/palete", element: <Suspense fallback={<Spin />}><FormPalete /></Suspense> },
-                // { path: "ofabricoshortlist", element: <Suspense fallback={<Spin />}><OFabricoShortList /></Suspense> },
-                // { path: "stocklist", element: <Suspense fallback={<Spin />}><StockList /></Suspense> },
-                // { path: "artigos/mpbufferlist", element: <Suspense fallback={<Spin />}><MPBufferList /></Suspense> },
-                // { path: "logslist/lineloglist", element: <Suspense fallback={<Spin />}><LineLogList /></Suspense> },
-                // { path: "logslist/stockloglist", element: <Suspense fallback={<Spin />}><StockLogList /></Suspense> },
-                // { path: "logslist/comsumptionneedloglist", element: <Suspense fallback={<Spin />}><ConsumptionNeedLogList /></Suspense> },
-                // { path: "bobines/bobinesoriginaislist", element: <Suspense fallback={<Spin />}><BobinesOriginaisList /></Suspense> },
-                // { path: "bobines/bobineslist", element: <Suspense fallback={<Spin />}><BobinesList /></Suspense> },
-                // { path: "bobinagens/fixlotes", element: <Suspense fallback={<Spin />}><BobinagensFixLotes /></Suspense> },
-                // { path: "currentline/menuactions", element: <Suspense fallback={<Spin />}><FormMenuActions /></Suspense> },
-                // { path: "expedicoes/timearmazem", element: <Suspense fallback={<Spin />}><ExpedicoesTempoList /></Suspense> },
-
-                // { path: "picking/recicladolist", element: <Suspense fallback={<Spin />}><RecicladoList /></Suspense> },
-                // { path: "picking/pickreciclado", element: <Suspense fallback={<Spin />}><PickReciclado /></Suspense> },
-                // { path: "picking/pickgranuladolist", element: <Suspense fallback={<Spin />}><PickGranuladoList /></Suspense> },
-                // { path: "picking/picknwlist", element: <Suspense fallback={<Spin />}><PickNWList /></Suspense> },
-
-                // { path: "ofabrico/checklists", element: <Suspense fallback={<Spin />}><CheckLists /></Suspense> },
-
-                // { path: "artigos/nwlist", element: <Suspense fallback={<Spin />}><NwList /></Suspense> },
-                // { path: "artigos/consumoslist", element: <Suspense fallback={<Spin />}><ConsumosList /></Suspense> },
-                // { path: "artigos/granuladobufferlinelist", element: <Suspense fallback={<Spin />}><GranuladoBufferLineList /></Suspense> },
-                // { path: "artigos/granuladolist", element: <Suspense fallback={<Spin />}><GranuladoList /></Suspense> },
-                // { path: "artigos/mpalternativas", element: <Suspense fallback={<Spin />}><MPAlternativas /></Suspense> },
-                // { path: "devolucoes/devolucoeslist", element: <Suspense fallback={<Spin />}><DevolucoesList /></Suspense> },
-                // { path: "planeamento/etapascortes", element: <Suspense fallback={<Spin />}><FormEtapasCortes /></Suspense> },
-
-                // { path: "paletes/paleteslist", element: <Suspense fallback={<Spin />}><PaletesList /></Suspense> },
-
-                // { path: "picking/base", element: <Suspense fallback={<Spin />}><BasePick /></Suspense> },
-
-                /*  { path: "ordemfabrico/formdetails", element: <Suspense fallback={<Spin />}><OFDetails /></Suspense> }, */
+                { path: "login", element: <Suspense fallback={<Spin />}><Login /></Suspense> },
+                { path: "layout", element: <Suspense fallback={<Spin />}><GridLayout /></Suspense> },
+                { path: "rh/registos", element: <Suspense fallback={<Spin />}><RegistosRH /></Suspense> }
             ]
+        },
+        {
+            path: '/',
+            element: <Main />,
+            children: []
         },
         { path: "*", element: <Suspense fallback={<Spin />}><NotFound /></Suspense> }
     ]);
@@ -85,11 +59,25 @@ const RenderRouter = () => {
 };
 
 
-
-
 const App = () => {
     const [width] = useMedia();
     const submitting = useSubmitting(true);
+    const [auth, setAuth] = useState({ isAuthenticated: false, });
+
+    useEffect(() => {
+        const accessToken = localStorage.getItem('access_token');
+        if (accessToken) {
+            axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+            setAuth({ isAuthenticated: true, username: localStorage.getItem('username'), first_name: localStorage.getItem('first_name'), last_name: localStorage.getItem('last_name') })
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        axios.defaults.headers.common.Authorization = null;
+        setAuth({ isAuthenticated: false });
+    };
 
     useEffect(() => {
         const controller = new AbortController();
@@ -104,7 +92,7 @@ const App = () => {
     return (
         <BrowserRouter>
             <MediaContext.Provider value={width}>
-                <AppContext.Provider value={{}}>
+                <AppContext.Provider value={{ auth, setAuth, handleLogout }}>
                     <SocketContext.Provider value={{}}>
                         <ModalProvider>
                             <RenderRouter />

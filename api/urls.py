@@ -7,5 +7,6 @@ app_name="api"
 urlpatterns = [
     
    re_path(r'^rponto/sql/$',rponto.Sql),
+   re_path(r'^rponto/sqlp/$',rponto.SqlProtected),
    re_path(r'^rponto/sync/$',rponto.Sync)
 ]

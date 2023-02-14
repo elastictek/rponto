@@ -8,6 +8,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.views import APIView
 from django.http import Http404, request
 from rest_framework.response import Response
+from .decorators import jwt_required
 from django.http.response import HttpResponse
 from django.http import FileResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -63,6 +64,20 @@ def Sql(request, format=None):
         response = func(request, format)
         return response
     return Response({})
+
+
+@api_view(['POST'])
+@renderer_classes([JSONRenderer])
+@jwt_required
+def SqlProtected(request):
+    if "parameters" in request.data and "method" in request.data["parameters"]:
+        method=request.data["parameters"]["method"]
+        func = globals()[method]
+        response = func(request, format)
+        return response
+    return Response({})
+
+
 
 @api_view(['POST','GET'])
 @renderer_classes([JSONRenderer])
