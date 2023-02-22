@@ -5,11 +5,13 @@ from rest_framework import serializers
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     remember = serializers.BooleanField(required=False)
+
     def __init__(self, *args, **kwargs):
         self.request = kwargs['context']['request']
         super().__init__(*args, **kwargs)
 
     def validate(self, attrs):
+        print("validateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
         data = super().validate(attrs)
         if attrs.get('remember'):
             self.request.session.set_expiry(86400)  # set session expiry to 24 hours
@@ -20,6 +22,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         token['first_name'] = user.first_name
         token['last_name'] = user.last_name
+        print("tooottttttttttttttttttttttttttttttttttttt")
         return token
 
 class CustomTokenObtainPairView(TokenObtainPairView):

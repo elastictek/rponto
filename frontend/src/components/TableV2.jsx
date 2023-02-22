@@ -220,9 +220,9 @@ export default ({ dataAPI, loadOnInit = false, loading,onPageChange, columns: co
                 {
                     key: 'action', name: '', frozen: frozenActionColumn, minWidth: 40, width: 40, sortable: false, resizable: false,
                     formatter: (props) => <Action {...props} dataAPI={dataAPI} content={actionColumn} />
-                }, ...cols]);
+                }, ...cols.filter(v=>!v?.hidden===true)]);
         } else {
-            setColumns([...rowSelection ? [SelectColumn] : [], ...cols]);
+            setColumns([...rowSelection ? [SelectColumn] : [], ...cols.filter(v=>!v?.hidden===true)]);
         }
     }, [dataAPI.getTimeStamp(),cols]);
 

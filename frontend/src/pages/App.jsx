@@ -23,6 +23,7 @@ const NotFound = lazy(() => import('./404'));
 const Main = lazy(() => import('./Main'));
 const Login = lazy(() => import('./Login'));
 const RegistosRH = lazy(() => import('./RegistosRH'));
+const PlanRH = lazy(() => import('./PlanRH'));
 
 
 export const MediaContext = React.createContext({});
@@ -41,11 +42,12 @@ const RenderRouter = () => {
     let element = useRoutes([
         {
             path: '/app',
-            element: <Outlet />,
+            element: <GridLayout />,
             children: [
                 { path: "login", element: <Suspense fallback={<Spin />}><Login /></Suspense> },
                 { path: "layout", element: <Suspense fallback={<Spin />}><GridLayout /></Suspense> },
-                { path: "rh/registos", element: <Suspense fallback={<Spin />}><RegistosRH /></Suspense> }
+                { path: "rh/registos", element: <Suspense fallback={<Spin />}><RegistosRH /></Suspense> },
+                { path: "rh/plan", element: <Suspense fallback={<Spin />}><PlanRH /></Suspense> }
             ]
         },
         {

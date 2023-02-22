@@ -7,6 +7,7 @@ export const DOWNLOAD_URL = "/downloadfile";
 export const MEDIA_URL = "/media";
 export const DADOSBASE_URL = `${API_URL}/dadosbase`;
 export const DATE_FORMAT = 'YYYY-MM-DD';
+export const DATE_FORMAT_NO_SEPARATOR = 'YYYYMMDD';
 export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 export const TIME_FORMAT = 'HH:mm';
 export const PAGE_TOOLBAR_HEIGHT = "45px";
