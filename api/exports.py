@@ -15,6 +15,7 @@ from rest_framework import status
 import mimetypes
 from datetime import datetime, timedelta
 from io import BytesIO
+import zipfile
 # import cups
 import os, tempfile
 
@@ -134,25 +135,46 @@ def exportRunxlslist(req,dbi,conn):
 def exportRunxlstemplatelist(req,dbi,conn):
     try:
         response = dbi.executeSimpleList(req["sql"], conn, req["data"])
-        df = pd.DataFrame(response["rows"])
-        df = df[df.columns.intersection(list(req["cols"].keys()))]
-        book = load_workbook(f'./doc_templates/{req.get("template")}')
-        sheet = book['dataplan']
-        sheet.append(list(req["cols"].keys()))
-        # Append the new data to the existing sheet
-        for index,row in df.iterrows():
-            r = []
-            for c in list(req["cols"].keys()):
-                print(row[c])
-                r.append(row[c])
-            sheet.append(r)
-        # Save the modified file to a buffer
-        output = BytesIO()
-        book.save(output)
-        output.seek(0)
+        zip_buffer = BytesIO()
+        with zipfile.ZipFile(zip_buffer, "a",zipfile.ZIP_DEFLATED, False) as zip_file:
+            for v in req.get("filter").get("months"):
+                df = pd.DataFrame([r for r in response["rows"] if r['m'] == int(v.get("key"))])
+                df = df[df.columns.intersection(list(req["cols"].keys()))]
+                book = load_workbook(f'./doc_templates/{req.get("template")}')
+                sheet = book['dataplan']
+                sheet.append(list(req["cols"].keys()))
+                # Append the new data to the existing sheet
+                for index,row in df.iterrows():
+                    r = []
+                    for c in list(req["cols"].keys()):
+                        r.append(row[c])
+                    sheet.append(r)
+                # Save the modified file to a buffer
+                output = BytesIO()
+                book.save(output)
+                output.seek(0)
+                zip_file.writestr(f"""{req.get("filter").get("fnum")}_{v.get("key")}_{req.get("filter").get("y")}.xlsx""" , output.read())
+        zip_file.close()
 
-        response =  HttpResponse(FileWrapper(output), content_type="application/ms-excel")
-        response['Content-Disposition'] = 'attachment; filename=registo_diario.xlsx'
+
+        # df = pd.DataFrame(response["rows"])
+        # df = df[df.columns.intersection(list(req["cols"].keys()))]
+        # book = load_workbook(f'./doc_templates/{req.get("template")}')
+        # sheet = book['dataplan']
+        # sheet.append(list(req["cols"].keys()))
+        # # Append the new data to the existing sheet
+        # for index,row in df.iterrows():
+        #     r = []
+        #     for c in list(req["cols"].keys()):
+        #         r.append(row[c])
+        #     sheet.append(r)
+        # # Save the modified file to a buffer
+        # output = BytesIO()
+        # book.save(output)
+        # output.seek(0)
+
+        response =  HttpResponse(zip_buffer.getvalue(), content_type="application/zip")
+        response['Content-Disposition'] = 'attachment; filename=registo_diario.zip'
         return response       
 
     except Exception as error:
@@ -178,7 +200,8 @@ def export(sql, db_parameters, parameters,conn_name,dbi=None,conn=None):
                 "sql":sql,
                 "data":dbparams,
                 "cols":parameters["cols"],
-                "template":parameters["template"]
+                "template":parameters["template"],
+                "filter":parameters.get("filter")
             }
             return exportRunxlstemplatelist(req,dbi,conn)
         

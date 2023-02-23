@@ -112,7 +112,7 @@ const ToolbarFilters = ({ dataAPI, ...props }) => {
 const moreFiltersRules = (keys) => { return getSchema({}, { keys }).unknown(true); }
 const TipoRelation = () => <Select size='small' options={[{ value: "e" }, { value: "ou" }, { value: "!e" }, { value: "!ou" }]} />;
 const moreFiltersSchema = ({ form }) => [
-  { fnum: { label: "Número", field: { type: 'inputnumber', min:1, size: 'small' } } },
+  { fnum: { label: "Número", field: { type: 'inputnumber', min: 1, size: 'small' } } },
   { fnome: { label: "Nome", field: { type: 'input', size: 'small' } } },
   { y: { label: "Ano", field: { type: "inputnumber", size: 'small', min: 2015, max: (new Date().getFullYear()) } }, m: { label: "Mês", field: { type: "inputnumber", size: 'small', min: 1, max: 12 } } }
 ];
@@ -129,8 +129,8 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
 
   const schemaRPD = (options = {}) => {
     return getSchema({
-      num: Joi.number().positive().integer().label("Número").required(),
-      month: Joi.number().positive().integer().label("Mês").required(),
+      num: Joi.any().label("Número").required(),
+      month: Joi.any().label("Mês").required(),
       year: Joi.number().positive().integer().label("Ano").required()
     }, options).unknown(true);
   }
@@ -145,7 +145,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
     submitting.trigger();
     var currentTime = new Date();
     const vals = {
-      month: currentTime.getMonth() + 1,
+      month: [{ value: currentTime.getMonth() + 1, label: currentTime.getMonth() + 1 }],
       year: currentTime.getFullYear()
     }
     form.setFieldsValue(vals);
@@ -161,9 +161,9 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
     setFormStatus({ ...status.formStatus });
     if (errors === 0) {
       let data = {
-        m: values.month,
+        months: values.month,
         y: values.year,
-        fnum: values.num
+        fnum: values.num.REFNUM_0.replace("F", "")
       }
 
       let cols = {};
@@ -173,7 +173,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
             cols[v.key] = { title: v?.reportTitle ? v.reportTitle : (typeof (v.name) !== "object" ? v.name : v.key), width: v.width, format: v?.reportFormat && v.reportFormat };
           }
         }
-        cols["NAM_0"] = { title: "NAME_0", width: 150};
+        cols["NAM_0"] = { title: "NAME_0", width: 150 };
       }
 
 
@@ -181,7 +181,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
         request: { url: `${API_URL}/rponto/sqlp/`, parameters: { method: "CalendarList" }, filter: { ...data } },
         type: { key: "template-p-xls" },
         limit: 2000,
-        dataexport: { template: "planRH.xlsx", cols, extension: "xlsx" }
+        dataexport: { template: "planRH.xlsx", cols, extension: "zip" }
       });
 
     }
@@ -196,16 +196,39 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
     <YScroll>
       <AlertsContainer /* id="el-external" */ mask fieldStatus={fieldStatus} formStatus={formStatus} portal={false} />
       <FormContainer initialValues={{}} id="LAY-PRT" fluid loading={submitting.state} wrapForm={true} form={form} fieldStatus={fieldStatus} setFieldStatus={setFieldStatus} onFinish={onFinish} onValuesChange={onValuesChange} schema={schemaRPD} wrapFormItem={true} forInput={true} alert={{ tooltip: true, pos: "none" }}>
-        <Row style={{ marginBottom: "20px" }} gutterWidth={10}>
-          <Col xs="content"><Field wrapFormItem={true} name="num" label={{ enabled: true, text: "Número" }}><InputNumber size="small" min={1} /></Field></Col>
-          <Col xs="content"><Field wrapFormItem={true} name="month" label={{ enabled: true, text: "Mês" }}><InputNumber size="small" min={1} max={12} /></Field></Col>
+        <Row style={{}} gutterWidth={10}>
+          <Col xs="content">
+            <Field wrapFormItem={true} name="num" label={{ enabled: true, text: "Número" }}>
+              <Selector
+                size="small"
+                title="Colaboradores"
+                params={{ payload: { url: `${API_URL}/rponto/sqlp/`, parameters: { method: "EmployeesLookup" }, pagination: { enabled: false, limit: 150 }, filter: {}, sort: [{ column: "REFNUM_0", direction: "ASC" }] } }}
+                keyField={["REFNUM_0"]}
+                textField="SRN_0"
+                detailText={r => r?.REFNUM_0}
+                columns={[
+                  { key: 'REFNUM_0', name: 'Número', width: 90 },
+                  { key: 'SRN_0', name: 'Nome' }
+                ]}
+                filters={{ fmulti: { type: "any", width: 150, text: "Colaborador" } }}
+                moreFilters={{}}
+              />
+            </Field>
+            {/* <Field wrapFormItem={true} name="num" label={{ enabled: true, text: "Número" }}><InputNumber size="small" min={1} /></Field> */}
+          </Col>
+        </Row>
+        <Row style={{}} gutterWidth={10}>
+          <Col><Field wrapFormItem={true} name="month" label={{ enabled: true, text: "Mês" }}>
+            <SelectMultiField allowClear data={[{ key: 1, value: 1 }, { key: 2, value: 2 }, { key: 3, value: 3 }, { key: 4, value: 4 }, { key: 5, value: 5 }, { key: 6, value: 6 }, { key: 7, value: 7 }, { key: 8, value: 8 }, { key: 9, value: 9 }, { key: 10, value: 10 }, { key: 11, value: 11 }, { key: 12, value: 12 }]} />
+          </Field>
+          </Col>
           <Col xs="content"><Field wrapFormItem={true} name="year" label={{ enabled: true, text: "Ano" }}><InputNumber size="small" min={2015} max={(new Date()).getFullYear} /></Field></Col>
         </Row>
       </FormContainer>
       {props?.extraRef && <Portal elId={props?.extraRef.current}>
         <Space>
-          <Button type="primary" disabled={submitting.state} onClick={onFinish}>Imprimir</Button>
-          <Button onClick={props?.closeParent}>Cancelar</Button>
+          <Button size='large' icon={<PrinterOutlined/>} type="primary" disabled={submitting.state} onClick={onFinish}/>
+          <Button size='large' onClick={props?.closeParent}>Cancelar</Button>
         </Space>
       </Portal>
       }
@@ -330,7 +353,7 @@ export default ({ props, setFormTitle }) => {
   // }
 
   const onPrintRPD = () => {
-    setModalParameters({ content: "printrpd", type: "drawer", title: "Imprimir Registo de Presenças Diário", push: false, width: "400px", loadData: () => dataAPI.fetchPost(), parameters: { openNotification, columns } });
+    setModalParameters({ content: "printrpd", type: "drawer", title: "Imprimir", push: false, width: "400px", loadData: () => dataAPI.fetchPost(), parameters: { openNotification, columns } });
     showModal();
   }
 
@@ -356,7 +379,7 @@ export default ({ props, setFormTitle }) => {
         rowClass={(row) => (row?.valid === 0 ? classes.notValid : undefined)}
         leftToolbar={<Space>
           {/* <Button disabled={submitting.state} onClick={onRecordApp}>App</Button>*/}
-          <Button disabled={submitting.state} onClick={onPrintRPD}>Imprimir Registo de Presenças</Button>
+          <Button size="large" icon={<PrinterOutlined />} disabled={submitting.state} onClick={onPrintRPD}>Imprimir Plano Mensal</Button>
         </Space>}
         toolbarFilters={{
           form: formFilter, schema, onFinish: onFilterFinish, onValuesChange: onFilterChange,

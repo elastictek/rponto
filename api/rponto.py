@@ -173,12 +173,15 @@ def EmployeesLookup(request, format=None):
     dql = dbmssql.dql(request.data, False)
     cols = f"""*"""
     dql.columns=encloseColumn(cols,False)
+    dql.sort = " ORDER BY(SELECT NULL) " if not dql.sort else dql.sort #Obrigatório se PAGING em sqlserver
     sql = lambda p, c, s: (
         f"""  
+            select * from (
             select DISTINCT e.REFNUM_0, NAM_0,SRN_0 FROM x3peoplesql.PEOPLELTEK.EMPLOID e 
             JOIN x3peoplesql.PEOPLELTEK.EMPLOCTR c on c.REFNUM_0 = e.REFNUM_0 
             WHERE c.PROPRF_0 = 'STD' 
             {f.text} {fmulti["text"]}
+            ) T
             {s(dql.sort)}
              {p(dql.paging)} {p(dql.limit)}
         """
@@ -548,6 +551,20 @@ def CalendarList(request, format=None):
     f2.auto()
     f2.value()
 
+
+    def filterMonthMultiSelect(data,name,operator):
+        f = Filters(data)
+        fP = {}
+        if name in data:
+            dt = [o['value'] for o in data[name]]
+            for idx,v in enumerate(dt):
+                fP[f"m{idx}"] = {"key":"m", "value": f"=={v}", "field": lambda k, v: f'C.{k}'}
+        f.setParameters({**fP}, True)
+        f.auto()
+        f.where(False, operator)
+        f.value("or")
+        return f
+    fmonths = filterMonthMultiSelect(request.data['filter'],'months',"and" if f2.hasFilters else "where")
     
     fmulti = filterMulti(request.data['filter'], {
         # 'flotenw': {"keys": ['lotenwinf', 'lotenwsup'], "table": 'mb.'},
@@ -556,7 +573,7 @@ def CalendarList(request, format=None):
     }, False, "and" if f.hasFilters else "where" ,False)
     fmulti["text"] = f""" """
 
-    parameters = {**f.parameters, **fmulti['parameters'],**f2.parameters}
+    parameters = {**f.parameters, **fmulti['parameters'],**f2.parameters,**fmonths.parameters}
     dql = dbmssql.dql(request.data, False)
     cols = f"""*"""
     dql.columns=encloseColumn(cols,False)
@@ -574,7 +591,8 @@ def CalendarList(request, format=None):
             DATEPART(ISO_WEEK,[date]) isowyear,
             DATEPART(WEEK,[date]) wyear,
             DATEPART(WEEKDAY,[date]) wday,
-            DATENAME(WEEKDAY,[date]) wdayname,
+            FORMAT([date], 'dddd', 'pt-pt') wdayname,
+            --DATENAME(WEEKDAY,[date]) wdayname,
             DATEPART(MONTH,[date]) m,
             DATEPART(YEAR,[date]) y,
             CASE WHEN DATEPART(ISO_WEEK,[date])>DATEPART(WEEK,[date]) THEN DATEPART(YEAR,[date])-1 ELSE DATEPART(YEAR,[date]) END isoy
@@ -920,7 +938,7 @@ def CalendarList(request, format=None):
             ) AS [UnpivotTable]
             ) H
             JOIN CALENDAR AS C ON C.wday=H.DAYWEEK and C.isoy=H.YEA_0 AND C.isowyear=H.WEEK
-            {f2.text}
+            {f2.text} {fmonths.text}
             {s(dql.sort)} {p(dql.paging)} {p(dql.limit)}
             OPTION(MAXRECURSION 400)
             
@@ -929,7 +947,7 @@ def CalendarList(request, format=None):
     if ("export" in request.data["parameters"]):
         dql.limit=f"""OFFSET 0 ROWS FETCH NEXT {request.data["parameters"]["limit"]} ROWS ONLY"""
         dql.paging=""
-        return export(sql(lambda v:v,lambda v:v,lambda v:v), db_parameters=parameters, parameters=request.data["parameters"],conn_name=AppSettings.reportConn["sage"],dbi=dbmssql,conn=connection)
+        return export(sql(lambda v:v,lambda v:v,lambda v:v), db_parameters=parameters, parameters={**request.data["parameters"],"filter":request.data.get('filter')},conn_name=AppSettings.reportConn["sage"],dbi=dbmssql,conn=connection)
     try:
         response = dbmssql.executeList(sql, connection, parameters,[],None,None)
     except Exception as error:
