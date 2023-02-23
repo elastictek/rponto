@@ -88,12 +88,22 @@ const ToolbarFilters = ({ dataAPI, ...props }) => {
   return (<>
     <Col width={80}>
       <Field name="fnum" label={{ enabled: true, text: "Número", pos: "top", padding: "0px" }}>
-        <Input size='small' allowClear />
+        <InputNumber style={{ width: "100%" }} size='small' />
       </Field>
     </Col>
     <Col width={180}>
       <Field name="fnome" label={{ enabled: true, text: "Nome", pos: "top", padding: "0px" }}>
         <Input size='small' allowClear />
+      </Field>
+    </Col>
+    <Col width={80}>
+      <Field name="y" label={{ enabled: true, text: "Ano", pos: "top", padding: "0px" }}>
+        <InputNumber style={{ width: "100%" }} size='small' min={2015} max={new Date().getFullYear()} />
+      </Field>
+    </Col>
+    <Col width={80}>
+      <Field name="m" label={{ enabled: true, text: "Mês", pos: "top", padding: "0px" }}>
+        <InputNumber style={{ width: "100%" }} size='small' min={1} max={12} />
       </Field>
     </Col>
   </>
@@ -102,9 +112,9 @@ const ToolbarFilters = ({ dataAPI, ...props }) => {
 const moreFiltersRules = (keys) => { return getSchema({}, { keys }).unknown(true); }
 const TipoRelation = () => <Select size='small' options={[{ value: "e" }, { value: "ou" }, { value: "!e" }, { value: "!ou" }]} />;
 const moreFiltersSchema = ({ form }) => [
-  { fnum: { label: "Número", field: { type: 'input', size: 'small' } } },
+  { fnum: { label: "Número", field: { type: 'inputnumber', min:1, size: 'small' } } },
   { fnome: { label: "Nome", field: { type: 'input', size: 'small' } } },
-  { fdata: { label: "Data", field: { type: "rangedate", size: 'small' } } }
+  { y: { label: "Ano", field: { type: "inputnumber", size: 'small', min: 2015, max: (new Date().getFullYear()) } }, m: { label: "Mês", field: { type: "inputnumber", size: 'small', min: 1, max: 12 } } }
 ];
 
 
@@ -119,7 +129,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
 
   const schemaRPD = (options = {}) => {
     return getSchema({
-      num: Joi.string().label("Número").required(),
+      num: Joi.number().positive().integer().label("Número").required(),
       month: Joi.number().positive().integer().label("Mês").required(),
       year: Joi.number().positive().integer().label("Ano").required()
     }, options).unknown(true);
@@ -153,7 +163,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
       let data = {
         m: values.month,
         y: values.year,
-        REFNUM_0: values.num
+        fnum: values.num
       }
 
       let cols = {};
@@ -163,7 +173,9 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
             cols[v.key] = { title: v?.reportTitle ? v.reportTitle : (typeof (v.name) !== "object" ? v.name : v.key), width: v.width, format: v?.reportFormat && v.reportFormat };
           }
         }
+        cols["NAM_0"] = { title: "NAME_0", width: 150};
       }
+
 
       downloadReport({
         request: { url: `${API_URL}/rponto/sqlp/`, parameters: { method: "CalendarList" }, filter: { ...data } },
@@ -185,7 +197,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
       <AlertsContainer /* id="el-external" */ mask fieldStatus={fieldStatus} formStatus={formStatus} portal={false} />
       <FormContainer initialValues={{}} id="LAY-PRT" fluid loading={submitting.state} wrapForm={true} form={form} fieldStatus={fieldStatus} setFieldStatus={setFieldStatus} onFinish={onFinish} onValuesChange={onValuesChange} schema={schemaRPD} wrapFormItem={true} forInput={true} alert={{ tooltip: true, pos: "none" }}>
         <Row style={{ marginBottom: "20px" }} gutterWidth={10}>
-          <Col xs="content"><Field wrapFormItem={true} name="num" label={{ enabled: true, text: "Número" }}><Input size="small" /></Field></Col>
+          <Col xs="content"><Field wrapFormItem={true} name="num" label={{ enabled: true, text: "Número" }}><InputNumber size="small" min={1} /></Field></Col>
           <Col xs="content"><Field wrapFormItem={true} name="month" label={{ enabled: true, text: "Mês" }}><InputNumber size="small" min={1} max={12} /></Field></Col>
           <Col xs="content"><Field wrapFormItem={true} name="year" label={{ enabled: true, text: "Ano" }}><InputNumber size="small" min={2015} max={(new Date()).getFullYear} /></Field></Col>
         </Row>
@@ -249,7 +261,7 @@ export default ({ props, setFormTitle }) => {
   }
 
   const columns = [
-    { key: 'bprint', name: '', ignoreReport: true, minWidth: 40, maxWidth: 40, formatter: p => <Button icon={<PrinterOutlined />} size="small" onClick={() => onFix(p.row)} /> },
+    /* { key: 'bprint', name: '', ignoreReport: true, minWidth: 40, maxWidth: 40, formatter: p => <Button icon={<PrinterOutlined />} size="small" onClick={() => onFix(p.row)} /> }, */
     { key: 'REFNUM_0', name: 'Número', width: 90, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.REFNUM_0}</div> },
     { key: 'date', width: 100, name: 'Data', formatter: p => moment(p.row.date).format(DATE_FORMAT) },
     { key: 'WEEK', width: 100, name: 'Semana', formatter: p => p.row.WEEK },
@@ -270,8 +282,8 @@ export default ({ props, setFormTitle }) => {
 
   const loadData = async ({ init = false, signal } = {}) => {
     if (init) {
-      const initFilters = loadInit({}, { ...dataAPI.getAllFilter(), tstamp: dataAPI.getTimeStamp() }, props, {}, [...Object.keys(dataAPI.getAllFilter())]);
-      let { filterValues, fieldValues } = fixRangeDates(['fdata'], initFilters);
+      const initFilters = loadInit({ y: new Date().getFullYear(), m: (new Date().getMonth() + 1) }, { ...dataAPI.getAllFilter(), tstamp: dataAPI.getTimeStamp() }, props, {}, [...Object.keys(dataAPI.getAllFilter())]);
+      let { filterValues, fieldValues } = fixRangeDates([], initFilters);
       formFilter.setFieldsValue({ ...fieldValues });
       dataAPI.addFilters({ ...filterValues }, true, false);
       dataAPI.setSort(defaultSort);
@@ -288,10 +300,7 @@ export default ({ props, setFormTitle }) => {
         const vals = Object.fromEntries(Object.entries({ ...defaultFilters, ...values }).filter(([_, v]) => v !== null && v !== ''));
         const _values = {
           ...vals,
-          fnum: getFilterValue(vals?.fnum, 'any'),
-          fnome: getFilterValue(vals?.fnome, 'any'),
-          fdata: getFilterRangeValues(vals["fdata"]?.formatted),
-
+          fnome: getFilterValue(vals?.fnome, 'any')
         };
         dataAPI.addFilters(_values, true);
         dataAPI.addParameters(defaultParameters);

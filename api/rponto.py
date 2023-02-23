@@ -528,25 +528,27 @@ def RegistosRH(request, format=None):
 def CalendarList(request, format=None):
     connection = connections[connMssqlName].cursor()
     f = Filters(request.data['filter'])
-    print(request.data['filter'])
     f.setParameters({
         #**rangeP(f.filterData.get('fdata'), 'dts', lambda k, v: f'CONVERT(DATE, dts)'),
-        "REFNUM_0": {"value": lambda v: f"=={v.get('REFNUM_0').lower()}" if v.get('REFNUM_0') is not None else None, "field": lambda k, v: f'lower(T.{k})'},
+        "REFNUM_0": {"value": lambda v: f"==F{str(v.get('fnum')).zfill(5)}" if v.get('fnum') is not None else None, "field": lambda k, v: f'T.{k}'},
     }, True)
     f.where("")
     f.auto()
     f.value()
 
+    _year = request.data['filter'].get("y") if request.data['filter'].get("y") is not None else datetime.now().year
+    _month = request.data['filter'].get("m") if request.data['filter'].get("m") is not None else None
     f2 = Filters(request.data['filter'])
     f2.setParameters({
         #**rangeP(f.filterData.get('fdata'), 'dts', lambda k, v: f'CONVERT(DATE, dts)'),
-        "y": {"value": lambda v: f"=={v.get('y')}" if v.get('y') is not None else None, "field": lambda k, v: f'C.{k}'},
-        "m": {"value": lambda v: f"=={v.get('m')}" if v.get('m') is not None else None, "field": lambda k, v: f'C.{k}'}
+        "y": {"value": lambda v: f"=={_year}", "field": lambda k, v: f'C.{k}'},
+        "m": {"value": lambda v: f"=={_month}" if _month is not None else None, "field": lambda k, v: f'C.{k}'}
     }, True)
     f2.where()
     f2.auto()
     f2.value()
 
+    
     fmulti = filterMulti(request.data['filter'], {
         # 'flotenw': {"keys": ['lotenwinf', 'lotenwsup'], "table": 'mb.'},
         # 'ftiponw': {"keys": ['tiponwinf', 'tiponwsup'], "table": 'mb.'},
@@ -562,10 +564,10 @@ def CalendarList(request, format=None):
     sql = lambda p, c, s: (
         f"""            
             WITH [CTE_CALENDAR] AS
-            (SELECT CAST('2021-01-01' AS DATE) AS [date]
+            (SELECT CAST('{_year}-01-01' AS DATE) AS [date]
             union all
             select DATEADD(dd,1,[date]) FROM [CTE_CALENDAR]
-            WHERE DATEADD(dd,1,[date]) <= CAST('2021-12-31' AS DATE)
+            WHERE DATEADD(dd,1,[date]) <= CAST('{_year}-12-31' AS DATE)
             ), [CALENDAR] AS 
             (SELECT 
             [date],
@@ -924,12 +926,7 @@ def CalendarList(request, format=None):
             
         """
     )
-    print(f.text)
-    print(f2.text)
     if ("export" in request.data["parameters"]):
-        print(f.text)
-        print("ffffff")
-        print(request.data["filter"])
         dql.limit=f"""OFFSET 0 ROWS FETCH NEXT {request.data["parameters"]["limit"]} ROWS ONLY"""
         dql.paging=""
         return export(sql(lambda v:v,lambda v:v,lambda v:v), db_parameters=parameters, parameters=request.data["parameters"],conn_name=AppSettings.reportConn["sage"],dbi=dbmssql,conn=connection)

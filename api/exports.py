@@ -143,6 +143,7 @@ def exportRunxlstemplatelist(req,dbi,conn):
         for index,row in df.iterrows():
             r = []
             for c in list(req["cols"].keys()):
+                print(row[c])
                 r.append(row[c])
             sheet.append(r)
         # Save the modified file to a buffer
@@ -151,7 +152,7 @@ def exportRunxlstemplatelist(req,dbi,conn):
         output.seek(0)
 
         response =  HttpResponse(FileWrapper(output), content_type="application/ms-excel")
-        response['Content-Disposition'] = 'attachment; filename=list.xlsx'
+        response['Content-Disposition'] = 'attachment; filename=registo_diario.xlsx'
         return response       
 
     except Exception as error:
