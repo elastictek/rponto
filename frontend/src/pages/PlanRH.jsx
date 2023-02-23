@@ -204,11 +204,11 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
                 title="Colaboradores"
                 params={{ payload: { url: `${API_URL}/rponto/sqlp/`, parameters: { method: "EmployeesLookup" }, pagination: { enabled: false, limit: 150 }, filter: {}, sort: [{ column: "REFNUM_0", direction: "ASC" }] } }}
                 keyField={["REFNUM_0"]}
-                textField="SRN_0"
+                textField="FULLNAME"
                 detailText={r => r?.REFNUM_0}
                 columns={[
                   { key: 'REFNUM_0', name: 'Número', width: 90 },
-                  { key: 'SRN_0', name: 'Nome' }
+                  { key: 'FULLNAME', name: 'Nome' }
                 ]}
                 filters={{ fmulti: { type: "any", width: 150, text: "Colaborador" } }}
                 moreFilters={{}}
@@ -289,7 +289,7 @@ export default ({ props, setFormTitle }) => {
     { key: 'date', width: 100, name: 'Data', formatter: p => moment(p.row.date).format(DATE_FORMAT) },
     { key: 'WEEK', width: 100, name: 'Semana', formatter: p => p.row.WEEK },
     { key: 'wdayname', width: 100, name: 'Dia Semana', formatter: p => p.row.wdayname },
-    { key: 'SRN_0', width: 350, name: 'Nome', formatter: p => <div style={{ fontWeight: 700 }}>{`${p.row.SRN_0} ${p.row.NAM_0}`}</div> },
+    { key: 'FULLNAME', width: 350, name: 'Nome', formatter: p => <div style={{ fontWeight: 700 }}>{`${p.row.SRN_0} ${p.row.NAM_0}`}</div> },
     { key: 'PLNTYP_0', name: 'Planemeanto', width: 80, formatter: p => p.row.PLNTYP_0 },
     { key: 'EN_MANHA', width: 130, name: 'Entrada Manhã', formatter: p => p.row.EN_MANHA },
     { key: 'SA_MANHA', width: 130, name: 'Saída Manhã', formatter: p => p.row.SA_MANHA },

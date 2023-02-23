@@ -166,8 +166,8 @@ def EmployeesLookup(request, format=None):
     f.value()
 
     fmulti = filterMulti(request.data['filter'], {
-        'fmulti': {"keys": ['REFNUM_0', 'SRN_0'], "table": 'e.'}
-    }, False, "and" if f.hasFilters else "and" ,False)
+        'fmulti': {"keys": ['REFNUM_0', "FULLNAME"], "table": 'T.'}
+    }, False, "and" if f.hasFilters else "where" ,False)
     parameters = {**f.parameters, **fmulti['parameters']}
 
     dql = dbmssql.dql(request.data, False)
@@ -177,11 +177,11 @@ def EmployeesLookup(request, format=None):
     sql = lambda p, c, s: (
         f"""  
             select * from (
-            select DISTINCT e.REFNUM_0, NAM_0,SRN_0 FROM x3peoplesql.PEOPLELTEK.EMPLOID e 
+            select DISTINCT e.REFNUM_0, NAM_0,SRN_0, CONCAT(SRN_0,' ',NAM_0) FULLNAME FROM x3peoplesql.PEOPLELTEK.EMPLOID e 
             JOIN x3peoplesql.PEOPLELTEK.EMPLOCTR c on c.REFNUM_0 = e.REFNUM_0 
             WHERE c.PROPRF_0 = 'STD' 
-            {f.text} {fmulti["text"]}
             ) T
+            {f.text} {fmulti["text"]}
             {s(dql.sort)}
              {p(dql.paging)} {p(dql.limit)}
         """
@@ -191,10 +191,13 @@ def EmployeesLookup(request, format=None):
         dql.paging=""
         return export(sql(lambda v:v,lambda v:v,lambda v:v), db_parameters=parameters, parameters=request.data["parameters"],conn_name=AppSettings.reportConn["sage"],dbi=dbmssql,conn=connection)
     try:
+        print(sql(lambda v:v,lambda v:v,lambda v:v))
         response = dbmssql.executeList(sql, connection, parameters,[],None,f"""
-            select DISTINCT e.REFNUM_0, NAM_0,SRN_0 FROM x3peoplesql.PEOPLELTEK.EMPLOID e 
+            select * from (
+            select DISTINCT e.REFNUM_0, NAM_0,SRN_0, CONCAT(SRN_0,' ',NAM_0) FULLNAME FROM x3peoplesql.PEOPLELTEK.EMPLOID e 
             JOIN x3peoplesql.PEOPLELTEK.EMPLOCTR c on c.REFNUM_0 = e.REFNUM_0 
             WHERE c.PROPRF_0 = 'STD' 
+            ) T
             {f.text} {fmulti["text"]}
         """)
     except Exception as error:
@@ -544,6 +547,7 @@ def CalendarList(request, format=None):
     f2 = Filters(request.data['filter'])
     f2.setParameters({
         #**rangeP(f.filterData.get('fdata'), 'dts', lambda k, v: f'CONVERT(DATE, dts)'),
+        "FULLNAME": {"value": lambda v: v.get('fnome').lower() if v.get('fnome') is not None else None, "field": lambda k, v: f'lower({k})'},
         "y": {"value": lambda v: f"=={_year}", "field": lambda k, v: f'C.{k}'},
         "m": {"value": lambda v: f"=={_month}" if _month is not None else None, "field": lambda k, v: f'C.{k}'}
     }, True)
@@ -599,7 +603,7 @@ def CalendarList(request, format=None):
             FROM [CTE_CALENDAR]
             )
             SELECT {c(f'{dql.columns}')} FROM (
-            SELECT [YEA_0],[WEEK],[DAYWEEK],[REFNUM_0],[PLNTYP_0], EN_MANHA,SA_MANHA,EN_TARDE,SA_TARDE, SRN_0,NAM_0
+            SELECT [YEA_0],[WEEK],[DAYWEEK],[REFNUM_0],[PLNTYP_0], EN_MANHA,SA_MANHA,EN_TARDE,SA_TARDE, SRN_0,NAM_0, CONCAT(SRN_0,' ',NAM_0) FULLNAME
             FROM (
             SELECT T.*,EID.SRN_0, EID.NAM_0 FROM (
             select DISTINCT 1 WEEK,YEA_0, REFNUM_0,STRTIM0_0, ENDTIM0_0,STRTIM1_0, ENDTIM1_0,STRTIM0_1, ENDTIM0_1,STRTIM1_1, ENDTIM1_1,STRTIM0_2, ENDTIM0_2,STRTIM1_2, ENDTIM1_2,STRTIM0_3, ENDTIM0_3,STRTIM1_3, ENDTIM1_3,
