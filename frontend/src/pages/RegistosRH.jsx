@@ -146,7 +146,7 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
               const type = p.row[`ty_${`${i + 1}`.padStart(2, '0')}`]?.trim();
               return (<Col xs="content" key={`img-${i}`} style={{ marginBottom: "15px", display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <div style={{ padding: "2px", fontSize: "10px", ...type && { background: type == "in" ? "#95de64" : "#ff7875" } }}><b>{i + 1}.</b> {dt && moment(dt).format(DATETIME_FORMAT)}</div>
-                <Image width="106px" src={`${ROOT_URL}/static/${v}`} />
+                <Image width="106px" src={`${ROOT_URL}/static/records/${v}`} />
               </Col>);
             })}
           </Row>
