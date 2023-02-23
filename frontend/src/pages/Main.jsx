@@ -346,7 +346,7 @@ export default ({ }) => {
 									})}
 								</Col></Row> */}
 							</Col>
-							<Col xs="content">
+							<Col xs="content" style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
 								{!data.snapshot && <Webcam
 									minScreenshotWidth={1280}
 									minScreenshotHeight={720}
