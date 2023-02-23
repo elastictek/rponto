@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, useRoutes, BrowserRouter, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Breadcrumb, Layout, Menu, theme, Drawer, notification } from 'antd';
-import Logo from 'assets/logoWhite.svg';
+import Logo from 'assets/logowhite.svg';
 import styled, { css } from 'styled-components';
 import MainMenu from './MainMenu';
 const { Header, Content, Footer } = Layout;
