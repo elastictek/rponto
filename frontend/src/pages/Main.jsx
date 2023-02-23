@@ -3,7 +3,7 @@ import { Button } from "antd-mobile";
 import { Alert } from "antd";
 import { Container, Row, Col } from 'react-grid-system';
 import styled from 'styled-components';
-import { EnterOutlined, RedoOutlined, CloseCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { EnterOutlined, RedoOutlined, CloseCircleOutlined, CheckCircleOutlined,CameraTwoTone, CameraFilled } from '@ant-design/icons';
 import Webcam from "react-webcam";
 import { useSubmitting } from "utils";
 import { API_URL } from "config";
@@ -469,7 +469,7 @@ export default ({ }) => {
 							<Col xs="content"><StyledButton disabled={data.snapshot || submitting.state} onClick={() => onClick('C')} size="large">C</StyledButton></Col>
 							<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onClick(0)} size="large">0</StyledButton></Col>
 							<Col xs="content">
-								{!data.snapshot && <StyledButton disabled={!parseInt(data.num) || submitting.state} onClick={capture} size="large"><EnterOutlined /></StyledButton>}
+								{!data.snapshot && <StyledButton disabled={!parseInt(data.num) || submitting.state} onClick={capture} size="large"><CameraTwoTone style={{fontSize:"48px"}} /></StyledButton>}
 								{data.snapshot && <StyledButton disabled={submitting.state} onClick={reset} icon={<RedoOutlined />} size="large" />}
 							</Col>
 							<Col></Col>
