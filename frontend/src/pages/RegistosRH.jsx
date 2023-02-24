@@ -57,7 +57,7 @@ const useStyles = createUseStyles({
     background: "#95de64"
   },
   out: {
-    background: "#ff7875"
+    background: "#d9f7be"
   },
   edit: {
     position: "relative",
@@ -119,7 +119,7 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
 
   const loadData = async ({ signal } = {}) => {
     try {
-      let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, filter: {}, parameters: { method: "GetCameraRecords", date: moment(p.row.dts).format(DATE_FORMAT_NO_SEPARATOR), num: p.row.num } });
+      let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials:true, filter: {}, parameters: { method: "GetCameraRecords", date: moment(p.row.dts).format(DATE_FORMAT_NO_SEPARATOR), num: p.row.num } });
       if (response.data.status !== "error") {
         setRecords(response.data);
       } else {
@@ -161,7 +161,7 @@ const Biometrias = ({ parameters }) => {
   const defaultFilters = {};
   const defaultParameters = { method: "BiometriasList" };
   const defaultSort = [];
-  const dataAPI = useDataAPI({ payload: { url: `${API_URL}/rponto/sqlp/`, parameters: {}, pagination: { enabled: false }, filter: defaultFilters, sort: [] } });
+  const dataAPI = useDataAPI({ payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials:true, parameters: {}, pagination: { enabled: false }, filter: defaultFilters, sort: [] } });
   const submitting = useSubmitting(true);
 
   useEffect(() => {
@@ -188,7 +188,7 @@ const Biometrias = ({ parameters }) => {
     submitting.trigger();
 
     try {
-      let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, filter: {}, parameters: { method: "Sync" } });
+      let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials:true, filter: {}, parameters: { method: "Sync" } });
       if (response.data.status !== "error") {
         parameters.openNotification(response.data.status, 'top', "Notificação", "Dados biométricos sincronizados com sucesso!");
       } else {
@@ -206,7 +206,7 @@ const Biometrias = ({ parameters }) => {
       title: <div>Eliminar Biometria <b>{r.num}</b></div>, content: "Tem a certeza que deseja eliminar a biometria selecionada?", onOk: async () => {
         submitting.trigger();
         try {
-          let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, filter: { num: r.num }, parameters: { method: "DelFace" } });
+          let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials:true, filter: { num: r.num }, parameters: { method: "DelFace" } });
           if (response.data.status !== "error") {
             parameters.openNotification(response.data.status, 'top', "Notificação", `Biometria ${r.num} eliminada com sucesso!`);
             dataAPI.fetchPost();
@@ -336,7 +336,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
     setFormStatus({ ...status.formStatus });
     if (errors === 0) {
       try {
-        let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, filter: {}, parameters: { method: "UpdateRecords", values: vals } });
+        let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials:true, filter: {}, parameters: { method: "UpdateRecords", values: vals } });
         if (response.data.status !== "error") {
           parameters.openNotification(response.data.status, 'top', "Notificação", response.data.title);
           props?.loadParentData();
@@ -515,7 +515,7 @@ export default ({ props, setFormTitle }) => {
   const defaultFilters = {};
   const defaultParameters = { method: "RegistosRH" };
   const defaultSort = [{ column: "dts", direction: "DESC" }, { column: "num", direction: "ASC" }];
-  const dataAPI = useDataAPI({ id: "lst-rp-rh", payload: { url: `${API_URL}/rponto/sqlp/`, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
+  const dataAPI = useDataAPI({ id: "lst-rp-rh", payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials:true, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
   const submitting = useSubmitting(true);
 
   const [modalParameters, setModalParameters] = useState({});

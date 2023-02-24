@@ -32,18 +32,15 @@ export const SocketContext = React.createContext({});
 export const AppContext = React.createContext({});
 
 
-
-
-// const MainLayout = () => {
-//     const location = useLocation();
-//     return (<>{(location.pathname === "/" || location.pathname === "/") && <GridLayout />}<Outlet /></>);
-// }
+const MainLayout = () => {
+    return (<>{(localStorage.getItem("auth")===null) ? <Suspense fallback={<Spin />}><Login /></Suspense> : <GridLayout />}</>);
+}
 
 const RenderRouter = () => {
     let element = useRoutes([
         {
             path: '/app',
-            element: <GridLayout />,
+            element: <MainLayout />,
             children: [
                 { path: "login", element: <Suspense fallback={<Spin />}><Login /></Suspense> },
                 /* { path: "layout", element: <Suspense fallback={<Spin />}><GridLayout /></Suspense> }, */
@@ -70,9 +67,8 @@ const App = () => {
     useEffect(() => {
         const _auth = json(localStorage.getItem('auth'));
         if (_auth) {
-            const accessToken = _auth.access_token;
-            if (accessToken) {
-                axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+            if (_auth.access_token) {
+                axios.defaults.headers.common.Authorization = `Bearer ${_auth.access_token}`;
                 setAuth({ isAuthenticated: true, ..._auth });
             }
         }

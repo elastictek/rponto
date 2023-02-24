@@ -19,6 +19,7 @@ export const useDataAPI = ({ payload, id, useStorage = true, fnPostProcess } = {
         sort: payload?.sort || [],
         parameters: payload?.parameters || {},
         data: (payload?.data) ? payload.data : {},
+        withCredentials: payload?.withCredentials || null,
         url: payload?.url,
         ...getLocalStorage(id, useStorage)
     });
@@ -303,8 +304,9 @@ export const useDataAPI = ({ payload, id, useStorage = true, fnPostProcess } = {
         return { ...dataState.data };
     }
 
-    const _fetchPost = ({ url, token, signal, rowFn, fromSate = false } = {}) => {
+    const _fetchPost = ({ url, withCredentials = null, token, signal, rowFn, fromSate = false } = {}) => {
         let _url = (url) ? url : dataState.url;
+        let _withCredentials = (withCredentials !== null) ? withCredentials : dataState.withCredentials;
         const payload = { ...getPayload(fromSate), tstamp: Date.now() };
         setIsLoading(true);
         return (async () => {
@@ -313,12 +315,12 @@ export const useDataAPI = ({ payload, id, useStorage = true, fnPostProcess } = {
                 localStorage.setItem(`dapi-${id}`, JSON.stringify(payload));
             }
             try {
-                const dt = (await fetchPost({ url: _url, ...payload, ...((signal) ? { signal } : { cancelToken: token }) })).data;
+                const dt = (await fetchPost({ url: _url, ...(_withCredentials !== null && { withCredentials: _withCredentials }), ...payload, ...((signal) ? { signal } : { cancelToken: token }) })).data;
                 if (typeof rowFn === "function") {
                     setData(await rowFn(dt), payload);
                 } else if (typeof fnPostProcess === "function") {
                     setData(await fnPostProcess(dt), payload);
-                }else{
+                } else {
                     setData(dt, payload);
                 }
             } catch (e) {

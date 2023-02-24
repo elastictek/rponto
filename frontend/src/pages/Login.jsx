@@ -13,15 +13,13 @@ import { fetchPost } from "utils/fetch";
 import Logo from 'assets/logo.svg';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { AppContext } from './App';
-import { Field, Container as FormContainer } from 'components/FormFields';
+import { Field, Container as FormContainer, AlertsContainer } from 'components/FormFields';
 import jwt_decode from 'jwt-decode';
 
 
 
 const schema = (options = {}) => {
-    return getSchema({
-        /* xxxx: Joi.any().label("xxxxx").required()*/
-    }, options).unknown(true);
+    return getSchema({}, options).unknown(true);
 }
 
 
@@ -34,6 +32,8 @@ export default () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [remember, setRemember] = useState(false);
+    const [fieldStatus, setFieldStatus] = useState({});
+    const [formStatus, setFormStatus] = useState({ error: [], warning: [], info: [], success: [] });
 
     useEffect(() => {
         const controller = new AbortController();
@@ -47,21 +47,29 @@ export default () => {
 
     const handleSubmit = async (e) => {
         if (e) { e.preventDefault(); }
-        const response = await axios.post('/api/token/', { username, password, remember }, { /* headers: { 'Content-Type': 'application/json' }, */ withCredentials: true });
-        const decodedToken = jwt_decode(response.data.access);
-        localStorage.removeItem('auth');
-        const _auth = {
-            access_token: response.data.access,
-            refresh_token: response.data.refresh,
-            username: username,
-            first_name: decodedToken.first_name,
-            last_name: decodedToken.last_name,
-            num: decodedToken.num,
-            email: decodedToken.email
-        };
-        localStorage.setItem('auth', JSON.stringify(_auth));
-        setAuth({ isAuthenticated: true, ..._auth });
-        window.location.href = '/app';
+        try {
+            localStorage.removeItem('auth');
+            const response = await axios.post('/api/token/', { username, password, remember }, { /* headers: { 'Content-Type': 'application/json' }, */ withCredentials: true });
+            const decodedToken = jwt_decode(response.data.access);
+            const _auth = {
+                access_token: response.data.access,
+                refresh_token: response.data.refresh,
+                username: username,
+                first_name: decodedToken.first_name,
+                last_name: decodedToken.last_name,
+                num: decodedToken.num,
+                email: decodedToken.email
+            };
+            localStorage.setItem('auth', JSON.stringify(_auth));
+            setAuth({ isAuthenticated: true, ..._auth });
+            window.location.href = '/app';
+        } catch (e) {
+            let { errors, warnings, value, ...status } = getStatus({});
+            status.formStatus.error.push({ message: <div>Ocorreu um erro ao efetuar o login!<br />Por favor, verifique se o <b>utilizador e/ou password</b> estão corretos.</div> })
+            setFormStatus({ ...status.formStatus });
+        }
+
+
     };
 
     const clear = () => {
@@ -79,13 +87,16 @@ export default () => {
     }
 
     return (
-        <Modal open width={400} closable={false} footer={null}>
+        <Modal open width={400} height={280} closable={false} footer={null} >
+
+
             {/*             {auth.isAuthenticated && <div style={{ display: "flex", justifyItems: "center", flexDirection: "column", alignItems: "center" }}>
                 <div style={{ fontWeight: 800, fontSize: "24px", textAlign: "center", marginBottom: "10px" }}>Logout</div>
                 <div style={{ fontSize: "18px", marginBottom: "20px" }}>{auth?.first_name} {auth?.last_name}</div>
                 <Space><Button type="primary" size='large' style={{ width: "150px" }} onClick={handleLogout}>Sim</Button><Button style={{ width: "150px" }} size='large'>Não</Button></Space>
             </div>} */}
-            <FormContainer id="LOGIN" fluid style={{ padding: "0px" }} loading={submitting.state} wrapForm={true} form={form} onFinish={onFinish} onValuesChange={onValuesChange} schema={schema} wrapFormItem={true} forInput={true} alert={{ tooltip: true, pos: "none" }}>
+            <AlertsContainer mask formStatus={formStatus} portal={false} style={{ marginBottom: "10px" }} />
+            <FormContainer tabIndex={0} onKeyDown={(e) => (e.key === "Enter") && handleSubmit()} id="LOGIN" fluid style={{ padding: "0px", outline: "0px" }} loading={submitting.state} wrapForm={true} form={form} onFinish={onFinish} onValuesChange={onValuesChange} schema={schema} wrapFormItem={true} forInput={true} alert={{ tooltip: true, pos: "none" }}>
                 <Row style={{}} gutterWidth={10}>
 
                     <Col style={{}}>

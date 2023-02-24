@@ -178,7 +178,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
 
 
       downloadReport({
-        request: { url: `${API_URL}/rponto/sqlp/`, parameters: { method: "CalendarList" }, filter: { ...data } },
+        request: { url: `${API_URL}/rponto/sqlp/`, withCredentials:true, parameters: { method: "CalendarList" }, filter: { ...data } },
         type: { key: "template-p-xls" },
         limit: 2000,
         dataexport: { template: "planRH.xlsx", cols, extension: "zip" }
@@ -202,7 +202,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
               <Selector
                 size="small"
                 title="Colaboradores"
-                params={{ payload: { url: `${API_URL}/rponto/sqlp/`, parameters: { method: "EmployeesLookup" }, pagination: { enabled: false, limit: 150 }, filter: {}, sort: [{ column: "REFNUM_0", direction: "ASC" }] } }}
+                params={{ payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials:true, parameters: { method: "EmployeesLookup" }, pagination: { enabled: false, limit: 150 }, filter: {}, sort: [{ column: "REFNUM_0", direction: "ASC" }] } }}
                 keyField={["REFNUM_0"]}
                 textField="FULLNAME"
                 detailText={r => r?.REFNUM_0}
@@ -248,7 +248,7 @@ export default ({ props, setFormTitle }) => {
   const defaultFilters = {};
   const defaultParameters = { method: "CalendarList" };
   const defaultSort = [{ column: "REFNUM_0", direction: "ASC" }, { column: "C.[date]", direction: "DESC" }];
-  const dataAPI = useDataAPI({ id: "lst-plan-rh", payload: { url: `${API_URL}/rponto/sqlp/`, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
+  const dataAPI = useDataAPI({ id: "lst-plan-rh", payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials:true, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
   const submitting = useSubmitting(true);
 
   const [modalParameters, setModalParameters] = useState({});

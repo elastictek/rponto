@@ -55,6 +55,11 @@ export default () => {
 // 		};
 // 	}, []);
 
+	/* useEffect(()=>{
+		if (localStorage.getItem("auth") === null) {
+			//window.location.href = '/app/login';
+		}
+	},[]); */
 
 
 	const onToggleDrawer = () => {
