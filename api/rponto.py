@@ -223,6 +223,11 @@ def loadFaces(path,sync=False):
             pickle.dump(faces, faces_file)
         return faces
 
+def getConfig():
+    if os.path.isfile(os.path.join("config.json")):
+        with open('config.json', 'rb') as config_file:
+            return json.load(config_file)
+
 def addFace(path,img):
     faces = {"matrix": [], "nums": []}
     if os.path.isfile(os.path.join("faces.dictionary")):
@@ -371,8 +376,6 @@ def SetUser(request, format=None):
                 print("A face não corresponde....")
                 results = face_recognition.compare_faces(faces.get("matrix"), unknown_encoding,tolerance)
                 valid_indexes = [i for i, x in enumerate(results) if x]
-                print("%%%%%%%%%%%")
-                print(valid_indexes)
                 for x in valid_indexes:
                     valid_nums.append(faces.get("nums")[x].get("num"))
                     valid_filepaths.append(filePathByNum(fotos_base_path,faces.get("nums")[x].get("num")))
@@ -413,7 +416,7 @@ def SetUser(request, format=None):
                 """
             )
             response = dbmssql.executeSimpleList(sql, connection, parameters)
-            return Response({**response,"result":result,"foto":filepath,"valid_nums":valid_nums,"valid_filepaths":valid_filepaths,"valid_names":valid_names})
+            return Response({**response,"result":result,"foto":filepath,"valid_nums":valid_nums,"valid_filepaths":valid_filepaths,"valid_names":valid_names,"config":getConfig()})
     except Exception as error:
         print(error)
         return Response({"status": "error", "title": str(error)})
