@@ -47,16 +47,21 @@ export default () => {
 
     const handleSubmit = async (e) => {
         if (e) { e.preventDefault(); }
-        console.log(username, password)
-        const response = await axios.post('/api/token/', { username, password, remember });
+        const response = await axios.post('/api/token/', { username, password, remember }, { /* headers: { 'Content-Type': 'application/json' }, */ withCredentials: true });
         const decodedToken = jwt_decode(response.data.access);
-        localStorage.setItem('access_token', response.data.access);
-        localStorage.setItem('refresh_token', response.data.refresh);
-        localStorage.setItem('username', username);
-        localStorage.setItem('first_name', decodedToken.first_name);
-        localStorage.setItem('last_name', decodedToken.last_name);
-        setAuth({ isAuthenticated: true, username, first_name: decodedToken.first_name, last_name: decodedToken.last_name });
-        navigate('/app/layout');
+        localStorage.removeItem('auth');
+        const _auth = {
+            access_token: response.data.access,
+            refresh_token: response.data.refresh,
+            username: username,
+            first_name: decodedToken.first_name,
+            last_name: decodedToken.last_name,
+            num: decodedToken.num,
+            email: decodedToken.email
+        };
+        localStorage.setItem('auth', JSON.stringify(_auth));
+        setAuth({ isAuthenticated: true, ..._auth });
+        window.location.href = '/app';
     };
 
     const clear = () => {
@@ -75,54 +80,51 @@ export default () => {
 
     return (
         <Modal open width={400} closable={false} footer={null}>
-            {auth.isAuthenticated && <div style={{ display: "flex", justifyItems: "center", flexDirection: "column", alignItems: "center" }}>
+            {/*             {auth.isAuthenticated && <div style={{ display: "flex", justifyItems: "center", flexDirection: "column", alignItems: "center" }}>
                 <div style={{ fontWeight: 800, fontSize: "24px", textAlign: "center", marginBottom: "10px" }}>Logout</div>
                 <div style={{ fontSize: "18px", marginBottom: "20px" }}>{auth?.first_name} {auth?.last_name}</div>
                 <Space><Button type="primary" size='large' style={{ width: "150px" }} onClick={handleLogout}>Sim</Button><Button style={{ width: "150px" }} size='large'>Não</Button></Space>
-            </div>}
-            <FormContainer id="LOGIN" fluid loading={submitting.state} wrapForm={true} form={form} onFinish={onFinish} onValuesChange={onValuesChange} schema={schema} wrapFormItem={true} forInput={true} alert={{ tooltip: true, pos: "none" }}>
+            </div>} */}
+            <FormContainer id="LOGIN" fluid style={{ padding: "0px" }} loading={submitting.state} wrapForm={true} form={form} onFinish={onFinish} onValuesChange={onValuesChange} schema={schema} wrapFormItem={true} forInput={true} alert={{ tooltip: true, pos: "none" }}>
                 <Row style={{}} gutterWidth={10}>
 
                     <Col style={{}}>
-                        {!auth.isAuthenticated && <>
 
-                            <Row style={{}} gutterWidth={10}><Col>
-                                <div style={{ fontWeight: 600 }}>Login</div>
-                            </Col></Row>
-                            <Row style={{}} gutterWidth={10}><Col>
-                                <Input placeholder="Login" value={username} onChange={(e) => setUsername(e.target.value)} />
-                            </Col></Row>
-                            <Row style={{}} gutterWidth={10}><Col>
-                                <div style={{ fontWeight: 600 }}>Password</div>
-                            </Col></Row>
-                            <Row style={{}} gutterWidth={10}><Col>
-                                <Input.Password
-                                    value={password}
-                                    placeholder="Password"
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                                />
-                            </Col></Row>
-                            <Row style={{}} gutterWidth={10}><Col>
-                                <Checkbox checked={remember} onChange={(v) => setRemember(!remember)}>Lembrar-me neste dispositivo</Checkbox>
-                            </Col></Row>
+                        <Row style={{}} gutterWidth={10}><Col>
+                            <div style={{ fontWeight: 600 }}>Login</div>
+                        </Col></Row>
+                        <Row style={{}} gutterWidth={10}><Col>
+                            <Input placeholder="Login" value={username} onChange={(e) => setUsername(e.target.value)} />
+                        </Col></Row>
+                        <Row style={{}} gutterWidth={10}><Col>
+                            <div style={{ fontWeight: 600 }}>Password</div>
+                        </Col></Row>
+                        <Row style={{}} gutterWidth={10}><Col>
+                            <Input.Password
+                                value={password}
+                                placeholder="Password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                            />
+                        </Col></Row>
 
-                        </>}
                     </Col>
 
 
 
 
-                    {!auth.isAuthenticated && <Col><Logo style={{ fontSize: "140px", height: "50px" }} /></Col>}
+                    <Col style={{ alignSelf: "center", display: "flex", justifyContent: "center" }}><Logo style={{ fontSize: "140px", height: "50px" }} /></Col>
 
                 </Row>
+                <Row style={{ marginTop: "15px" }} gutterWidth={10}><Col>
+                    <Checkbox checked={remember} onChange={(v) => setRemember(!remember)}>Lembrar-me neste dispositivo</Checkbox>
+                </Col></Row>
 
 
-
-                {!auth.isAuthenticated && <Row gutterWidth={10} style={{ display: "flex", marginTop: "20px" }}>
+                <Row gutterWidth={10} style={{ display: "flex", marginTop: "20px" }}>
                     <Col>
                         <Button block onClick={handleSubmit} size='large' type="primary">Entrar</Button>
-                    </Col></Row>}
+                    </Col></Row>
             </FormContainer>
         </Modal>
 

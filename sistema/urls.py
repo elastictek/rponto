@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import re_path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+#from rest_framework_simplejwt import views as jwt_views
 from .serializer import CustomTokenObtainPairView
 from django.conf.urls.static import static
 from .settings import local

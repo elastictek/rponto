@@ -4,7 +4,8 @@ import * as ReactDOM from 'react-dom/client';
 import { Route, Routes, useRoutes, BrowserRouter, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Spin, Input, Modal } from 'antd';
 import { useMediaQuery } from 'react-responsive';
-import './app.css'
+import './app.css';
+import { json } from "utils/object";
 import 'antd/dist/antd.compact.less';
 import { SOCKET } from 'config';
 import useWebSocket from 'react-use-websocket';
@@ -45,7 +46,7 @@ const RenderRouter = () => {
             element: <GridLayout />,
             children: [
                 { path: "login", element: <Suspense fallback={<Spin />}><Login /></Suspense> },
-                { path: "layout", element: <Suspense fallback={<Spin />}><GridLayout /></Suspense> },
+                /* { path: "layout", element: <Suspense fallback={<Spin />}><GridLayout /></Suspense> }, */
                 { path: "rh/registos", element: <Suspense fallback={<Spin />}><RegistosRH /></Suspense> },
                 { path: "rh/plan", element: <Suspense fallback={<Spin />}><PlanRH /></Suspense> }
             ]
@@ -67,18 +68,22 @@ const App = () => {
     const [auth, setAuth] = useState({ isAuthenticated: false, });
 
     useEffect(() => {
-        const accessToken = localStorage.getItem('access_token');
-        if (accessToken) {
-            axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-            setAuth({ isAuthenticated: true, username: localStorage.getItem('username'), first_name: localStorage.getItem('first_name'), last_name: localStorage.getItem('last_name') })
+        const _auth = json(localStorage.getItem('auth'));
+        if (_auth) {
+            const accessToken = _auth.access_token;
+            if (accessToken) {
+                axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+                setAuth({ isAuthenticated: true, ..._auth });
+            }
         }
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('auth');
         axios.defaults.headers.common.Authorization = null;
         setAuth({ isAuthenticated: false });
+        window.location.href = '/app/login';
+
     };
 
     useEffect(() => {

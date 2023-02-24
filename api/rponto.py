@@ -142,6 +142,7 @@ def Sql(request, format=None):
 
 @api_view(['POST'])
 @renderer_classes([JSONRenderer])
+@permission_classes([IsAuthenticated])
 @jwt_required
 def SqlProtected(request):
     if "parameters" in request.data and "method" in request.data["parameters"]:

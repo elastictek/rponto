@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Route, Routes, useRoutes, BrowserRouter, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Breadcrumb, Layout, Menu, theme, Drawer, notification } from 'antd';
 import Logo from 'assets/logowhite.svg';
+import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import MainMenu from './MainMenu';
+import { AppContext } from './App';
 const { Header, Content, Footer } = Layout;
 
 export const LayoutContext = React.createContext({});
@@ -21,17 +23,43 @@ const StyledDrawer = styled(Drawer)`
 
 export default () => {
 	const [api, contextHolder] = notification.useNotification();
+	const { auth, setAuth, handleLogout } = useContext(AppContext);
 	const colorBgContainer = "#fff";
 	const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+	const navigate = useNavigate();
 	//   const {
 	//     token: { colorBgContainer },
 	//   } = theme.useToken();
 
+
+// 	useEffect(() => {
+// 		if (localStorage.getItem('access_token') === null) {
+// 			navigate('/app/login');
+// 			//window.location.href = '/app/login';
+// 		}
+// 		else {
+// /* 			(async () => {
+// 				try {
+// 					const { data } = await axios.get(
+// 						'http://localhost:8000/home/', {
+// 						headers: {
+// 							'Content-Type': 'application/json'
+// 						}
+// 					}
+// 					);
+// 					setMessage(data.message);
+// 				} catch (e) {
+// 					console.log('not auth')
+// 				}
+// 			})() */
+// 		};
+// 	}, []);
+
+
+
 	const onToggleDrawer = () => {
 		setIsDrawerVisible(!isDrawerVisible);
 	}
-
-
 
 	const openNotification = (status, placement, message, description) => {
 		if (status === "error") {
@@ -70,7 +98,7 @@ export default () => {
 					onClose={onToggleDrawer}
 					open={isDrawerVisible}
 				>
-					<MainMenu dark onToggleDrawer={onToggleDrawer} />
+					<MainMenu dark onToggleDrawer={onToggleDrawer} auth={auth} handleLogout={handleLogout} />
 				</StyledDrawer>
 				<Header style={{ lineHeight: "32px", height: "32px", display: "flex", alignItems: "center", padding: "0px 0px" }}>
 					<Logo style={{ width: "100px", height: "24px", cursor: "pointer" }} onClick={onToggleDrawer} />
