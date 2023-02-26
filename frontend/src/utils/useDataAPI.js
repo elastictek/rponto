@@ -3,7 +3,7 @@ import { fetchPost } from "./fetch";
 import { Modal } from 'antd';
 import { deepEqual, pickAll } from 'utils';
 
-const getLocalStorage = (id, useStorage) => {
+export const getLocalStorage = (id, useStorage) => {
     if (useStorage && id) {
         return JSON.parse(localStorage.getItem(`dapi-${id}`));
     }
@@ -23,6 +23,7 @@ export const useDataAPI = ({ payload, id, useStorage = true, fnPostProcess } = {
         url: payload?.url,
         ...getLocalStorage(id, useStorage)
     });
+
 
     const action = useRef([]);
     const _sort = useRef([]);

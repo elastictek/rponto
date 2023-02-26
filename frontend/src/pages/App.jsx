@@ -44,8 +44,10 @@ const RenderRouter = () => {
             children: [
                 { path: "login", element: <Suspense fallback={<Spin />}><Login /></Suspense> },
                 /* { path: "layout", element: <Suspense fallback={<Spin />}><GridLayout /></Suspense> }, */
-                { path: "rh/registos", element: <Suspense fallback={<Spin />}><RegistosRH /></Suspense> },
-                { path: "rh/plan", element: <Suspense fallback={<Spin />}><PlanRH /></Suspense> }
+                { path: "rh/registos", element: <Suspense fallback={<Spin />}><RegistosRH key="lst-rp-rh" id="lst-rp-rh" /></Suspense> },
+                { path: "rh/plan", element: <Suspense fallback={<Spin />}><PlanRH key="lst-pl-rh" id="lst-pl-rh" /></Suspense> },
+                { path: "rh/registospessoal", element: <Suspense fallback={<Spin />}><RegistosRH key="lst-rp-pri" id ="lst-rp-pri" /></Suspense> },
+                { path: "rh/planpessoal", element: <Suspense fallback={<Spin />}><PlanRH  key="lst-pl-pri" id="lst-pl-pri" /></Suspense> }
             ]
         },
         {

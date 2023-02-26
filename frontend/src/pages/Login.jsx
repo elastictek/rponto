@@ -46,7 +46,7 @@ export default () => {
     }
 
     const handleSubmit = async (e) => {
-        if (e) { e.preventDefault(); }
+        if (e) { e.preventDefault();e.stopPropagation(); }
         try {
             localStorage.removeItem('auth');
             const response = await axios.post('/api/token/', { username, password, remember }, { /* headers: { 'Content-Type': 'application/json' }, */ withCredentials: true });
@@ -58,7 +58,11 @@ export default () => {
                 first_name: decodedToken.first_name,
                 last_name: decodedToken.last_name,
                 num: decodedToken.num,
-                email: decodedToken.email
+                email: decodedToken.email,
+                groups:decodedToken.groups,
+                isAdmin:decodedToken.isAdmin,
+                isRH:decodedToken.isRH,
+                items:decodedToken.items
             };
             localStorage.setItem('auth', JSON.stringify(_auth));
             setAuth({ isAuthenticated: true, ..._auth });
@@ -82,10 +86,6 @@ export default () => {
 
     }
 
-    const onFinish = (values) => {
-
-    }
-
     return (
         <Modal open width={400} height={280} closable={false} footer={null} >
 
@@ -96,7 +96,7 @@ export default () => {
                 <Space><Button type="primary" size='large' style={{ width: "150px" }} onClick={handleLogout}>Sim</Button><Button style={{ width: "150px" }} size='large'>Não</Button></Space>
             </div>} */}
             <AlertsContainer mask formStatus={formStatus} portal={false} style={{ marginBottom: "10px" }} />
-            <FormContainer tabIndex={0} onKeyDown={(e) => (e.key === "Enter") && handleSubmit()} id="LOGIN" fluid style={{ padding: "0px", outline: "0px" }} loading={submitting.state} wrapForm={true} form={form} onFinish={onFinish} onValuesChange={onValuesChange} schema={schema} wrapFormItem={true} forInput={true} alert={{ tooltip: true, pos: "none" }}>
+            <FormContainer tabIndex={0} onKeyUp={(e) => (e.key === "Enter") && handleSubmit(e)} id="LOGIN" fluid style={{ padding: "0px", outline: "0px" }} loading={submitting.state} wrapForm={true} form={form} onValuesChange={onValuesChange} schema={schema} wrapFormItem={true} forInput={true} alert={{ tooltip: true, pos: "none" }}>
                 <Row style={{}} gutterWidth={10}>
 
                     <Col style={{}}>
@@ -105,7 +105,7 @@ export default () => {
                             <div style={{ fontWeight: 600 }}>Login</div>
                         </Col></Row>
                         <Row style={{}} gutterWidth={10}><Col>
-                            <Input placeholder="Login" value={username} onChange={(e) => setUsername(e.target.value)} />
+                            <Input autoFocus placeholder="Login" value={username} onChange={(e) => setUsername(e.target.value)} />
                         </Col></Row>
                         <Row style={{}} gutterWidth={10}><Col>
                             <div style={{ fontWeight: 600 }}>Password</div>

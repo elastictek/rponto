@@ -396,7 +396,7 @@ def SetUser(request, format=None):
                         with open(f"""{faces_base_path}/{filter["num"]}_.jpg""", "wb") as fh:
                             fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
                         added = addFace(faces_base_path,f"""{filter["num"]}_.jpg""")
-                    return Response({"status": "error", "title": f"""O funcionário não existe na base de dados do sistema! {"Recolha de dados biométricos efetuada." if added else ""}"""})
+                    return Response({"status": "error", "title": f"""O colaborador indicado não existe no sistema! {"A recolha dos dados biométricos foi efetuada." if added else ""}"""})
 
             f = Filters(request.data['filter'])
             f.setParameters({
@@ -419,6 +419,159 @@ def SetUser(request, format=None):
             return Response({**response,"result":result,"foto":filepath,"valid_nums":valid_nums,"valid_filepaths":valid_filepaths,"valid_names":valid_names,"config":getConfig()})
     except Exception as error:
         print(error)
+        return Response({"status": "error", "title": str(error)})
+
+def AutoCapture(request, format=None):
+    connection = connections[connMssqlName].cursor()    
+    data = request.data['parameters']
+    filter = request.data['filter']
+    ts = datetime.now()
+    try:
+        if "save" in data and data["save"]==True:
+            hsh = data.get("hsh") if data.get("hsh") is not None else None
+            if hsh is None:
+
+                try:
+                    os.makedirs(f"""{records_base_path}/{ts.strftime("%Y%m%d")}""")
+                except FileExistsError:
+                    pass
+                try:
+                    os.makedirs(f"""{records_base_path}/{ts.strftime("%Y%m%d")}/{filter["num"]}""")
+                except FileExistsError:
+                    pass
+
+                with open(f"""{records_base_path}/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""", "wb") as fh:
+                    fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
+                                    
+                f = Filters({"num": filter["num"],"dts": ts.strftime("%Y-%m-%d") })
+                f.where()
+                f.add(f'num = :num', True)
+                f.add(f'dts = :dts', True)
+                f.value("and")
+                reg = dbmssql.executeSimpleList(lambda: (f'SELECT * from rponto.dbo.time_registration {f.text}'), connection, f.parameters)['rows']
+                if len(reg)==0:
+                    dti = {
+                        "num":f.parameters["num"],
+                        "nt": 1,
+                        "hsh":hashlib.md5(f"""{f.parameters["num"]}-{ts.strftime("%Y-%m-%d")}""".encode('utf-8')).hexdigest(),
+                        "dts":ts.strftime("%Y-%m-%d"),
+                        "dt":datetime.strptime(data["timestamp"],"%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d"),
+                        f"ss_01":ts.strftime("%Y-%m-%d %H:%M:%S"),
+                        f"ts_01":data["timestamp"],
+                        f"ty_01":"in",
+                    }
+                    dml = dbmssql.dml(TypeDml.INSERT, dti, "rponto.dbo.time_registration",None,None,False)
+                    dbmssql.execute(dml.statement, connection, dml.parameters)
+                    return Response({"status":"success","hsh":dti.get("hsh")})
+                else:               
+                    nt = reg[0].get("nt")
+                    if nt==8:
+                        raise Exception("Atingiu o número máximo de registos! Por favor entre em contacto com os Recursos Humanos.")
+                    dti = {
+                        "nt": nt+1,
+                        f"ss_{str(nt+1).zfill(2)}":ts.strftime("%Y-%m-%d %H:%M:%S"),
+                        f"ts_{str(nt+1).zfill(2)}":data["timestamp"],
+                        f"ty_{str(nt+1).zfill(2)}":"in" if reg[0].get(f"ty_{str(nt).zfill(2)}") == "out" else "out"
+                    }
+                    f = Filters({"num": filter["num"],"hsh": reg[0].get("hsh")})
+                    f.where()
+                    f.add(f'num = :num', True)
+                    f.add(f'hsh = :hsh', True)
+                    f.value("and")
+                    dml = dbmssql.dml(TypeDml.UPDATE, dti, "rponto.dbo.time_registration",f.parameters,None,False)
+                    dbmssql.execute(dml.statement, connection, dml.parameters)
+                    return Response({"status":"success","hsh":reg[0].get("hsh")})
+            else:
+                f = Filters({"num": filter["num"],"hsh": hsh })
+                f.where()
+                f.add(f'num = :num', True)
+                f.add(f'hsh = :hsh', True)
+                f.value("and")
+                reg = dbmssql.executeSimpleList(lambda: (f'SELECT * from rponto.dbo.time_registration {f.text}'), connection, f.parameters)['rows']
+                if len(reg)>0:
+                    nt = reg[0].get("nt")
+                    dti = {f"ty_{str(nt).zfill(2)}":data.get("type")}
+                    dml = dbmssql.dml(TypeDml.UPDATE, dti, "rponto.dbo.time_registration",f.parameters,None,False)
+                    dbmssql.execute(dml.statement, connection, dml.parameters)
+                    return Response({"status":"success"})
+        else:
+            existsInBd = True
+            result = False
+            #filepath = filePathByNum(fotos_base_path,filter["num"])
+            filepath = None
+            print(f"1. {datetime.now()}")
+            faces = loadFaces(faces_base_path)
+            print(f"2. {datetime.now()}")
+            tmp = tempfile.NamedTemporaryFile(delete=False)
+            try:
+                tmp.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
+                unknown_image = face_recognition.load_image_file(tmp)
+            finally:
+                tmp.close()
+                os.unlink(tmp.name)
+            print(f"3. {datetime.now()}")
+            unknown_encoding = face_recognition.face_encodings(unknown_image,None,jitters,model)
+            if len(unknown_encoding)==0:
+                    return Response({"status": "error", "title": "Não foi reconhecida nenhuma face!"})
+            unknown_encoding = unknown_encoding[0]
+
+            valid_nums = []
+            valid_filepaths = []
+            valid_names = []
+            
+            print(f"4. {datetime.now()}")
+            results = face_recognition.compare_faces(faces.get("matrix"), unknown_encoding,tolerance)
+            valid_indexes = [i for i, x in enumerate(results) if x]
+            for idx,x in enumerate(valid_indexes):
+                if idx==0:
+                    result=True
+                    request.data['filter']["num"] = faces.get("nums")[x].get("num")
+                    filepath=filePathByNum(fotos_base_path,faces.get("nums")[x].get("num"))
+                else:
+                    valid_nums.append(faces.get("nums")[x].get("num"))
+                    valid_filepaths.append(filePathByNum(fotos_base_path,faces.get("nums")[x].get("num")))            
+            print(f"5. {datetime.now()}")
+            if len(valid_nums):
+                sql = lambda: (
+                    f"""
+                        select DISTINCT e.REFNUM_0, NAM_0,SRN_0 FROM x3peoplesql.PEOPLELTEK.EMPLOID e 
+                        JOIN x3peoplesql.PEOPLELTEK.EMPLOCTR c on c.REFNUM_0 = e.REFNUM_0 
+                        WHERE c.PROPRF_0 = 'STD' AND e.REFNUM_0 IN ({','.join(f"'{w}'" for w in valid_nums)})
+                    """
+                )
+                response = dbmssql.executeSimpleList(sql, connection, {})
+                if len(response["rows"])>0:
+                    valid_names=response["rows"]
+            if existsInBd==False:
+                added=False
+                if len(valid_indexes)==0:
+                    with open(f"""{faces_base_path}/{filter["num"]}_.jpg""", "wb") as fh:
+                        fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
+                    added = addFace(faces_base_path,f"""{filter["num"]}_.jpg""")
+                return Response({"status": "error", "title": f"""O colaborador indicado não existe no sistema! {"A recolha dos dados biométricos foi efetuada." if added else ""}"""})
+
+            f = Filters(request.data['filter'])
+            f.setParameters({
+                "REFNUM_0": {"value": lambda v: f"=={v.get('num')}", "field": lambda k, v: f'e.{k}'}
+            }, True)
+            f.where(False,"and")
+            f.auto()
+            f.value("and")
+            parameters = {**f.parameters}
+            dql = dbmssql.dql(request.data, False,False,[])
+            sql = lambda: (
+                f"""
+                    select DISTINCT e.REFNUM_0, NAM_0,SRN_0 FROM x3peoplesql.PEOPLELTEK.EMPLOID e 
+                    JOIN x3peoplesql.PEOPLELTEK.EMPLOCTR c on c.REFNUM_0 = e.REFNUM_0 
+                    WHERE c.PROPRF_0 = 'STD' {f.text}
+                    {dql.limit}
+                """
+            )
+            response = dbmssql.executeSimpleList(sql, connection, parameters)
+            if result==False and request.data['filter'].get("num") is None:
+                return Response({"status": "error", "title": "O sistema não o(a) identificou!"})
+            return Response({**response,"result":result,"num":request.data['filter'].get("num"),"foto":filepath,"valid_nums":valid_nums,"valid_filepaths":valid_filepaths,"valid_names":valid_names,"config":getConfig()})
+    except Exception as error:
         return Response({"status": "error", "title": str(error)})
 
 def BiometriasList(request, format=None):

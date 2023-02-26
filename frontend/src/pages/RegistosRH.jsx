@@ -9,7 +9,7 @@ import { getSchema, pick, getStatus, validateMessages } from "utils/schemaValida
 import { useSubmitting } from "utils";
 import loadInit, { fixRangeDates } from "utils/loadInit";
 import { API_URL, ROOT_URL } from "config";
-import { useDataAPI } from "utils/useDataAPI";
+import { useDataAPI, getLocalStorage } from "utils/useDataAPI";
 import { getFilterRangeValues, getFilterValue, secondstoDay } from "utils";
 import Portal from "components/portal";
 import { Button, Spin, Form, Space, Input, Typography, Modal, Select, Tag, Alert, Drawer, Image, TimePicker, InputNumber } from "antd";
@@ -20,23 +20,24 @@ import { json } from "utils/object";
 import { EditOutlined, CameraOutlined, DeleteTwoTone, CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import ResultMessage from 'components/resultMessage';
 import Table from 'components/TableV2';
-import { DATE_FORMAT, DATETIME_FORMAT, TIME_FORMAT, DATE_FORMAT_NO_SEPARATOR} from 'config';
+import { DATE_FORMAT, DATETIME_FORMAT, TIME_FORMAT, DATE_FORMAT_NO_SEPARATOR } from 'config';
 import uuIdInt from "utils/uuIdInt";
 import { useModal } from "react-modal-hook";
 import ResponsiveModal from 'components/Modal';
 import { Container, Row, Col, Visible, Hidden } from 'react-grid-system';
 import { Field, Container as FormContainer, SelectField, AlertsContainer, RangeDateField, SelectDebounceField, CheckboxField, Selector, SelectMultiField } from 'components/FormFields';
 import YScroll from 'components/YScroll';
-import { MediaContext } from "./App";
+import { MediaContext, AppContext } from "./App";
+import { isRH, isPrivate } from './commons';
 import { LayoutContext } from "./GridLayout";
-import {BsFillEraserFill} from 'react-icons/bs';
+import { BsFillEraserFill } from 'react-icons/bs';
 
 const title = "Registo de Picagens";
-const TitleForm = ({ data, onChange, record, level, form }) => {
+const TitleForm = ({ isRH }) => {
   return (<ToolbarTitle title={<>
     <Col>
       <Row style={{ marginTop: "15px", marginBottom: "5px" }}>
-        <Col xs='content' style={{}}><Row nogutter><Col><span style={{ fontSize: "21px", lineHeight: "normal", fontWeight: 900 }}>{title}</span></Col></Row></Col>
+        <Col xs='content' style={{}}><Row nogutter><Col><span style={{ fontSize: "21px", lineHeight: "normal", fontWeight: 900 }}>{isRH ? title : `${title} Pessoal`}</span></Col></Row></Col>
         {/* <Col xs='content' style={{ paddingTop: "3px" }}>{st && <Tag icon={<MoreOutlined />} color="#2db7f5">{st}</Tag>}</Col> */}
       </Row>
 
@@ -83,16 +84,23 @@ const useStyles = createUseStyles({
 const schema = (options = {}) => {
   return getSchema({}, options).unknown(true);
 }
-const ToolbarFilters = ({ dataAPI, ...props }) => {
+const ToolbarFilters = ({ dataAPI, auth, num, ...props }) => {
   return (<>
-    <Col width={80}>
-      <Field name="fnum" label={{ enabled: true, text: "Número", pos: "top", padding: "0px" }}>
-        <Input size='small' allowClear />
-      </Field>
-    </Col>
-    <Col width={180}>
-      <Field name="fnome" label={{ enabled: true, text: "Nome", pos: "top", padding: "0px" }}>
-        <Input size='small' allowClear />
+    {isRH(auth, num) && <>
+      <Col width={80}>
+        <Field name="fnum" label={{ enabled: true, text: "Número", pos: "top", padding: "0px" }}>
+          <Input size='small' allowClear />
+        </Field>
+      </Col>
+      <Col width={180}>
+        <Field name="fnome" label={{ enabled: true, text: "Nome", pos: "top", padding: "0px" }}>
+          <Input size='small' allowClear />
+        </Field>
+      </Col>
+    </>}
+    <Col xs='content'>
+      <Field name="fdata" label={{ enabled: true, text: "Data", pos: "top", padding: "0px" }}>
+        <RangeDateField size='small' allowClear />
       </Field>
     </Col>
   </>
@@ -103,6 +111,9 @@ const TipoRelation = () => <Select size='small' options={[{ value: "e" }, { valu
 const moreFiltersSchema = ({ form }) => [
   { fnum: { label: "Número", field: { type: 'input', size: 'small' } } },
   { fnome: { label: "Nome", field: { type: 'input', size: 'small' } } },
+  { fdata: { label: "Data", field: { type: "rangedate", size: 'small' } } }
+];
+const moreFiltersSchemaPrivate = ({ form }) => [
   { fdata: { label: "Data", field: { type: "rangedate", size: 'small' } } }
 ];
 
@@ -119,7 +130,7 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
 
   const loadData = async ({ signal } = {}) => {
     try {
-      let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials:true, filter: {}, parameters: { method: "GetCameraRecords", date: moment(p.row.dts).format(DATE_FORMAT_NO_SEPARATOR), num: p.row.num } });
+      let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials: true, filter: {}, parameters: { method: "GetCameraRecords", date: moment(p.row.dts).format(DATE_FORMAT_NO_SEPARATOR), num: p.row.num } });
       if (response.data.status !== "error") {
         setRecords(response.data);
       } else {
@@ -161,7 +172,7 @@ const Biometrias = ({ parameters }) => {
   const defaultFilters = {};
   const defaultParameters = { method: "BiometriasList" };
   const defaultSort = [];
-  const dataAPI = useDataAPI({ payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials:true, parameters: {}, pagination: { enabled: false }, filter: defaultFilters, sort: [] } });
+  const dataAPI = useDataAPI({ payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: {}, pagination: { enabled: false }, filter: defaultFilters, sort: [] } });
   const submitting = useSubmitting(true);
 
   useEffect(() => {
@@ -188,7 +199,7 @@ const Biometrias = ({ parameters }) => {
     submitting.trigger();
 
     try {
-      let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials:true, filter: {}, parameters: { method: "Sync" } });
+      let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials: true, filter: {}, parameters: { method: "Sync" } });
       if (response.data.status !== "error") {
         parameters.openNotification(response.data.status, 'top', "Notificação", "Dados biométricos sincronizados com sucesso!");
       } else {
@@ -206,7 +217,7 @@ const Biometrias = ({ parameters }) => {
       title: <div>Eliminar Biometria <b>{r.num}</b></div>, content: "Tem a certeza que deseja eliminar a biometria selecionada?", onOk: async () => {
         submitting.trigger();
         try {
-          let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials:true, filter: { num: r.num }, parameters: { method: "DelFace" } });
+          let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials: true, filter: { num: r.num }, parameters: { method: "DelFace" } });
           if (response.data.status !== "error") {
             parameters.openNotification(response.data.status, 'top', "Notificação", `Biometria ${r.num} eliminada com sucesso!`);
             dataAPI.fetchPost();
@@ -336,7 +347,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
     setFormStatus({ ...status.formStatus });
     if (errors === 0) {
       try {
-        let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials:true, filter: {}, parameters: { method: "UpdateRecords", values: vals } });
+        let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials: true, filter: {}, parameters: { method: "UpdateRecords", values: vals } });
         if (response.data.status !== "error") {
           parameters.openNotification(response.data.status, 'top', "Notificação", response.data.title);
           props?.loadParentData();
@@ -350,7 +361,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
       } finally {
         submitting.end();
       };
-    }else{
+    } else {
       submitting.end();
     }
   }
@@ -414,8 +425,8 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
 
   const erase = (n) => {
     let vals = form.getFieldsValue(true);
-    vals[`ss_${`${n}`.padStart(2, '0')}`]=null;
-    vals[`ty_${`${n}`.padStart(2, '0')}`]=null;
+    vals[`ss_${`${n}`.padStart(2, '0')}`] = null;
+    vals[`ty_${`${n}`.padStart(2, '0')}`] = null;
     form.setFieldsValue(vals);
   }
 
@@ -504,9 +515,10 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
   );
 }
 
-export default ({ props, setFormTitle }) => {
+export default ({ setFormTitle, ...props }) => {
   const media = useContext(MediaContext);
   const { openNotification } = useContext(LayoutContext);
+  const { auth } = useContext(AppContext);
   const location = useLocation();
   const navigate = useNavigate();
   const classes = useStyles();
@@ -515,8 +527,9 @@ export default ({ props, setFormTitle }) => {
   const defaultFilters = {};
   const defaultParameters = { method: "RegistosRH" };
   const defaultSort = [{ column: "dts", direction: "DESC" }, { column: "num", direction: "ASC" }];
-  const dataAPI = useDataAPI({ id: "lst-rp-rh", payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials:true, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
+  const dataAPI = useDataAPI({ id:props.id, payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
   const submitting = useSubmitting(true);
+  const [num, setNum] = useState(null);
 
   const [modalParameters, setModalParameters] = useState({});
   const [showModal, hideModal] = useModal(({ in: open, onExited }) => {
@@ -552,35 +565,35 @@ export default ({ props, setFormTitle }) => {
   }
 
   const columns = [
-    { key: 'baction', name: '', minWidth: 40, maxWidth: 40, formatter: p => <Button icon={<EditOutlined />} size="small" onClick={() => onFix(p.row)} /> },
+    ...(isRH(auth, num)) ? [{ key: 'baction', name: '', minWidth: 40, maxWidth: 40, formatter: p => <Button icon={<EditOutlined />} size="small" onClick={() => onFix(p.row)} /> }] : [],
     { key: 'num', name: 'Número', frozen: true, width: 90, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> },
     { key: 'dts', width: 100, name: 'Data', frozen: true, formatter: p => moment(p.row.dts).format(DATE_FORMAT) },
     { key: 'SRN_0', name: 'Nome', formatter: p => <div style={{ fontWeight: 700 }}>{`${p.row.SRN_0} ${p.row.NAM_0}`}</div> },
     { key: 'nt', name: 'Picagens', width: 80, formatter: p => p.row.nt },
-    { key: 'ty_01', name: '', hidden:true, reportTitle: "es_01", minWidth: 35, width: 35, formatter: p => p.row.ty_01?.trim() === 'in' ? "E" : "S" },
+    { key: 'ty_01', name: '', hidden: true, reportTitle: "es_01", minWidth: 35, width: 35, formatter: p => p.row.ty_01?.trim() === 'in' ? "E" : "S" },
     { key: 'ss_01', width: 130, name: 'P01', formatter: p => p.row.ss_01 && moment(p.row.ss_01).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_01) },
-    { key: 'ty_02', name: '', hidden:true, reportTitle: "es_02", minWidth: 35, width: 35, formatter: p => p.row.ty_02?.trim() === 'in' ? "E" : "S" },
+    { key: 'ty_02', name: '', hidden: true, reportTitle: "es_02", minWidth: 35, width: 35, formatter: p => p.row.ty_02?.trim() === 'in' ? "E" : "S" },
     { key: 'ss_02', width: 130, name: 'P02', formatter: p => p.row.ss_02 && moment(p.row.ss_02).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_02) },
-    { key: 'ty_03', name: '', hidden:true, reportTitle: "es_03", minWidth: 35, width: 35, formatter: p => p.row.ty_03?.trim() === 'in' ? "E" : "S" },
+    { key: 'ty_03', name: '', hidden: true, reportTitle: "es_03", minWidth: 35, width: 35, formatter: p => p.row.ty_03?.trim() === 'in' ? "E" : "S" },
     { key: 'ss_03', width: 130, name: 'P03', formatter: p => p.row.ss_03 && moment(p.row.ss_03).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_03) },
-    { key: 'ty_04', name: '', hidden:true, reportTitle: "es_04", minWidth: 35, width: 35, formatter: p => p.row.ty_04?.trim() === 'in' ? "E" : "S" },
+    { key: 'ty_04', name: '', hidden: true, reportTitle: "es_04", minWidth: 35, width: 35, formatter: p => p.row.ty_04?.trim() === 'in' ? "E" : "S" },
     { key: 'ss_04', width: 130, name: 'P04', formatter: p => p.row.ss_04 && moment(p.row.ss_04).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_04) },
-    { key: 'ty_05', name: '', hidden:true, reportTitle: "es_05", minWidth: 35, width: 35, formatter: p => p.row.ty_05?.trim() === 'in' ? "E" : "S" },
+    { key: 'ty_05', name: '', hidden: true, reportTitle: "es_05", minWidth: 35, width: 35, formatter: p => p.row.ty_05?.trim() === 'in' ? "E" : "S" },
     { key: 'ss_05', width: 130, name: 'P05', formatter: p => p.row.ss_05 && moment(p.row.ss_05).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_05) },
-    { key: 'ty_06', name: '', hidden:true, reportTitle: "es_06", minWidth: 35, width: 35, formatter: p => p.row.ty_06?.trim() === 'in' ? "E" : "S" },
+    { key: 'ty_06', name: '', hidden: true, reportTitle: "es_06", minWidth: 35, width: 35, formatter: p => p.row.ty_06?.trim() === 'in' ? "E" : "S" },
     { key: 'ss_06', width: 130, name: 'P06', formatter: p => p.row.ss_06 && moment(p.row.ss_06).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_06) },
-    { key: 'ty_07', name: '', hidden:true, reportTitle: "es_07", minWidth: 35, width: 35, formatter: p => p.row.ty_07?.trim() === 'in' ? "E" : "S" },
+    { key: 'ty_07', name: '', hidden: true, reportTitle: "es_07", minWidth: 35, width: 35, formatter: p => p.row.ty_07?.trim() === 'in' ? "E" : "S" },
     { key: 'ss_07', width: 130, name: 'P07', formatter: p => p.row.ss_07 && moment(p.row.ss_07).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_07) },
-    { key: 'ty_08', name: '', hidden:true, reportTitle: "es_08", minWidth: 35, width: 35, formatter: p => p.row.ty_08?.trim() === 'in' ? "E" : "S" },
+    { key: 'ty_08', name: '', hidden: true, reportTitle: "es_08", minWidth: 35, width: 35, formatter: p => p.row.ty_08?.trim() === 'in' ? "E" : "S" },
     { key: 'ss_08', width: 130, name: 'P08', formatter: p => p.row.ss_08 && moment(p.row.ss_08).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_08) },
-    {
+    ...(isRH(auth, num)) ? [{
       key: 'pic', sortable: false,
       minWidth: 35, width: 35,
       name: "",
       formatter: p => <CameraOutlined style={{ cursor: "pointer" }} />,
       editor: (p) => { return <RegistosVisuaisViewer p={p} column="" title="Registos Visuais" /> },
       editorOptions: { editOnClick: true },
-    },
+    }] : []
 
   ];
 
@@ -592,13 +605,15 @@ export default ({ props, setFormTitle }) => {
 
   const loadData = async ({ init = false, signal } = {}) => {
     if (init) {
-      const initFilters = loadInit({}, { ...dataAPI.getAllFilter(), tstamp: dataAPI.getTimeStamp() }, props, {}, [...Object.keys(dataAPI.getAllFilter())]);
+      const { num: _num, ...initFilters } = loadInit({}, { ...dataAPI.getAllFilter(), tstamp: dataAPI.getTimeStamp() }, props, { ...location?.state }, [...Object.keys(location?.state ? location?.state : {}), ...Object.keys(dataAPI.getAllFilter())]);
+      setNum(_num);
       let { filterValues, fieldValues } = fixRangeDates(['fdata'], initFilters);
       formFilter.setFieldsValue({ ...fieldValues });
       dataAPI.addFilters({ ...filterValues }, true, false);
       dataAPI.setSort(defaultSort);
       dataAPI.addParameters(defaultParameters, true, true);
       dataAPI.fetchPost({ signal });
+      
     }
     submitting.end();
   }
@@ -638,13 +653,9 @@ export default ({ props, setFormTitle }) => {
     showModal();
   }
 
-  const onRecordApp = () => {
-    window.location.assign(ROOT_URL);
-  }
-
   return (
     <>
-      {!setFormTitle && <TitleForm data={dataAPI.getAllFilter()} onChange={onFilterChange} form={formFilter} />}
+      {!setFormTitle && <TitleForm isRH={isRH(auth, num)} />}
       <Table
         loading={submitting.state}
         /*  actionColumn={<ActionContent dataAPI={dataAPI} onClick={onAction} modeEdit={modeEdit.datagrid} />} */
@@ -663,13 +674,14 @@ export default ({ props, setFormTitle }) => {
         rowHeight={28}
         rowClass={(row) => (row?.valid === 0 ? classes.notValid : undefined)}
         leftToolbar={<Space>
-          <Button disabled={submitting.state} onClick={onRecordApp}>App</Button>
-          <Button disabled={submitting.state} onClick={onViewBiometrias}>Biometrias</Button>
+          {(isRH(auth, num)) && <>
+            <Button disabled={submitting.state} onClick={onViewBiometrias}>Biometrias</Button>
+          </>}
         </Space>}
         toolbarFilters={{
           form: formFilter, schema, onFinish: onFilterFinish, onValuesChange: onFilterChange,
-          filters: <ToolbarFilters dataAPI={dataAPI} />,
-          moreFilters: { schema: moreFiltersSchema, rules: moreFiltersRules, width: 500, mask: true }
+          filters: <ToolbarFilters dataAPI={dataAPI} auth={auth} num={num} />,
+          moreFilters: { schema: isRH(auth, num) ? moreFiltersSchema : moreFiltersSchemaPrivate, rules: moreFiltersRules, width: 500, mask: true }
         }}
       />
     </>

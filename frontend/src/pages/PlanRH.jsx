@@ -237,7 +237,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
 }
 
 
-export default ({ props, setFormTitle }) => {
+export default ({ setFormTitle, ...props }) => {
   const media = useContext(MediaContext);
   const { openNotification } = useContext(LayoutContext);
   const location = useLocation();
@@ -248,7 +248,7 @@ export default ({ props, setFormTitle }) => {
   const defaultFilters = {};
   const defaultParameters = { method: "CalendarList" };
   const defaultSort = [{ column: "REFNUM_0", direction: "ASC" }, { column: "C.[date]", direction: "DESC" }];
-  const dataAPI = useDataAPI({ id: "lst-plan-rh", payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials:true, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
+  const dataAPI = useDataAPI({ id: props.id, payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials:true, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
   const submitting = useSubmitting(true);
 
   const [modalParameters, setModalParameters] = useState({});
@@ -301,7 +301,7 @@ export default ({ props, setFormTitle }) => {
     const controller = new AbortController();
     const interval = loadData({ init: true, signal: controller.signal });
     return (() => { controller.abort(); (interval) && clearInterval(interval); });
-  }, []);
+  }, [location?.state]);
 
   const loadData = async ({ init = false, signal } = {}) => {
     if (init) {

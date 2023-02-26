@@ -12,10 +12,14 @@ import YScroll from "components/YScroll";
 import { Button, Select, Typography, Card, Collapse, Space, Modal } from "antd";
 const { Panel } = Collapse;
 import { LogoutOutlined } from '@ant-design/icons';
+import {isRH,isPrivate} from "./commons";
 // import ResponsiveModal from 'components/Modal';
 // import { usePermission, Permissions } from "utils/usePermission";
 
 const StyledCollapse = styled(Collapse)`
+    height:100%;
+    display:flex;
+    flex-direction:column;
     .ant-collapse-content-box{
         padding:0px 0px !important;
         display:flex;
@@ -44,9 +48,9 @@ const StyledCollapse = styled(Collapse)`
 const getLocalStorage = (id) => {
     if (id) {
         const selItems = json(localStorage.getItem(id));
-        return (selItems) ? selItems : ['1', '2'];
+        return (selItems) ? selItems : ['1', '2', '3'];
     }
-    return ['1', '2'];
+    return ['1', '2', '3'];
 }
 const idMenu = "rponto-menu-01";
 const selectedItems = getLocalStorage(idMenu);
@@ -80,7 +84,8 @@ export default ({ dark = false, onToggleDrawer, handleLogout, auth }) => {
     // }
 
     const logout = () => {
-        Modal.confirm({icon:false,onOk:handleLogout,okText:"Sim",cancelText:"Não",okButtonProps:{size:"large"},cancelButtonProps:{size:"large"},centered:false,
+        Modal.confirm({
+            icon: false, onOk: handleLogout, okText: "Sim", cancelText: "Não", okButtonProps: { size: "large" }, cancelButtonProps: { size: "large" }, centered: false,
             content: <div style={{ display: "flex", justifyItems: "center", flexDirection: "column", alignItems: "center" }}>
                 <div style={{ fontWeight: 700, fontSize: "16px", textAlign: "center", marginBottom: "10px" }}>Logout?</div>
                 <div style={{ fontSize: "14px" }}>{auth?.first_name} {auth?.last_name}</div>
@@ -92,21 +97,18 @@ export default ({ dark = false, onToggleDrawer, handleLogout, auth }) => {
     return (
         <YScroll>
             <StyledCollapse size="large" defaultActiveKey={selectedItems} ghost={true} expandIconPosition="end" onChange={onMenuChange}>
-                <Panel header={<b>Recursos Humanos</b>} key="1" style={{ height: "85vh" }}>
-                    <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { window.location.assign(ROOT_URL); }}>Aplicação de Registo de Ponto</Button>
-                    <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/registos', {}); onToggleDrawer(); }}>Registo de Picagens</Button>
-                    <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/plan', {}); onToggleDrawer(); }}>Plano de Horários</Button>
-
-
-
-
+                <Panel header={<b>Área Pessoal</b>} key="1" style={{ marginBottom: "5px" }}>
+                    <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/registospessoal', { state: { num: auth.num, tstamp: Date.now() }, replace: true }); onToggleDrawer(); }}>Registo de Picagens</Button>
+                    <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/planpessoal', { state: { num: auth.num, tstamp: Date.now() }, replace: true }); onToggleDrawer(); }}>Horário</Button>
                 </Panel>
-                <Panel collapsible='disabled' key="2" showArrow={false}>
-                    <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={logout} icon={<LogoutOutlined style={{marginRight:"10px"}}/>}>Terminar Sessão</Button>
-
-
-
-
+                {isRH(auth) && <Panel header={<b>Recursos Humanos</b>} key="2" style={{ marginBottom: "5px" }}>
+                    <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { window.location.assign(ROOT_URL); }}>Aplicação de Registo de Ponto</Button>
+                    <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/registos', { replace: true, state: { num: null, tstamp: Date.now() } }); onToggleDrawer(); }}>Registo de Picagens</Button>
+                    <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/plan', { replace: true, state: { num: null, tstamp: Date.now() } }); onToggleDrawer(); }}>Plano de Horários</Button>
+                </Panel>
+                }
+                <Panel collapsible='disabled' key="3" showArrow={false} style={{ marginTop: "auto" }}>
+                    <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={logout} icon={<LogoutOutlined style={{ marginRight: "10px" }} />}>Terminar Sessão</Button>
                 </Panel>
             </StyledCollapse>
         </YScroll>
