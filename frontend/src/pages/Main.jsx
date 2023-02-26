@@ -584,7 +584,7 @@ export default ({ }) => {
 		if (v === true) {
 			submitting.trigger();
 			try {
-				const vals = { num: `F${data.num.padStart(5, '0')}` };
+				const vals = { num: data.num.startsWith("F") ? data.num : `F${data.num.padStart(5, '0')}` };
 				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", save: true, snapshot: data.snapshot, timestamp: dayjs(data.date).format(DATETIME_FORMAT) } });
 				if (response.data.status !== "error" && response.data.hsh) {
 					updateData(draft => {
@@ -618,7 +618,7 @@ export default ({ }) => {
 		clearTimer(timeout);
 		submitting.trigger();
 		try {
-			const vals = { num: `F${data.num.padStart(5, '0')}` };
+			const vals = { num: data.num.startsWith("F") ? data.num : `F${data.num.padStart(5, '0')}` };
 			let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", hsh: data.hsh, save: true, type: t } });
 			if (response.data.status !== "error") {
 				updateData(draft => { draft.type = t, draft.level = 3; });

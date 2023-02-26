@@ -442,7 +442,7 @@ def AutoCapture(request, format=None):
 
                 with open(f"""{records_base_path}/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""", "wb") as fh:
                     fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
-                                    
+            
                 f = Filters({"num": filter["num"],"dts": ts.strftime("%Y-%m-%d") })
                 f.where()
                 f.add(f'num = :num', True)
