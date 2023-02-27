@@ -362,7 +362,7 @@ const BlockCaptureAuto = ({ auto, onCaptureAuto, capturing, data, submitting }) 
 
 			<Row style={{marginTop:"20px"}}>
 				<Col></Col>
-				<Col xs="content"><Button onClick={onCaptureAuto} size="large"><CameraTwoTone style={{ fontSize: "52px" }} /></Button></Col>
+				<Col xs="content"><Button onTouchStart={onCaptureAuto} size="large"><CameraTwoTone style={{ fontSize: "52px" }} /></Button></Col>
 				<Col></Col>
 			</Row>
 
