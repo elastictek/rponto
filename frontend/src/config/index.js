@@ -15,6 +15,6 @@ export const SOCKET = { url: 'ws://localhost:8000/ws' };
 export const SCREENSIZE_OPTIMIZED = { width: 1920, height: 1080 }
 export const ON_CONFIRM_TIMEOUT = 10000;//milliseconds
 export const ON_END_MESSAGE_TIMEOUT = 10000;//millisecondes
-export const AUTO_SAMPLE_INTERVAL = 100;//milliseconds
+export const AUTO_SAMPLE_INTERVAL = 1000;//milliseconds
 export const STAND_STILL_DURATION = 2; //in seconds
 export const AUTO_MOTION_TOLERANCE = 200;//higher more tolerant

@@ -179,32 +179,32 @@ const BlockNumPad = ({ auto, data, submitting, reset, capture, onNumPadClick }) 
 			}
 			{(!data.snapshot) && <><Row gutterWidth={2}>
 				<Col></Col>
-				<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onNumPadClick(1)} size="large">1</StyledButton></Col>
-				<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onNumPadClick(2)} size="large">2</StyledButton></Col>
-				<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onNumPadClick(3)} size="large">3</StyledButton></Col>
+				<Col xs="content"><StyledButton disabled={submitting.state} onTouchStart={() => onNumPadClick(1)} size="large">1</StyledButton></Col>
+				<Col xs="content"><StyledButton disabled={submitting.state} onTouchStart={() => onNumPadClick(2)} size="large">2</StyledButton></Col>
+				<Col xs="content"><StyledButton disabled={submitting.state} onTouchStart={() => onNumPadClick(3)} size="large">3</StyledButton></Col>
 				<Col></Col>
 			</Row>
 				<Row gutterWidth={2}>
 					<Col></Col>
-					<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onNumPadClick(4)} size="large">4</StyledButton></Col>
-					<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onNumPadClick(5)} size="large">5</StyledButton></Col>
-					<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onNumPadClick(6)} size="large">6</StyledButton></Col>
+					<Col xs="content"><StyledButton disabled={submitting.state} onTouchStart={() => onNumPadClick(4)} size="large">4</StyledButton></Col>
+					<Col xs="content"><StyledButton disabled={submitting.state} onTouchStart={() => onNumPadClick(5)} size="large">5</StyledButton></Col>
+					<Col xs="content"><StyledButton disabled={submitting.state} onTouchStart={() => onNumPadClick(6)} size="large">6</StyledButton></Col>
 					<Col></Col>
 				</Row>
 				<Row gutterWidth={2}>
 					<Col></Col>
-					<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onNumPadClick(7)} size="large">7</StyledButton></Col>
-					<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onNumPadClick(8)} size="large">8</StyledButton></Col>
-					<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onNumPadClick(9)} size="large">9</StyledButton></Col>
+					<Col xs="content"><StyledButton disabled={submitting.state} onTouchStart={() => onNumPadClick(7)} size="large">7</StyledButton></Col>
+					<Col xs="content"><StyledButton disabled={submitting.state} onTouchStart={() => onNumPadClick(8)} size="large">8</StyledButton></Col>
+					<Col xs="content"><StyledButton disabled={submitting.state} onTouchStart={() => onNumPadClick(9)} size="large">9</StyledButton></Col>
 					<Col></Col>
 				</Row>
 				<Row gutterWidth={2}>
 					<Col></Col>
-					<Col xs="content"><StyledButton disabled={data.snapshot || submitting.state} onClick={() => onNumPadClick('C')} size="large">C</StyledButton></Col>
-					<Col xs="content"><StyledButton disabled={submitting.state} onClick={() => onNumPadClick(0)} size="large">0</StyledButton></Col>
+					<Col xs="content"><StyledButton disabled={data.snapshot || submitting.state} onTouchStart={() => onNumPadClick('C')} size="large">C</StyledButton></Col>
+					<Col xs="content"><StyledButton disabled={submitting.state} onTouchStart={() => onNumPadClick(0)} size="large">0</StyledButton></Col>
 					<Col xs="content">
-						{!data.snapshot && <StyledButton disabled={!parseInt(data.num) || submitting.state} onClick={capture} size="large"><CameraTwoTone style={{ fontSize: "48px" }} /></StyledButton>}
-						{data.snapshot && <StyledButton disabled={submitting.state} onClick={reset} icon={<RedoOutlined />} size="large" />}
+						{!data.snapshot && <StyledButton disabled={!parseInt(data.num) || submitting.state} onTouchStart={capture} size="large"><CameraTwoTone style={{ fontSize: "48px" }} /></StyledButton>}
+						{data.snapshot && <StyledButton disabled={submitting.state} onTouchStart={reset} icon={<RedoOutlined />} size="large" />}
 					</Col>
 					<Col></Col>
 				</Row>
@@ -229,8 +229,8 @@ const BlockConfirm = ({ submitting, data, onConfirm }) => {
 
 				<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
 					<Col></Col>
-					<Col xs="content"><Button disabled={submitting.state} onClick={() => onConfirm(true)} shape='rounded' style={{ border: "none", minWidth: "130px", minHeight: "130px", color: "#52c41a" }}><CheckCircleOutlined style={{ fontSize: "80px" }} /></Button></Col>
-					<Col xs="content"><Button disabled={submitting.state} onClick={() => onConfirm(false)} shape='rounded' style={{ border: "none", minWidth: "130px", minHeight: "130px", color: "#f5222d" }}><CloseCircleOutlined style={{ fontSize: "80px" }} /></Button></Col>
+					<Col xs="content"><Button disabled={submitting.state} onTouchStart={() => onConfirm(true)} shape='rounded' style={{ border: "none", minWidth: "130px", minHeight: "130px", color: "#52c41a" }}><CheckCircleOutlined style={{ fontSize: "80px" }} /></Button></Col>
+					<Col xs="content"><Button disabled={submitting.state} onTouchStart={() => onConfirm(false)} shape='rounded' style={{ border: "none", minWidth: "130px", minHeight: "130px", color: "#f5222d" }}><CloseCircleOutlined style={{ fontSize: "80px" }} /></Button></Col>
 					<Col></Col>
 				</Row>
 			</>}
@@ -255,8 +255,8 @@ const BlockIO = ({ submitting, data, onFinish }) => {
 			{(data.level == 2 && data.nome) && <>
 				<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
 					<Col></Col>
-					<Col xs="content"><Button disabled={submitting.state} onClick={() => onFinish('in')} shape='rounded' style={{ minWidth: "130px", minHeight: "130px", background: "#52c41a", color: "#fff", fontSize: "20px" }}>Entrada</Button></Col>
-					<Col xs="content"><Button disabled={submitting.state} onClick={() => onFinish("out")} shape='rounded' style={{ minWidth: "130px", minHeight: "130px", background: "#f5222d", color: "#fff", fontSize: "20px" }}>Saída</Button></Col>
+					<Col xs="content"><Button disabled={submitting.state} onTouchStart={() => onFinish('in')} shape='rounded' style={{ minWidth: "130px", minHeight: "130px", background: "#52c41a", color: "#fff", fontSize: "20px" }}>Entrada</Button></Col>
+					<Col xs="content"><Button disabled={submitting.state} onTouchStart={() => onFinish("out")} shape='rounded' style={{ minWidth: "130px", minHeight: "130px", background: "#f5222d", color: "#fff", fontSize: "20px" }}>Saída</Button></Col>
 					<Col></Col>
 				</Row>
 			</>}
@@ -277,7 +277,7 @@ const BlockMessage = ({ data, reset }) => {
 					</Row>
 					<Row>
 						<Col></Col>
-						<Col xs="content"><Button fill="none" color='primary' size="large" onClick={reset} style={{}}>Novo Registo</Button></Col>
+						<Col xs="content"><Button fill="none" color='primary' size="large" onTouchStart={reset} style={{}}>Novo Registo</Button></Col>
 						<Col></Col>
 					</Row>
 				</Col>
@@ -426,13 +426,13 @@ export default ({ }) => {
 					canvas.height = video.videoHeight;
 					ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 					const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-					setLog(`----lastimage>${canvas.width} - ${canvas.height}`);
 					if (lastImageData) {
 						// Calculate the difference between the current frame and the previous frame
 						const diff = pixelMatch(imageData.data, lastImageData.data, null, canvas.width, canvas.height, { threshold: 0.2 });
 
 						// If there is motion, start the timer
 						//setLog(`----diff>${diff}`);
+						setLog(`----lastimage>${diff}`);
 						if (diff > AUTO_MOTION_TOLERANCE) {
 
 							setMotionDetected(Date.now());
@@ -468,9 +468,11 @@ export default ({ }) => {
 		autoTimer.current = setTimeout(fn, duration * 1000);
 	}
 	const updateAutoTimer = (duration, fn) => {
-		clearTimer(autoTimer);
-		setStandStillCounter(STAND_STILL_DURATION + 1);
-		autoTimer.current = setTimeout(fn, duration * 1000);
+		if (!autoTimer.current){
+			clearTimer(autoTimer);
+			setStandStillCounter(STAND_STILL_DURATION + 1);
+			autoTimer.current = setTimeout(fn, duration * 1000);
+		}
 	}
 	const reset = () => {
 		clearTimer(timeout);
