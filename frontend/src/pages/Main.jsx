@@ -383,6 +383,7 @@ export default ({ }) => {
 	const canvasRef = useRef(null);
 	const [auto, setAuto] = useState(false);
 	const [error, setError] = useState();
+	const [log, setLog] = useState();
 
 	const [data, updateData] = useImmer({
 		level: 0,
@@ -425,12 +426,13 @@ export default ({ }) => {
 					canvas.height = video.videoHeight;
 					ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 					const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
+					setLog("----lastimage>");
 					if (lastImageData) {
 						// Calculate the difference between the current frame and the previous frame
 						const diff = pixelMatch(imageData.data, lastImageData.data, null, canvas.width, canvas.height, { threshold: 0.2 });
 
 						// If there is motion, start the timer
+						setLog(`----diff>${diff}`);
 						if (diff > AUTO_MOTION_TOLERANCE) {
 
 							setMotionDetected(Date.now());
@@ -653,6 +655,7 @@ export default ({ }) => {
 		<canvas ref={canvasRef} style={{ display: 'none' }} />
 		<Container fluid style={{ fontWeight: 700 }}>
 			<Row><Col>{error}</Col></Row>
+			<Row><Col>{log}</Col></Row>
 			<BlockMessage data={data} reset={reset} />
 			<Toolbar data={data} auto={auto} onAuto={onAuto} />
 
