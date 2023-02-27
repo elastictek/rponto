@@ -51,6 +51,7 @@ dbmssql = DBSql(connections[connMssqlName].alias)
 
 fotos_base_path = '../fotos'
 records_base_path = '../records'
+records_invalid_base_path = '../records_invalid'
 faces_base_path = 'faces'
 tolerance = 0.4
 jitters = 1
@@ -347,7 +348,8 @@ def SetUser(request, format=None):
             
             unknown_encoding = face_recognition.face_encodings(unknown_image,None,jitters,model)
             if len(unknown_encoding)==0:
-                    return Response({"status": "error", "title": "Não foi reconhecida nenhuma face!"})
+                saveSnapshot(records_invalid_base_path,data["snapshot"],ts,"no_face",filter["num"])
+                return Response({"status": "error", "title": "Não foi reconhecida nenhuma face!"})
             unknown_encoding = unknown_encoding[0]
 
             valid_nums = []
@@ -367,7 +369,7 @@ def SetUser(request, format=None):
                 existsInBd = False            
                 
             if result==False:
-                print("A face não corresponde....")
+                saveSnapshot(records_invalid_base_path,data["snapshot"],ts,"not_identified",filter["num"])
                 results = face_recognition.compare_faces(faces.get("matrix"), unknown_encoding,tolerance)
                 valid_indexes = [i for i, x in enumerate(results) if x]
                 for x in valid_indexes:
@@ -415,6 +417,25 @@ def SetUser(request, format=None):
         print(error)
         return Response({"status": "error", "title": str(error)})
 
+def saveSnapshot(basepath,snapshot,tstamp,suffix="",num=None):
+    try:
+        os.makedirs(f"""{basepath}/{tstamp.strftime("%Y%m%d")}""")
+    except FileExistsError:
+        pass
+    if num is not None:
+        try:
+            os.makedirs(f"""{basepath}/{tstamp.strftime("%Y%m%d")}/{num}""")
+        except FileExistsError:
+            pass
+
+    if num is None:
+        pth=f"""{basepath}/{tstamp.strftime("%Y%m%d")}/{tstamp.strftime("%Y%m%d.%H%M%S")}.{suffix}.jpg"""
+    else:
+        pth=f"""{basepath}/{tstamp.strftime("%Y%m%d")}/{num}/{tstamp.strftime("%Y%m%d.%H%M%S")}.{suffix}.jpg"""
+
+    with open(pth, "wb") as fh:
+        fh.write(base64.b64decode(snapshot.replace('data:image/jpeg;base64,','')))
+
 def AutoCapture(request, format=None):
     connection = connections[connMssqlName].cursor()    
     data = request.data['parameters']
@@ -460,6 +481,7 @@ def AutoCapture(request, format=None):
                 else:               
                     nt = reg[0].get("nt")
                     if nt==8:
+                        saveSnapshot(records_invalid_base_path,data["snapshot"],ts,"max_records")
                         raise Exception("Atingiu o número máximo de registos! Por favor entre em contacto com os Recursos Humanos.")
                     dti = {
                         "nt": nt+1,
@@ -506,7 +528,8 @@ def AutoCapture(request, format=None):
             print(f"3. {datetime.now()}")
             unknown_encoding = face_recognition.face_encodings(unknown_image,None,jitters,model)
             if len(unknown_encoding)==0:
-                    return Response({"status": "error", "title": "Não foi reconhecida nenhuma face!"})
+                saveSnapshot(records_invalid_base_path,data["snapshot"],ts,"no_face")
+                return Response({"status": "error", "title": "Não foi reconhecida nenhuma face!"})
             unknown_encoding = unknown_encoding[0]
 
             valid_nums = []
@@ -563,6 +586,7 @@ def AutoCapture(request, format=None):
             )
             response = dbmssql.executeSimpleList(sql, connection, parameters)
             if result==False and request.data['filter'].get("num") is None:
+                saveSnapshot(records_invalid_base_path,data["snapshot"],ts,"not_identified")
                 return Response({"status": "error", "title": "O sistema não o(a) identificou!"})
             return Response({**response,"result":result,"num":request.data['filter'].get("num"),"foto":filepath,"valid_nums":valid_nums,"valid_filepaths":valid_filepaths,"valid_names":valid_names,"config":getConfig()})
     except Exception as error:
@@ -1117,7 +1141,8 @@ def GetCameraRecords(request, format=None):
     parameters = request.data['parameters']
     if parameters.get('date') and parameters.get('num'):
         path = os.path.join(parameters.get('date'),parameters.get('num'))
-        for filename in os.listdir(os.path.join(records_base_path,path)):
+        listdir = sorted(os.listdir(os.path.join(records_base_path,path)), key=os.path.getmtime)
+        for filename in listdir:
             v = datetime.strptime(filename.replace(".jpg",""), '%Y%m%d.%H%M%S').strftime("%Y-%m-%d %H:%M:%S")
             records.append({"filename":os.path.join(path,filename).replace("\\","/"),"tstamp":v})
     return Response(records)
