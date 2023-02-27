@@ -348,12 +348,26 @@ const BlockMessageStandStill = ({ submitting, data, auto, capturing, standStillC
 			{(auto && data.level == 0 && capturing && !submitting.state && !data.error.status) &&
 				<Row gutterWidth={2} style={{ marginTop: "30px", marginBottom: "30px" }}>
 					<Col></Col>
-					<Col xs="content" style={{ fontWeight: 200, fontSize: "25px", display: "flex", flexDirection: "column", alignItems: "center" }}>Por favor, <span style={{ fontWeight: 700 }}>permaneça imóvel</span> em frente à câmera por {standStillCounter} segundos...</Col>
+					<Col xs="content" style={{ fontWeight: 200, fontSize: "25px", display: "flex", flexDirection: "column", alignItems: "center" }}>Por favor, <span style={{ fontWeight: 700 }}>permaneça imóvel</span> em frente à câmera por {standStillCounter-1} segundos...</Col>
 					<Col></Col>
 				</Row>
 			}
 		</>
 	);
+}
+
+const BlockCaptureAuto = ({ auto, onCaptureAuto, capturing, data, submitting }) => {
+	return (<>
+		{(auto && data.level == 0 && !capturing && !submitting.state && !data.error.status) &&
+
+			<Row style={{marginTop:"20px"}}>
+				<Col></Col>
+				<Col xs="content"><Button onClick={onCaptureAuto} size="large"><CameraTwoTone style={{ fontSize: "52px" }} /></Button></Col>
+				<Col></Col>
+			</Row>
+
+		}
+	</>);
 }
 
 const clearTimer = (timer, timeout = true) => {
@@ -380,11 +394,8 @@ export default ({ }) => {
 	const autoTimer = React.useRef(null);
 	const autoSampleTimer = React.useRef(null);
 
-	const canvasRef = useRef(null);
+	// const canvasRef = useRef(null);
 	const [auto, setAuto] = useState(false);
-	const [error, setError] = useState();
-	const [log, setLog] = useState();
-
 	const [data, updateData] = useImmer({
 		level: 0,
 		num: '',
@@ -432,7 +443,6 @@ export default ({ }) => {
 
 						// If there is motion, start the timer
 						//setLog(`----diff>${diff}`);
-						setLog(`----lastimage>${diff}`);
 						if (diff > AUTO_MOTION_TOLERANCE) {
 
 							setMotionDetected(Date.now());
@@ -444,7 +454,6 @@ export default ({ }) => {
 				}, AUTO_SAMPLE_INTERVAL);
 			})
 			.catch(error => {
-				setError("-------------------->",error.message)
 				console.error('Error accessing webcam:', error);
 			});
 	}
@@ -454,24 +463,31 @@ export default ({ }) => {
 		//initMotionDetection();
 		return (() => { clearInterval(interval); clearTimer(autoSampleTimer, false); clearTimer(autoTimer); });
 	}, []);
-	useEffect(() => {
-		// Start the timer when motion is detected
-		if (motionDetected > 0) {
-			if (!capturing) {
-				standStillTimer.current = setInterval(() => { setStandStillCounter(prev => prev - 1); }, 1000);
-				setCapturing(true);
-			}
-			updateAutoTimer(STAND_STILL_DURATION, () => autoCapture());
-		}
-	}, [motionDetected, autoTimer.current]);
-	const startAutoTimer = (duration, fn) => {
-		autoTimer.current = setTimeout(fn, duration * 1000);
-	}
-	const updateAutoTimer = (duration, fn) => {
-		if (!autoTimer.current){
-			clearTimer(autoTimer);
-			setStandStillCounter(STAND_STILL_DURATION + 1);
-			autoTimer.current = setTimeout(fn, duration * 1000);
+	// useEffect(() => {
+	// 	// Start the timer when motion is detected
+	// 	if (motionDetected > 0) {
+	// 		if (!capturing) {
+	// 			standStillTimer.current = setInterval(() => { setStandStillCounter(prev => prev - 1); }, 1000);
+	// 			setCapturing(true);
+	// 		}
+	// 		updateAutoTimer(STAND_STILL_DURATION, () => autoCapture());
+	// 	}
+	// }, [motionDetected, autoTimer.current]);	
+	// const startAutoTimer = (duration, fn) => {
+	// 	autoTimer.current = setTimeout(fn, duration * 1000);
+	// }
+	// const updateAutoTimer = (duration, fn) => {
+	// 	if (!autoTimer.current){
+	// 		clearTimer(autoTimer);
+	// 		setStandStillCounter(STAND_STILL_DURATION + 1);
+	// 		autoTimer.current = setTimeout(fn, duration * 1000);
+	// 	}
+	// }
+	const onCaptureAuto = () => {
+		if (!capturing) {
+			standStillTimer.current = setInterval(() => { setStandStillCounter(prev => prev - 1); }, 1000);
+			setCapturing(true);
+			autoTimer.current = setTimeout(() => autoCapture(), STAND_STILL_DURATION * 1000);
 		}
 	}
 	const reset = () => {
@@ -480,9 +496,9 @@ export default ({ }) => {
 		setCapturing(false);
 		clearTimer(standStillTimer, false);
 		clearTimer(autoSampleTimer, false);
-		if (auto) {
-			initMotionDetection();
-		}
+		/* 		if (auto) {
+					initMotionDetection();
+				} */
 		//TODO - FALTA OS RESTANTES TIMERS...
 		updateData(draft => {
 			draft.config = {};
@@ -643,7 +659,7 @@ export default ({ }) => {
 	}
 	const onAuto = () => {
 		if (auto === false) {
-			initMotionDetection();
+			// initMotionDetection();
 		} else {
 			clearTimer(autoSampleTimer, false);
 			clearTimer(autoTimer);
@@ -654,10 +670,8 @@ export default ({ }) => {
 	}
 
 	return (<>
-		<canvas ref={canvasRef} style={{ display: 'none' }} />
+		{/* <canvas ref={canvasRef} style={{ display: 'none' }} /> */}
 		<Container fluid style={{ fontWeight: 700 }}>
-			<Row><Col>{error}</Col></Row>
-			<Row><Col>{log}</Col></Row>
 			<BlockMessage data={data} reset={reset} />
 			<Toolbar data={data} auto={auto} onAuto={onAuto} />
 
@@ -681,6 +695,7 @@ export default ({ }) => {
 				<BlockWait submitting={submitting} />
 				<BlockError submitting={submitting} reset={reset} error={data?.error} />
 				<BlockMessageStandStill data={data} auto={auto} submitting={submitting} capturing={capturing} standStillCounter={standStillCounter} />
+				<BlockCaptureAuto auto={auto} onCaptureAuto={onCaptureAuto} data={data} submitting={submitting} capturing={capturing} />
 				<BlockNumPad auto={auto} data={data} submitting={submitting} reset={reset} capture={capture} onNumPadClick={onNumPadClick} />
 				<BlockConfirm submitting={submitting} data={data} onConfirm={onConfirm} />
 				<BlockIO submitting={submitting} data={data} onFinish={onFinish} />
