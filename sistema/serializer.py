@@ -27,7 +27,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         dnum = db.executeSimpleList(lambda: (f"select * from sagex3.ELASTICTEK.AUTILIS WHERE ADDEML_0='{user.email}'"), connection, {})['rows']
         if len(dnum)>0:
-            token["num"]=dnum[0].get("USR_0")
+            token["num"]=f"F{dnum[0].get('USR_0')[1:].zfill(5)}"  
 
         groups = user.groups.all().values_list('name',flat=True)
         items = {}

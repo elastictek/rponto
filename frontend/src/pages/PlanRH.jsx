@@ -27,17 +27,18 @@ import ResponsiveModal from 'components/Modal';
 import { Container, Row, Col, Visible, Hidden } from 'react-grid-system';
 import { Field, Container as FormContainer, SelectField, AlertsContainer, RangeDateField, SelectDebounceField, CheckboxField, Selector, SelectMultiField } from 'components/FormFields';
 import YScroll from 'components/YScroll';
-import { MediaContext } from "./App";
+import { isRH, isPrivate, LeftUserItem } from './commons';
+import { MediaContext, AppContext } from "./App";
 import { LayoutContext } from "./GridLayout";
 import { BsFillEraserFill } from 'react-icons/bs';
 import { downloadReport } from 'components/DownloadReports';
 
 const title = "Plano de Horários";
-const TitleForm = ({ data, onChange, record, level, form }) => {
+const TitleForm = ({ isRH }) => {
   return (<ToolbarTitle title={<>
     <Col>
       <Row style={{ marginTop: "15px", marginBottom: "5px" }}>
-        <Col xs='content' style={{}}><Row nogutter><Col><span style={{ fontSize: "21px", lineHeight: "normal", fontWeight: 900 }}>{title}</span></Col></Row></Col>
+        <Col xs='content' style={{}}><Row nogutter><Col><span style={{ fontSize: "21px", lineHeight: "normal", fontWeight: 900 }}>{isRH ? title : `${title} Pessoal`}</span></Col></Row></Col>
         {/* <Col xs='content' style={{ paddingTop: "3px" }}>{st && <Tag icon={<MoreOutlined />} color="#2db7f5">{st}</Tag>}</Col> */}
       </Row>
 
@@ -84,18 +85,18 @@ const useStyles = createUseStyles({
 const schema = (options = {}) => {
   return getSchema({}, options).unknown(true);
 }
-const ToolbarFilters = ({ dataAPI, ...props }) => {
+const ToolbarFilters = ({ dataAPI, auth, num, ...props }) => {
   return (<>
-    <Col width={80}>
+    {isRH(auth, num) && <><Col width={80}>
       <Field name="fnum" label={{ enabled: true, text: "Número", pos: "top", padding: "0px" }}>
         <InputNumber style={{ width: "100%" }} size='small' />
       </Field>
     </Col>
-    <Col width={180}>
-      <Field name="fnome" label={{ enabled: true, text: "Nome", pos: "top", padding: "0px" }}>
-        <Input size='small' allowClear />
-      </Field>
-    </Col>
+      <Col width={180}>
+        <Field name="fnome" label={{ enabled: true, text: "Nome", pos: "top", padding: "0px" }}>
+          <Input size='small' allowClear />
+        </Field>
+      </Col></>}
     <Col width={80}>
       <Field name="y" label={{ enabled: true, text: "Ano", pos: "top", padding: "0px" }}>
         <InputNumber style={{ width: "100%" }} size='small' min={2015} max={new Date().getFullYear()} />
@@ -114,6 +115,9 @@ const TipoRelation = () => <Select size='small' options={[{ value: "e" }, { valu
 const moreFiltersSchema = ({ form }) => [
   { fnum: { label: "Número", field: { type: 'inputnumber', min: 1, size: 'small' } } },
   { fnome: { label: "Nome", field: { type: 'input', size: 'small' } } },
+  { y: { label: "Ano", field: { type: "inputnumber", size: 'small', min: 2015, max: (new Date().getFullYear()) } }, m: { label: "Mês", field: { type: "inputnumber", size: 'small', min: 1, max: 12 } } }
+];
+const moreFiltersSchemaPrivate = ({ form }) => [
   { y: { label: "Ano", field: { type: "inputnumber", size: 'small', min: 2015, max: (new Date().getFullYear()) } }, m: { label: "Mês", field: { type: "inputnumber", size: 'small', min: 1, max: 12 } } }
 ];
 
@@ -178,7 +182,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
 
 
       downloadReport({
-        request: { url: `${API_URL}/rponto/sqlp/`, withCredentials:true, parameters: { method: "CalendarList" }, filter: { ...data } },
+        request: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: { method: "CalendarList" }, filter: { ...data } },
         type: { key: "template-p-xls" },
         limit: 2000,
         dataexport: { template: "planRH.xlsx", cols, extension: "zip" }
@@ -202,7 +206,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
               <Selector
                 size="small"
                 title="Colaboradores"
-                params={{ payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials:true, parameters: { method: "EmployeesLookup" }, pagination: { enabled: false, limit: 150 }, filter: {}, sort: [{ column: "REFNUM_0", direction: "ASC" }] } }}
+                params={{ payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: { method: "EmployeesLookup" }, pagination: { enabled: false, limit: 150 }, filter: {}, sort: [{ column: "REFNUM_0", direction: "ASC" }] } }}
                 keyField={["REFNUM_0"]}
                 textField="FULLNAME"
                 detailText={r => r?.REFNUM_0}
@@ -227,7 +231,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
       </FormContainer>
       {props?.extraRef && <Portal elId={props?.extraRef.current}>
         <Space>
-          <Button size='large' icon={<PrinterOutlined/>} type="primary" disabled={submitting.state} onClick={onFinish}/>
+          <Button size='large' icon={<PrinterOutlined />} type="primary" disabled={submitting.state} onClick={onFinish} />
           <Button size='large' onClick={props?.closeParent}>Cancelar</Button>
         </Space>
       </Portal>
@@ -236,10 +240,10 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
   );
 }
 
-
 export default ({ setFormTitle, ...props }) => {
   const media = useContext(MediaContext);
   const { openNotification } = useContext(LayoutContext);
+  const { auth } = useContext(AppContext);
   const location = useLocation();
   const navigate = useNavigate();
   const classes = useStyles();
@@ -248,8 +252,9 @@ export default ({ setFormTitle, ...props }) => {
   const defaultFilters = {};
   const defaultParameters = { method: "CalendarList" };
   const defaultSort = [{ column: "REFNUM_0", direction: "ASC" }, { column: "C.[date]", direction: "DESC" }];
-  const dataAPI = useDataAPI({ id: props.id, payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials:true, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
+  const dataAPI = useDataAPI({ id: props.id, payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
   const submitting = useSubmitting(true);
+  const [num, setNum] = useState(null);
 
   const [modalParameters, setModalParameters] = useState({});
   const [showModal, hideModal] = useModal(({ in: open, onExited }) => {
@@ -285,11 +290,11 @@ export default ({ setFormTitle, ...props }) => {
 
   const columns = [
     /* { key: 'bprint', name: '', ignoreReport: true, minWidth: 40, maxWidth: 40, formatter: p => <Button icon={<PrinterOutlined />} size="small" onClick={() => onFix(p.row)} /> }, */
-    { key: 'REFNUM_0', name: 'Número', width: 90, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.REFNUM_0}</div> },
+    ...isRH(auth, num) ? [{ key: 'REFNUM_0', name: 'Número', width: 90, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.REFNUM_0}</div> }] : [],
     { key: 'date', width: 100, name: 'Data', formatter: p => moment(p.row.date).format(DATE_FORMAT) },
     { key: 'WEEK', width: 100, name: 'Semana', formatter: p => p.row.WEEK },
     { key: 'wdayname', width: 100, name: 'Dia Semana', formatter: p => p.row.wdayname },
-    { key: 'FULLNAME', width: 350, name: 'Nome', formatter: p => <div style={{ fontWeight: 700 }}>{`${p.row.SRN_0} ${p.row.NAM_0}`}</div> },
+    ...isRH(auth, num) ? [{ key: 'FULLNAME', width: 350, name: 'Nome', formatter: p => <div style={{ fontWeight: 700 }}>{`${p.row.SRN_0} ${p.row.NAM_0}`}</div> }] : [],
     { key: 'PLNTYP_0', name: 'Planemeanto', width: 80, formatter: p => p.row.PLNTYP_0 },
     { key: 'EN_MANHA', width: 130, name: 'Entrada Manhã', formatter: p => p.row.EN_MANHA },
     { key: 'SA_MANHA', width: 130, name: 'Saída Manhã', formatter: p => p.row.SA_MANHA },
@@ -305,10 +310,12 @@ export default ({ setFormTitle, ...props }) => {
 
   const loadData = async ({ init = false, signal } = {}) => {
     if (init) {
-      const initFilters = loadInit({ y: new Date().getFullYear(), m: (new Date().getMonth() + 1) }, { ...dataAPI.getAllFilter(), tstamp: dataAPI.getTimeStamp() }, props, {}, [...Object.keys(dataAPI.getAllFilter())]);
+      const { num: _num, ...initFilters } = loadInit({ y: new Date().getFullYear(), m: (new Date().getMonth() + 1) }, { ...dataAPI.getAllFilter(), tstamp: dataAPI.getTimeStamp() }, props, { ...location?.state }, [...Object.keys(location?.state ? location?.state : {}), ...Object.keys(dataAPI.getAllFilter())]);
+      setNum(_num);
+      //const initFilters = loadInit({ y: new Date().getFullYear(), m: (new Date().getMonth() + 1) }, { ...dataAPI.getAllFilter(), tstamp: dataAPI.getTimeStamp() }, props, {}, [...Object.keys(dataAPI.getAllFilter())]);
       let { filterValues, fieldValues } = fixRangeDates([], initFilters);
       formFilter.setFieldsValue({ ...fieldValues });
-      dataAPI.addFilters({ ...filterValues }, true, false);
+      dataAPI.addFilters({ ...filterValues, ...(_num && { num: _num }) }, true, false);
       dataAPI.setSort(defaultSort);
       dataAPI.addParameters(defaultParameters, true, true);
       dataAPI.fetchPost({ signal });
@@ -359,7 +366,7 @@ export default ({ setFormTitle, ...props }) => {
 
   return (
     <>
-      {!setFormTitle && <TitleForm data={dataAPI.getAllFilter()} onChange={onFilterChange} form={formFilter} />}
+      {!setFormTitle && <TitleForm isRH={isRH(auth, num)} />}
       <Table
         loading={submitting.state}
         /*  actionColumn={<ActionContent dataAPI={dataAPI} onClick={onAction} modeEdit={modeEdit.datagrid} />} */
@@ -379,12 +386,13 @@ export default ({ setFormTitle, ...props }) => {
         rowClass={(row) => (row?.valid === 0 ? classes.notValid : undefined)}
         leftToolbar={<Space>
           {/* <Button disabled={submitting.state} onClick={onRecordApp}>App</Button>*/}
-          <Button size="large" icon={<PrinterOutlined />} disabled={submitting.state} onClick={onPrintRPD}>Imprimir Plano Mensal</Button>
+          {isRH(auth, num) && <Button size="large" icon={<PrinterOutlined />} disabled={submitting.state} onClick={onPrintRPD}>Imprimir Plano Mensal</Button>}
+          {(!isRH(auth, num)) && <> <LeftUserItem auth={auth} /></>}
         </Space>}
         toolbarFilters={{
           form: formFilter, schema, onFinish: onFilterFinish, onValuesChange: onFilterChange,
-          filters: <ToolbarFilters dataAPI={dataAPI} />,
-          moreFilters: { schema: moreFiltersSchema, rules: moreFiltersRules, width: 500, mask: true }
+          filters: <ToolbarFilters dataAPI={dataAPI} auth={auth} num={num} />,
+          moreFilters: { schema: isRH(auth, num) ? moreFiltersSchema : moreFiltersSchemaPrivate, rules: moreFiltersRules, width: 500, mask: true }
         }}
       />
     </>

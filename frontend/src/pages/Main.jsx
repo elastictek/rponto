@@ -10,7 +10,7 @@ import { API_URL } from "config";
 import { fetchPost } from "utils/fetch";
 import Logo from 'assets/logo.svg';
 import dayjs from 'dayjs';
-import { DATETIME_FORMAT, STAND_STILL_DURATION, AUTO_SAMPLE_INTERVAL, AUTO_MOTION_TOLERANCE,ON_CONFIRM_TIMEOUT,ON_END_MESSAGE_TIMEOUT } from 'config';
+import { DATETIME_FORMAT, STAND_STILL_DURATION, AUTO_SAMPLE_INTERVAL, AUTO_MOTION_TOLERANCE, ON_CONFIRM_TIMEOUT, ON_END_MESSAGE_TIMEOUT } from 'config';
 import { useImmer } from "use-immer";
 import pixelMatch from 'pixelmatch';
 
@@ -129,7 +129,9 @@ const Toolbar = ({ data, auto, onAuto }) => {
 										month: 'long',
 										year: 'numeric'
 									})}</Col>
-								<Col xs="content"><Button size="large" fill='none' onClick={onAuto}>{auto ? <StopFilled /> : <PlayCircleFilled />}</Button></Col>
+							</Row>
+							<Row gutterWidth={10} style={{ display: "flex", justifyContent: "end" }}>
+								<Col xs="content"><Button style={{ padding: "0px" }} fill='none' onClick={onAuto}>{auto ? <StopFilled /> : <PlayCircleFilled style={{ fontSize: "16px" }} />}</Button></Col>
 							</Row>
 						</Col>
 					</Row>
@@ -505,7 +507,7 @@ export default ({ }) => {
 		}
 	}
 	const autoCapture = async () => {
-		if (!auto){return;}
+		if (!auto) { return; }
 		clearTimer(autoSampleTimer, false);
 		setStandStillCounter(STAND_STILL_DURATION + 1);
 		clearTimer(standStillTimer, false);

@@ -612,6 +612,7 @@ def UpdateRecords(request, format=None):
 
 def RegistosRH(request, format=None):
     connection = connections[connMssqlName].cursor()
+    print(request.data['filter'])
     f = Filters(request.data['filter'])
     f.setParameters({
         **rangeP(f.filterData.get('fdata'), 'dts', lambda k, v: f'CONVERT(DATE, dts)'),
@@ -620,7 +621,8 @@ def RegistosRH(request, format=None):
     #    "diff": {"value": lambda v: '>0' if "fdataout" in v and v.get("fdataout") is not None else None, "field": lambda k, v: f'TIMESTAMPDIFF(second,in_t,out_t)'},
         "SRN_0": {"value": lambda v: v.get('fnome').lower() if v.get('fnome') is not None else None, "field": lambda k, v: f'lower(EID.{k})'},
         # "carga": {"value": lambda v: v.get('fcarganome').lower() if v.get('fcarganome') is not None else None, "field": lambda k, v: f'lower(sgppl.{k})'},
-        "num": {"value": lambda v: v.get('fnum').lower() if v.get('fnum') is not None else None, "field": lambda k, v: f'lower(TR.{k})'},
+        "fnum": {"value": lambda v: v.get('fnum').lower() if v.get('fnum') is not None else None, "field": lambda k, v: f'lower(TR.num)'},
+        "num": {"value": lambda v: f"=={v.get('num')}" if v.get('num') is not None else None, "field": lambda k, v: f'TR.{k}'},
         # "lar": {"value": lambda v: Filters.getNumeric(v.get('flargura')), "field": lambda k, v: f"j->>'{k}'"},
         # "area_real": {"value": lambda v: Filters.getNumeric(v.get('farea')), "field": lambda k, v: f'sgppl.{k}'},
         # "comp_real": {"value": lambda v: Filters.getNumeric(v.get('fcomp')), "field": lambda k, v: f'sgppl.{k}'},
@@ -656,7 +658,6 @@ def RegistosRH(request, format=None):
     f.where()
     f.auto()
     f.value()
-
     fmulti = filterMulti(request.data['filter'], {
         # 'flotenw': {"keys": ['lotenwinf', 'lotenwsup'], "table": 'mb.'},
         # 'ftiponw': {"keys": ['tiponwinf', 'tiponwsup'], "table": 'mb.'},
@@ -694,6 +695,7 @@ def CalendarList(request, format=None):
     f.setParameters({
         #**rangeP(f.filterData.get('fdata'), 'dts', lambda k, v: f'CONVERT(DATE, dts)'),
         "REFNUM_0": {"value": lambda v: f"==F{str(v.get('fnum')).zfill(5)}" if v.get('fnum') is not None else None, "field": lambda k, v: f'T.{k}'},
+        "num": {"value": lambda v: f"=={v.get('num')}" if v.get('num') is not None else None, "field": lambda k, v: f'T.REFNUM_0'},
     }, True)
     f.where("")
     f.auto()

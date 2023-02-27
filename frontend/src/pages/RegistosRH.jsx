@@ -28,7 +28,7 @@ import { Container, Row, Col, Visible, Hidden } from 'react-grid-system';
 import { Field, Container as FormContainer, SelectField, AlertsContainer, RangeDateField, SelectDebounceField, CheckboxField, Selector, SelectMultiField } from 'components/FormFields';
 import YScroll from 'components/YScroll';
 import { MediaContext, AppContext } from "./App";
-import { isRH, isPrivate } from './commons';
+import { isRH, isPrivate,LeftUserItem } from './commons';
 import { LayoutContext } from "./GridLayout";
 import { BsFillEraserFill } from 'react-icons/bs';
 
@@ -515,6 +515,8 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
   );
 }
 
+
+
 export default ({ setFormTitle, ...props }) => {
   const media = useContext(MediaContext);
   const { openNotification } = useContext(LayoutContext);
@@ -527,7 +529,7 @@ export default ({ setFormTitle, ...props }) => {
   const defaultFilters = {};
   const defaultParameters = { method: "RegistosRH" };
   const defaultSort = [{ column: "dts", direction: "DESC" }, { column: "num", direction: "ASC" }];
-  const dataAPI = useDataAPI({ id:props.id, payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
+  const dataAPI = useDataAPI({ id: props.id, payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
   const submitting = useSubmitting(true);
   const [num, setNum] = useState(null);
 
@@ -566,9 +568,9 @@ export default ({ setFormTitle, ...props }) => {
 
   const columns = [
     ...(isRH(auth, num)) ? [{ key: 'baction', name: '', minWidth: 40, maxWidth: 40, formatter: p => <Button icon={<EditOutlined />} size="small" onClick={() => onFix(p.row)} /> }] : [],
-    { key: 'num', name: 'Número', frozen: true, width: 90, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> },
+    ...isRH(auth, num) ? [{ key: 'num', name: 'Número', frozen: true, width: 90, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> }] : [],
     { key: 'dts', width: 100, name: 'Data', frozen: true, formatter: p => moment(p.row.dts).format(DATE_FORMAT) },
-    { key: 'SRN_0', name: 'Nome', formatter: p => <div style={{ fontWeight: 700 }}>{`${p.row.SRN_0} ${p.row.NAM_0}`}</div> },
+    ...isRH(auth, num) ? [{ key: 'SRN_0', name: 'Nome', formatter: p => <div style={{ fontWeight: 700 }}>{`${p.row.SRN_0} ${p.row.NAM_0}`}</div> }] : [],
     { key: 'nt', name: 'Picagens', width: 80, formatter: p => p.row.nt },
     { key: 'ty_01', name: '', hidden: true, reportTitle: "es_01", minWidth: 35, width: 35, formatter: p => p.row.ty_01?.trim() === 'in' ? "E" : "S" },
     { key: 'ss_01', width: 130, name: 'P01', formatter: p => p.row.ss_01 && moment(p.row.ss_01).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_01) },
@@ -609,11 +611,11 @@ export default ({ setFormTitle, ...props }) => {
       setNum(_num);
       let { filterValues, fieldValues } = fixRangeDates(['fdata'], initFilters);
       formFilter.setFieldsValue({ ...fieldValues });
-      dataAPI.addFilters({ ...filterValues }, true, false);
-      dataAPI.setSort(defaultSort);
+      dataAPI.addFilters({ ...filterValues, ...(_num && { num: _num }) }, true, false);
+      dataAPI.setSort(defaultSort, false);
       dataAPI.addParameters(defaultParameters, true, true);
       dataAPI.fetchPost({ signal });
-      
+
     }
     submitting.end();
   }
@@ -674,9 +676,8 @@ export default ({ setFormTitle, ...props }) => {
         rowHeight={28}
         rowClass={(row) => (row?.valid === 0 ? classes.notValid : undefined)}
         leftToolbar={<Space>
-          {(isRH(auth, num)) && <>
-            <Button disabled={submitting.state} onClick={onViewBiometrias}>Biometrias</Button>
-          </>}
+          {(isRH(auth, num)) && <><Button disabled={submitting.state} onClick={onViewBiometrias}>Biometrias</Button></>}
+          {(!isRH(auth, num)) && <><LeftUserItem auth={auth} /></>}
         </Space>}
         toolbarFilters={{
           form: formFilter, schema, onFinish: onFilterFinish, onValuesChange: onFilterChange,
