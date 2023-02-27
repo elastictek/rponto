@@ -1140,9 +1140,14 @@ def GetCameraRecords(request, format=None):
     records = []
     parameters = request.data['parameters']
     if parameters.get('date') and parameters.get('num'):
-        path = os.path.join(parameters.get('date'),parameters.get('num'))
-        listdir = sorted(os.listdir(os.path.join(records_base_path,path)), key=os.path.getmtime)
-        for filename in listdir:
+        path = os.path.join(parameters.get('date'),parameters.get('num'))        
+        files = os.listdir(os.path.join(records_base_path,path))
+        # Create a list of tuples where each tuple contains the filename and its modification time
+        file_times = [(f, datetime.fromtimestamp(os.path.getmtime(os.path.join(os.path.join(records_base_path,path), f)))) for f in files]
+        # Sort the list of tuples by the modification time
+        file_times_sorted = sorted(file_times, key=lambda x: x[1])        
+        for f in file_times_sorted:
+            filename = f[0]
             v = datetime.strptime(filename.replace(".jpg",""), '%Y%m%d.%H%M%S').strftime("%Y-%m-%d %H:%M:%S")
             records.append({"filename":os.path.join(path,filename).replace("\\","/"),"tstamp":v})
     return Response(records)
