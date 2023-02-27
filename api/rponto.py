@@ -1124,5 +1124,6 @@ def GetCameraRecords(request, format=None):
     if parameters.get('date') and parameters.get('num'):
         path = os.path.join(parameters.get('date'),parameters.get('num'))
         for filename in os.listdir(os.path.join(records_base_path,path)):
-            records.append(os.path.join(path,filename).replace("\\","/"))
+            v = datetime.strptime(filename.replace(".jpg",""), '%Y%m%d.%H%M%S').strftime("%Y-%m-%d %H:%M:%S")
+            records.append({"filename":os.path.join(path,filename).replace("\\","/"),"tstamp":v})
     return Response(records)

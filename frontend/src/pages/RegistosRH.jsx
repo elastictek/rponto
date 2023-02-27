@@ -117,6 +117,56 @@ const moreFiltersSchemaPrivate = ({ form }) => [
   { fdata: { label: "Data", field: { type: "rangedate", size: 'small' } } }
 ];
 
+// const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
+//   const [visible, setVisible] = useState(true);
+//   const submitting = useSubmitting(true);
+//   const [records, setRecords] = useState([]);
+
+//   useEffect(() => {
+//     const controller = new AbortController();
+//     loadData({ signal: controller.signal });
+//     return (() => { controller.abort(); });
+//   }, []);
+
+//   const loadData = async ({ signal } = {}) => {
+//     try {
+//       let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials: true, filter: {}, parameters: { method: "GetCameraRecords", date: moment(p.row.dts).format(DATE_FORMAT_NO_SEPARATOR), num: p.row.num } });
+//       if (response.data.status !== "error") {
+//         setRecords(response.data);
+//       } else {
+//         setRecords([]);
+//       }
+//       submitting.end();
+//     } catch (e) {
+//       setRecords([]);
+//       submitting.end();
+//     };
+//   }
+//   const onCancel = () => {
+//     p.onClose();
+//     setVisible(false);
+//   };
+
+//   return (
+//     <Drawer push={false} title={title && title} open={visible} destroyOnClose onClose={onCancel} width="550px">
+//       <YScroll>
+//         <Container>
+//           <Row>
+//             {records.map((v, i) => {
+//               const dt = p.row[`ss_${`${i + 1}`.padStart(2, '0')}`];
+//               const type = p.row[`ty_${`${i + 1}`.padStart(2, '0')}`]?.trim();
+//               return (<Col xs="content" key={`img-${i}`} style={{ marginBottom: "15px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+//                 <div style={{ padding: "2px", fontSize: "10px", ...type && { background: type == "in" ? "#95de64" : "#ff7875" } }}><b>{i + 1}.</b> {dt && moment(dt).format(DATETIME_FORMAT)}</div>
+//                 <Image width="106px" src={`${ROOT_URL}/static/records/${v}`} />
+//               </Col>);
+//             })}
+//           </Row>
+//         </Container>
+//       </YScroll>
+//     </Drawer>
+//   );
+// }
+
 const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
   const [visible, setVisible] = useState(true);
   const submitting = useSubmitting(true);
@@ -131,6 +181,7 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
   const loadData = async ({ signal } = {}) => {
     try {
       let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials: true, filter: {}, parameters: { method: "GetCameraRecords", date: moment(p.row.dts).format(DATE_FORMAT_NO_SEPARATOR), num: p.row.num } });
+      console.log("views--",response.data)
       if (response.data.status !== "error") {
         setRecords(response.data);
       } else {
@@ -153,11 +204,11 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
         <Container>
           <Row>
             {records.map((v, i) => {
-              const dt = p.row[`ss_${`${i + 1}`.padStart(2, '0')}`];
-              const type = p.row[`ty_${`${i + 1}`.padStart(2, '0')}`]?.trim();
+              const dt = v.tstamp; //p.row[`ss_${`${i + 1}`.padStart(2, '0')}`];
+              //const type = p.row[`ty_${`${i + 1}`.padStart(2, '0')}`]?.trim();
               return (<Col xs="content" key={`img-${i}`} style={{ marginBottom: "15px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <div style={{ padding: "2px", fontSize: "10px", ...type && { background: type == "in" ? "#95de64" : "#ff7875" } }}><b>{i + 1}.</b> {dt && moment(dt).format(DATETIME_FORMAT)}</div>
-                <Image width="106px" src={`${ROOT_URL}/static/records/${v}`} />
+                <div style={{ padding: "2px", fontSize: "10px", /* ...type && { background: type == "in" ? "#95de64" : "#ff7875" } */ }}><b>{i + 1}.</b> {dt && moment(dt).format(DATETIME_FORMAT)}</div>
+                <Image width="106px" src={`${ROOT_URL}/static/records/${v.filename}`} />
               </Col>);
             })}
           </Row>
@@ -166,6 +217,7 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
     </Drawer>
   );
 }
+
 
 const Biometrias = ({ parameters }) => {
   const primaryKeys = ['num'];
