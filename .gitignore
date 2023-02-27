@@ -3,6 +3,9 @@ local.py
 production.py
 base.py
 test.py
+faces/
+faces.dictionary
+
 
 #api
 print.py
