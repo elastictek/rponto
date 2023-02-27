@@ -426,13 +426,13 @@ export default ({ }) => {
 					canvas.height = video.videoHeight;
 					ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 					const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-					setLog("----lastimage>");
+					setLog(`----lastimage>${canvas.width} - ${canvas.height}`);
 					if (lastImageData) {
 						// Calculate the difference between the current frame and the previous frame
 						const diff = pixelMatch(imageData.data, lastImageData.data, null, canvas.width, canvas.height, { threshold: 0.2 });
 
 						// If there is motion, start the timer
-						setLog(`----diff>${diff}`);
+						//setLog(`----diff>${diff}`);
 						if (diff > AUTO_MOTION_TOLERANCE) {
 
 							setMotionDetected(Date.now());
