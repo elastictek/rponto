@@ -382,6 +382,7 @@ export default ({ }) => {
 
 	const canvasRef = useRef(null);
 	const [auto, setAuto] = useState(false);
+	const [error, setError] = useState();
 
 	const [data, updateData] = useImmer({
 		level: 0,
@@ -431,6 +432,7 @@ export default ({ }) => {
 
 						// If there is motion, start the timer
 						if (diff > AUTO_MOTION_TOLERANCE) {
+
 							setMotionDetected(Date.now());
 						}
 					}
@@ -440,6 +442,7 @@ export default ({ }) => {
 				}, AUTO_SAMPLE_INTERVAL);
 			})
 			.catch(error => {
+				setError("-------------------->",error.message)
 				console.error('Error accessing webcam:', error);
 			});
 	}
@@ -649,7 +652,7 @@ export default ({ }) => {
 	return (<>
 		<canvas ref={canvasRef} style={{ display: 'none' }} />
 		<Container fluid style={{ fontWeight: 700 }}>
-
+			<Row><Col>{error}</Col></Row>
 			<BlockMessage data={data} reset={reset} />
 			<Toolbar data={data} auto={auto} onAuto={onAuto} />
 

@@ -123,11 +123,6 @@ def rangeP2(data, key, field1, field2, fieldDiff=None):
                 ret[f'{key}_{i}'] = {"key": key, "value": v, "field": field1 if field is False else field2}
     return ret
 
-
-
-
-
-
 @api_view(['POST'])
 @renderer_classes([JSONRenderer])
 def Sql(request, format=None):
@@ -192,7 +187,6 @@ def EmployeesLookup(request, format=None):
         dql.paging=""
         return export(sql(lambda v:v,lambda v:v,lambda v:v), db_parameters=parameters, parameters=request.data["parameters"],conn_name=AppSettings.reportConn["sage"],dbi=dbmssql,conn=connection)
     try:
-        print(sql(lambda v:v,lambda v:v,lambda v:v))
         response = dbmssql.executeList(sql, connection, parameters,[],None,f"""
             select * from (
             select DISTINCT e.REFNUM_0, NAM_0,SRN_0, CONCAT(SRN_0,' ',NAM_0) FULLNAME FROM x3peoplesql.PEOPLELTEK.EMPLOID e 

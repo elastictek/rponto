@@ -17,4 +17,4 @@ export const ON_CONFIRM_TIMEOUT = 10000;//milliseconds
 export const ON_END_MESSAGE_TIMEOUT = 10000;//millisecondes
 export const AUTO_SAMPLE_INTERVAL = 100;//milliseconds
 export const STAND_STILL_DURATION = 2; //in seconds
-export const AUTO_MOTION_TOLERANCE = 50;//higher more tolerant
+export const AUTO_MOTION_TOLERANCE = 200;//higher more tolerant
