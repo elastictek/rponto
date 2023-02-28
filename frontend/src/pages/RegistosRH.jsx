@@ -8,7 +8,7 @@ import { fetch, fetchPost } from "utils/fetch";
 import { getSchema, pick, getStatus, validateMessages } from "utils/schemaValidator";
 import { useSubmitting } from "utils";
 import loadInit, { fixRangeDates } from "utils/loadInit";
-import { API_URL, ROOT_URL } from "config";
+import { API_URL, ROOT_URL, FILES_URL } from "config";
 import { useDataAPI, getLocalStorage } from "utils/useDataAPI";
 import { getFilterRangeValues, getFilterValue, secondstoDay } from "utils";
 import Portal from "components/portal";
@@ -28,7 +28,7 @@ import { Container, Row, Col, Visible, Hidden } from 'react-grid-system';
 import { Field, Container as FormContainer, SelectField, AlertsContainer, RangeDateField, SelectDebounceField, CheckboxField, Selector, SelectMultiField } from 'components/FormFields';
 import YScroll from 'components/YScroll';
 import { MediaContext, AppContext } from "./App";
-import { isRH, isPrivate,LeftUserItem } from './commons';
+import { isRH, isPrivate, LeftUserItem } from './commons';
 import { LayoutContext } from "./GridLayout";
 import { BsFillEraserFill } from 'react-icons/bs';
 
@@ -181,7 +181,7 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
   const loadData = async ({ signal } = {}) => {
     try {
       let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials: true, filter: {}, parameters: { method: "GetCameraRecords", date: moment(p.row.dts).format(DATE_FORMAT_NO_SEPARATOR), num: p.row.num } });
-      console.log("views--",response.data)
+      console.log("views--", response.data)
       if (response.data.status !== "error") {
         setRecords(response.data);
       } else {
@@ -208,7 +208,7 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
               //const type = p.row[`ty_${`${i + 1}`.padStart(2, '0')}`]?.trim();
               return (<Col xs="content" key={`img-${i}`} style={{ marginBottom: "15px", display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <div style={{ padding: "2px", fontSize: "10px", /* ...type && { background: type == "in" ? "#95de64" : "#ff7875" } */ }}><b>{i + 1}.</b> {dt && moment(dt).format(DATETIME_FORMAT)}</div>
-                <Image width="106px" src={`${ROOT_URL}/static/records/${v.filename}`} />
+                <Image width="106px" src={`${FILES_URL}/static/records/${v.filename}`} />
               </Col>);
             })}
           </Row>
@@ -218,6 +218,31 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
   );
 }
 
+const Pic = ({ p, title, forInput, ...props }) => {
+  const [visible, setVisible] = useState(true);
+  const submitting = useSubmitting(true);
+  const [records, setRecords] = useState([]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    loadData({ signal: controller.signal });
+    return (() => { controller.abort(); });
+  }, []);
+
+  const loadData = async ({ signal } = {}) => {
+    submitting.end();
+  }
+  const onCancel = () => {
+    setVisible(false);
+    p.onClose();
+  };
+
+  return (
+    <Modal footer={null} title={title && title} open={visible} destroyOnClose onCancel={onCancel} bodyStyle={{ height: 400, display: "flex", justifyContent: "center" }} >
+      <Image src={p.row.path} height={350} />
+    </Modal>
+  );
+}
 
 const Biometrias = ({ parameters }) => {
   const primaryKeys = ['num'];
@@ -307,6 +332,119 @@ const Biometrias = ({ parameters }) => {
           <Button size="small" disabled={submitting.state} onClick={syncAll}>Sincronizar Tudo</Button>
         </Space>}
         toolbarFilters={{}}
+      />
+    </YScroll>
+  );
+}
+
+const InvalidRecords = ({ parameters }) => {
+  const primaryKeys = ['k'];
+  const defaultFilters = {};
+  const [formFilter] = Form.useForm();
+  const defaultParameters = { method: "InvalidRecordsList" };
+  const defaultSort = [];
+  const dataAPI = useDataAPI({ payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: {}, pagination: { enabled: false }, filter: defaultFilters, sort: [] } });
+  const submitting = useSubmitting(true);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const interval = loadData({ init: true, signal: controller.signal });
+    return (() => { controller.abort(); (interval) && clearInterval(interval); });
+  }, []);
+
+  const loadData = async ({ init = false, signal } = {}) => {
+    if (init) {
+      let { filterValues, fieldValues } = fixRangeDates(['fdata'], { fdata: [`>=${moment().format(DATE_FORMAT)}`, `<=${moment().format(DATE_FORMAT)}`] });
+      console.log("X!!!!!--->",filterValues, fieldValues)
+      formFilter.setFieldsValue({ ...fieldValues });
+      dataAPI.addFilters({ ...filterValues }, true, false);
+      
+      dataAPI.addParameters(defaultParameters, true, true);
+      dataAPI.fetchPost({
+        signal, rowFn: async (dt) => {
+          const _dt = [];
+          for (let [i, v] of dt.rows.entries()) {
+            const r = v.split('\\');
+            if (r.length === 3) {
+              let _f = r[2].split('.');
+              _dt.push({ k: `${r[2]}.${i}`, name: `${_f[0]}.${_f[1]}`, path: `${FILES_URL}/static/${v.replace("../", "")}`, num: null, type: _f[2] });
+            } else if (r.length === 4) {
+              let _f = r[3].split('.');
+              _dt.push({ k: `${r[3]}.${i}`, name: `${_f[0]}.${_f[1]}`, path: `${FILES_URL}/static/${v.replace("../", "")}`, num: r[2], type: _f[2] });
+            }
+          }
+          submitting.end();
+          console.log(_dt)
+          console.log(dt)
+          return { rows: _dt };
+        }
+      });
+    }
+    submitting.end();
+  }
+
+  const columns = [
+    { key: 'num', width: 125, name: 'Número', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> },
+    { key: 'name', name: 'Ficheiro', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.name}</div> },
+    { key: 'type', name: 'Evento', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.type}</div> },
+    { key: 'pic', sortable: false, minWidth: 35, width: 35, name: "", formatter: p => <CameraOutlined style={{ cursor: "pointer" }} />, editor: (p) => { return <Pic p={p} column="" title="Registo Visual" /> }, editorOptions: { editOnClick: true } }
+  ];
+
+  const onFilterFinish = (type, values) => {
+    switch (type) {
+      case "filter":
+        //remove empty values
+        const vals = Object.fromEntries(Object.entries({ ...defaultFilters, ...values }).filter(([_, v]) => v !== null && v !== ''));
+        const _values = {
+          ...vals,
+          fnum: getFilterValue(vals?.fnum, 'any'),
+          fnome: getFilterValue(vals?.fnome, 'any'),
+          fdata: getFilterRangeValues(vals["fdata"]?.formatted),
+
+        };
+        dataAPI.addFilters(_values, true);
+        dataAPI.addParameters(defaultParameters);
+        dataAPI.first();
+        dataAPI.fetchPost();
+        break;
+    }
+  };
+  const onFilterChange = (changedValues, values) => {
+    /* if ("type" in changedValues) {
+        navigate("/app/picking/picknwlist", { state: { ...location?.state, ...formFilter.getFieldsValue(true), type: changedValues.type, tstamp: Date.now() }, replace: true });
+    } */
+  };
+
+  return (
+    <YScroll>
+      <Table
+        loading={submitting.state}
+        /*  actionColumn={<ActionContent dataAPI={dataAPI} onClick={onAction} modeEdit={modeEdit.datagrid} />} */
+        frozenActionColumn={true}
+        reportTitle="Biometrias"
+        loadOnInit={false}
+        columns={columns}
+        dataAPI={dataAPI}
+        toolbar={true}
+        search={true}
+        moreFilters={false}
+        rowSelection={false}
+        primaryKeys={primaryKeys}
+        editable={true}
+        clearSort={false}
+        rowHeight={28}
+        leftToolbar={<Space>
+          {/* <Button size="small" disabled={submitting.state} onClick={syncAll}>Sincronizar Tudo</Button> */}
+        </Space>}
+        toolbarFilters={{
+          form: formFilter,/*  schema */ onFinish: onFilterFinish, onValuesChange: onFilterChange,
+          filters:
+            <Col xs='content'>
+              <Field name="fdata" label={{ enabled: true, text: "Data", pos: "top", padding: "0px" }}>
+                <RangeDateField size='small' allowClear />
+              </Field>
+            </Col>
+        }}
       />
     </YScroll>
   );
@@ -591,6 +729,7 @@ export default ({ setFormTitle, ...props }) => {
     const content = () => {
       switch (modalParameters.content) {
         case "viewbiometrias": return <Biometrias parameters={modalParameters.parameters} />;
+        case "viewinvalidrecords": return <InvalidRecords parameters={modalParameters.parameters} />;
         case "fix": return <Fix parameters={modalParameters.parameters} loadParentData={modalParameters.loadData} />;
       }
     }
@@ -702,10 +841,18 @@ export default ({ setFormTitle, ...props }) => {
     showModal();
   }
 
+  const onInvalidRecords = () => {
+    setModalParameters({ content: "viewinvalidrecords", type: "drawer", title: "Registos Inválidos", push: false, width: "550px", parameters: { openNotification } });
+    showModal();
+  }
+
+
   const onFix = (row) => {
     setModalParameters({ content: "fix", type: "drawer", title: `Corrigir Registo de Picagem`, push: false, width: "90%", loadData: () => dataAPI.fetchPost(), parameters: { openNotification, row } });
     showModal();
   }
+
+
 
   return (
     <>
@@ -728,7 +875,10 @@ export default ({ setFormTitle, ...props }) => {
         rowHeight={28}
         rowClass={(row) => (row?.valid === 0 ? classes.notValid : undefined)}
         leftToolbar={<Space>
-          {(isRH(auth, num)) && <><Button disabled={submitting.state} onClick={onViewBiometrias}>Biometrias</Button></>}
+          {(isRH(auth, num)) && <>
+            <Button disabled={submitting.state} onClick={onViewBiometrias}>Biometrias</Button>
+            <Button disabled={submitting.state} onClick={onInvalidRecords}>Registos Inválidos</Button></>
+          }
           {(!isRH(auth, num)) && <><LeftUserItem auth={auth} /></>}
         </Space>}
         toolbarFilters={{

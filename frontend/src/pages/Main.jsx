@@ -397,6 +397,7 @@ export default ({ }) => {
 	// const canvasRef = useRef(null);
 	const [auto, setAuto] = useState(false);
 	const [data, updateData] = useImmer({
+		existsInBd:false,
 		level: 0,
 		num: '',
 		nome: '',
@@ -501,6 +502,7 @@ export default ({ }) => {
 				} */
 		//TODO - FALTA OS RESTANTES TIMERS...
 		updateData(draft => {
+			draft.existsInBd=false;
 			draft.config = {};
 			draft.level = 0;
 			draft.num = '';
@@ -582,8 +584,8 @@ export default ({ }) => {
 				});
 				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", snapshot: imageSrc, timestamp: dayjs(_ds).format(DATETIME_FORMAT) } });
 				if (response.data.status !== "error" && response.data?.rows?.length > 0) {
-					console.log("response.data->", response.data)
 					updateData(draft => {
+						draft.existsInBd = response.data.existsInBd;
 						draft.config = response.data.config;
 						draft.level = 1;
 						draft.recon = response.data.result;
@@ -610,7 +612,8 @@ export default ({ }) => {
 			submitting.trigger();
 			try {
 				const vals = { num: data.num.startsWith("F") ? data.num : `F${data.num.padStart(5, '0')}` };
-				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", save: true, snapshot: data.snapshot, timestamp: dayjs(data.date).format(DATETIME_FORMAT) } });
+				const learn = (data?.existsInBd===true && Array.isArray(data?.valid_nums) && data.valid_nums.length===0 && !data?.recon ) ? true : false;
+				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", save: true, learn, snapshot: data.snapshot, timestamp: dayjs(data.date).format(DATETIME_FORMAT) } });
 				if (response.data.status !== "error" && response.data.hsh) {
 					updateData(draft => {
 						draft.level = 2;

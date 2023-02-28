@@ -1,5 +1,6 @@
 import React from 'react';
 export const ROOT_URL = "http://localhost:8000";
+export const FILES_URL = "http://localhost:8000";
 export const CSRF = document.cookie.replace("csrftoken=", "");
 export const MAX_UPLOAD_SIZE = 5; //MB
 export const API_URL = "/api";
