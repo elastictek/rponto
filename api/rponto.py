@@ -19,6 +19,8 @@ from datetime import datetime, timedelta
 import os, tempfile
 import pickle
 import glob
+import pathlib
+import random
 
 from pyodbc import Cursor, Error, connect, lowercase
 from datetime import datetime
@@ -292,11 +294,11 @@ def addFace(path,img):
 #CHANGED
 def DelFace(request, format=None):
     filter = request.data['filter']
-    if filter.get("num") and filter.get("filename"):
+    if filter.get("num") and filter.get("file"):
         if os.path.isfile(os.path.join("faces.dictionary")):
             with open('faces.dictionary', 'rb') as faces_file:
                 faces = pickle.load(faces_file)
-                idx = next((index for (index, d) in enumerate(faces.get("nums")) if d["num"] == filter.get("num") and d["filename"] == filter.get("filename")), None)
+                idx = next((index for (index, d) in enumerate(faces.get("nums")) if d["num"] == filter.get("num") and d["file"] == filter.get("file")), None)
                 if idx is not None:
                     faces.get("nums").pop(idx)
                     with open('faces.dictionary', 'wb') as faces_file:
@@ -983,7 +985,7 @@ def BiometriasList(request, format=None):
 def InvalidRecordsList(request, format=None):
     records = []
     dates = request.data.get("filter").get("fdata")
-    num = request.data.get("filter").get("num")
+    num = request.data.get("filter").get("fnum")
     start_date = datetime.today()
     end_date = datetime.today()
     if (dates and len(dates)>0):
@@ -996,61 +998,23 @@ def InvalidRecordsList(request, format=None):
         if dates[0] is not None and dates[1] is not None:
             start_date = datetime.strptime(dates[0].replace(">=",""), '%Y-%m-%d')
             end_date = datetime.strptime(dates[1].replace("<=",""), '%Y-%m-%d')
-    start_date=start_date.strftime("%Y-%m-%d")
-    end_date=end_date.strftime("%Y-%m-%d")
-    print(start_date)
-    print(end_date)
-
-    #path = os.path.join(parameters.get('date'),parameters.get('num'))
+    start_date=start_date.date()
+    end_date=end_date.date()
+    if (num is not None):
+        num = f"""F{num.replace("F","").replace("f","").zfill(5)}"""
     for root, dirs, files in os.walk(records_invalid_base_path):
-        for file in files:
+        for idx,file in enumerate(files):
             # Get the full path of the file
-            full_path = os.path.join(root, file)
-
-            # Get the file's creation time
-            #creation_time = datetime.datetime.from
-            print(full_path)
-
-    # path = os.path.join(parameters.get('date'),parameters.get('num'))        
-    # files = os.listdir(os.path.join(records_base_path,path))
-    # # Create a list of tuples where each tuple contains the filename and its modification time
-    #file_times = [(f, datetime.fromtimestamp(os.path.getmtime(os.path.join(os.path.join(records_base_path,path), f)))) for f in files]
-    # # Sort the list of tuples by the modification time
-    # file_times_sorted = sorted(file_times, key=lambda x: x[1])        
-    # for f in file_times_sorted:
-    #     filename = f[0]
-    #     v = datetime.strptime(filename.replace(".jpg",""), '%Y%m%d.%H%M%S').strftime("%Y-%m-%d %H:%M:%S")
-    #     records.append({"filename":os.path.join(path,filename).replace("\\","/"),"tstamp":v})
-    #files = sorted(glob.glob(records_invalid_base_path + '/**/**/*.jpg', recursive=True), key=os.path.getmtime)
-    #return Response({"rows":files})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    records = []
-    # path = os.path.join(parameters.get('date'),parameters.get('num'))        
-    # files = os.listdir(os.path.join(records_base_path,path))
-    # # Create a list of tuples where each tuple contains the filename and its modification time
-    # file_times = [(f, datetime.fromtimestamp(os.path.getmtime(os.path.join(os.path.join(records_base_path,path), f)))) for f in files]
-    # # Sort the list of tuples by the modification time
-    # file_times_sorted = sorted(file_times, key=lambda x: x[1])        
-    # for f in file_times_sorted:
-    #     filename = f[0]
-    #     v = datetime.strptime(filename.replace(".jpg",""), '%Y%m%d.%H%M%S').strftime("%Y-%m-%d %H:%M:%S")
-    #     records.append({"filename":os.path.join(path,filename).replace("\\","/"),"tstamp":v})
-    files = sorted(glob.glob(records_invalid_base_path + '/**/**/*.jpg', recursive=True), key=os.path.getmtime)
-    print(files)
-    return Response({"rows":files})
+            creation_date = datetime.fromtimestamp(pathlib.Path(os.path.join(root, file)).stat().st_ctime)
+            if creation_date.date()>=start_date and creation_date.date()<=end_date:
+                fullpath = os.path.join(root, file).replace("\\","/")
+                if num is not None:
+                    print(fullpath)
+                    if num in fullpath:
+                        records.append({"k":f"f-{idx}-{random.randint(111111, 999999)}", "filename":fullpath,"tstamp":creation_date.strftime("%Y-%m-%d %H:%M:%S")})
+                else:
+                    records.append({"k":f"f-{idx}-{random.randint(111111, 999999)}", "filename":fullpath,"tstamp":creation_date.strftime("%Y-%m-%d %H:%M:%S")})
+    return Response({"rows":records})
 
 def UpdateRecords(request, format=None):
     values = request.data["parameters"].get("values")

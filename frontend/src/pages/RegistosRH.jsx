@@ -218,7 +218,7 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
   );
 }
 
-const Pic = ({ p, title, forInput, ...props }) => {
+const Pic = ({ p, path, title, ...props }) => {
   const [visible, setVisible] = useState(true);
   const submitting = useSubmitting(true);
   const [records, setRecords] = useState([]);
@@ -239,13 +239,13 @@ const Pic = ({ p, title, forInput, ...props }) => {
 
   return (
     <Modal footer={null} title={title && title} open={visible} destroyOnClose onCancel={onCancel} bodyStyle={{ height: 400, display: "flex", justifyContent: "center" }} >
-      <Image src={p.row.path} height={350} />
+      <Image src={path ? path : p.row.path} height={350} />
     </Modal>
   );
 }
 
 const Biometrias = ({ parameters }) => {
-  const primaryKeys = ['num'];
+  const primaryKeys = ['file'];
   const defaultFilters = {};
   const defaultParameters = { method: "BiometriasList" };
   const defaultSort = [];
@@ -267,9 +267,11 @@ const Biometrias = ({ parameters }) => {
   }
 
   const columns = [
-    { key: 'num', frozen: true, width: 125, name: 'Número', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> },
+    { key: 'num', width: 125, name: 'Número', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> },
     { key: 't_stamp', width: 150, name: 'Data', sortable: false, formatter: p => moment(p.row.t_stamp).format(DATETIME_FORMAT) },
-    { key: 'baction', name: '', minWidth: 40, maxWidth: 40, formatter: p => <Button icon={<DeleteTwoTone />} size="small" onClick={() => onDelFace(p.row)} /> }
+    { key: 'file', name: 'Ficheiro', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.file}</div> },
+    { key: 'pic', sortable: false, minWidth: 35, width: 35, name: "", formatter: p => <CameraOutlined style={{ cursor: "pointer" }} />, editor: (p) => { return <Pic p={p} path={`${FILES_URL}/static/${p.row.file}`} column="" title="Registo Visual" /> }, editorOptions: { editOnClick: true } },
+    { key: 'baction', name: '', minWidth: 40, maxWidth: 40, formatter: p => <Button icon={<DeleteTwoTone />} size="small" onClick={() => onDelFace(p.row)} /> },
   ];
 
   const syncAll = async () => {
@@ -294,7 +296,7 @@ const Biometrias = ({ parameters }) => {
       title: <div>Eliminar Biometria <b>{r.num}</b></div>, content: "Tem a certeza que deseja eliminar a biometria selecionada?", onOk: async () => {
         submitting.trigger();
         try {
-          let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials: true, filter: { num: r.num }, parameters: { method: "DelFace" } });
+          let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials: true, filter: { num: r.num, file: r.file }, parameters: { method: "DelFace" } });
           if (response.data.status !== "error") {
             parameters.openNotification(response.data.status, 'top', "Notificação", `Biometria ${r.num} eliminada com sucesso!`);
             dataAPI.fetchPost();
@@ -352,32 +354,33 @@ const InvalidRecords = ({ parameters }) => {
     return (() => { controller.abort(); (interval) && clearInterval(interval); });
   }, []);
 
+  const rowFn = async (dt) => {
+    const _dt = [];
+    for (let [i, x] of dt.rows.entries()) {
+      const v = x.filename.replace("../", "").replace("./", "");
+      const r = v.split('/');
+      console.log(r)
+      if (r.length === 3) {
+        let _f = r[2].split('.');
+        _dt.push({ k: `${r[2]}.${i}`, name: `${_f[0]}.${_f[1]}`, path: `${FILES_URL}/static/${v.replace("../", "")}`, num: null, type: _f[2] });
+      } else if (r.length === 4) {
+        let _f = r[3].split('.');
+        _dt.push({ k: `${r[3]}.${i}`, name: `${_f[0]}.${_f[1]}`, path: `${FILES_URL}/static/${v.replace("../", "")}`, num: r[2], type: _f[2] });
+      }
+    }
+    submitting.end();
+    return { rows: _dt };
+  }
+
   const loadData = async ({ init = false, signal } = {}) => {
     if (init) {
       let { filterValues, fieldValues } = fixRangeDates(['fdata'], { fdata: [`>=${moment().format(DATE_FORMAT)}`, `<=${moment().format(DATE_FORMAT)}`] });
-      console.log("X!!!!!--->",filterValues, fieldValues)
       formFilter.setFieldsValue({ ...fieldValues });
       dataAPI.addFilters({ ...filterValues }, true, false);
-      
+
       dataAPI.addParameters(defaultParameters, true, true);
       dataAPI.fetchPost({
-        signal, rowFn: async (dt) => {
-          const _dt = [];
-          for (let [i, v] of dt.rows.entries()) {
-            const r = v.split('\\');
-            if (r.length === 3) {
-              let _f = r[2].split('.');
-              _dt.push({ k: `${r[2]}.${i}`, name: `${_f[0]}.${_f[1]}`, path: `${FILES_URL}/static/${v.replace("../", "")}`, num: null, type: _f[2] });
-            } else if (r.length === 4) {
-              let _f = r[3].split('.');
-              _dt.push({ k: `${r[3]}.${i}`, name: `${_f[0]}.${_f[1]}`, path: `${FILES_URL}/static/${v.replace("../", "")}`, num: r[2], type: _f[2] });
-            }
-          }
-          submitting.end();
-          console.log(_dt)
-          console.log(dt)
-          return { rows: _dt };
-        }
+        signal, rowFn
       });
     }
     submitting.end();
@@ -397,15 +400,14 @@ const InvalidRecords = ({ parameters }) => {
         const vals = Object.fromEntries(Object.entries({ ...defaultFilters, ...values }).filter(([_, v]) => v !== null && v !== ''));
         const _values = {
           ...vals,
-          fnum: getFilterValue(vals?.fnum, 'any'),
-          fnome: getFilterValue(vals?.fnome, 'any'),
+          fnum: getFilterValue(vals?.fnum, 'exact'),
           fdata: getFilterRangeValues(vals["fdata"]?.formatted),
 
         };
         dataAPI.addFilters(_values, true);
         dataAPI.addParameters(defaultParameters);
         dataAPI.first();
-        dataAPI.fetchPost();
+        dataAPI.fetchPost({ rowFn });
         break;
     }
   };
@@ -439,11 +441,18 @@ const InvalidRecords = ({ parameters }) => {
         toolbarFilters={{
           form: formFilter,/*  schema */ onFinish: onFilterFinish, onValuesChange: onFilterChange,
           filters:
-            <Col xs='content'>
-              <Field name="fdata" label={{ enabled: true, text: "Data", pos: "top", padding: "0px" }}>
-                <RangeDateField size='small' allowClear />
-              </Field>
-            </Col>
+            <>
+              <Col xs='content'>
+                <Field name="fnum" label={{ enabled: true, text: "Número", pos: "top", padding: "0px" }}>
+                  <Input size='small' allowClear style={{width:"70px"}} />
+                </Field>
+              </Col>
+              <Col xs='content'>
+                <Field name="fdata" label={{ enabled: true, text: "Data", pos: "top", padding: "0px" }}>
+                  <RangeDateField size='small' allowClear />
+                </Field>
+              </Col>
+            </>
         }}
       />
     </YScroll>
@@ -837,7 +846,7 @@ export default ({ setFormTitle, ...props }) => {
   };
 
   const onViewBiometrias = () => {
-    setModalParameters({ content: "viewbiometrias", type: "drawer", title: "Biometrias", push: false, width: "350px", parameters: { openNotification } });
+    setModalParameters({ content: "viewbiometrias", type: "drawer", title: "Biometrias", push: false, width: "550px", parameters: { openNotification } });
     showModal();
   }
 
