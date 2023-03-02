@@ -4,6 +4,7 @@ production.py
 base.py
 test.py
 faces/
+cropped_faces/
 faces.dictionary
 
 

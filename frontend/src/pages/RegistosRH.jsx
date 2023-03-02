@@ -846,7 +846,7 @@ export default ({ setFormTitle, ...props }) => {
   };
 
   const onViewBiometrias = () => {
-    setModalParameters({ content: "viewbiometrias", type: "drawer", title: "Biometrias", push: false, width: "550px", parameters: { openNotification } });
+    setModalParameters({ content: "viewbiometrias", type: "drawer", title: "Biometrias", push: false, width: "650px", parameters: { openNotification } });
     showModal();
   }
 

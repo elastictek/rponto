@@ -134,6 +134,7 @@ def exportRunxlslist(req,dbi,conn):
 
 def exportRunxlstemplatelist(req,dbi,conn):
     try:
+        print(req["sql"])
         response = dbi.executeSimpleList(req["sql"], conn, req["data"])
         zip_buffer = BytesIO()
         with zipfile.ZipFile(zip_buffer, "a",zipfile.ZIP_DEFLATED, False) as zip_file:

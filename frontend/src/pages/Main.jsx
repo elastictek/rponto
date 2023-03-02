@@ -131,7 +131,7 @@ const Toolbar = ({ data, auto, onAuto }) => {
 									})}</Col>
 							</Row>
 							<Row gutterWidth={10} style={{ display: "flex", justifyContent: "end" }}>
-								<Col xs="content"><Button style={{ padding: "0px" }} fill='none' onClick={onAuto}>{auto ? <StopFilled /> : <PlayCircleFilled style={{ fontSize: "16px" }} />}</Button></Col>
+								<Col xs="content"><Button style={{ padding: "0px" }} fill='none' onTouchStart={onAuto}>{auto ? <StopFilled /> : <PlayCircleFilled style={{ fontSize: "16px" }} />}</Button></Col>
 							</Row>
 						</Col>
 					</Row>
@@ -153,7 +153,7 @@ const BlockError = ({ submitting, error, reset }) => {
 						showIcon
 						description={<div style={{ fontSize: "16px" }}>{error?.text}</div>}
 						type="error"
-						action={<Button disabled={submitting.state} onClick={reset} size="small" fill='none' color='danger'>Tentar novamente</Button>}
+						action={<Button disabled={submitting.state} onTouchStart={reset} size="small" fill='none' color='danger'>Tentar novamente</Button>}
 					/>
 				</StyledAlert>
 			</Col>
@@ -361,9 +361,7 @@ const BlockCaptureAuto = ({ auto, onCaptureAuto, capturing, data, submitting }) 
 		{(auto && data.level == 0 && !capturing && !submitting.state && !data.error.status) &&
 
 			<Row style={{marginTop:"20px"}}>
-				<Col></Col>
-				<Col xs="content"><Button onTouchStart={onCaptureAuto} size="large"><CameraTwoTone style={{ fontSize: "52px" }} /></Button></Col>
-				<Col></Col>
+				<Col><Button block onTouchStart={onCaptureAuto} size="large"><CameraTwoTone style={{ fontSize: "52px" }} /></Button></Col>
 			</Row>
 
 		}
