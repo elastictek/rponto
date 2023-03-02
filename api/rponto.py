@@ -223,7 +223,9 @@ def loadFaces(path,sync=False):
             #f = os.path.join(path, filename)
             #if os.path.isfile(f):
             #    ki = face_recognition.load_image_file(f)
-            faces.get("nums").append({"num":filename.split('_')[0],"t_stamp":datetime.today(),"file":filename,"matrix":face_recognition.face_encodings(ki,None,jitters,model)[0]})
+            matrix=face_recognition.face_encodings(ki,None,jitters,model)
+            if matrix and len(matrix)>0:
+                faces.get("nums").append({"num":filename.split('_')[0],"t_stamp":datetime.today(),"file":filename,"matrix":matrix[0]})
         with open('faces.dictionary', 'wb') as faces_file:
             pickle.dump(faces, faces_file)
         return faces
@@ -592,19 +594,20 @@ def AutoCapture(request, format=None):
             valid_names = []
             
             print(f"4. {datetime.now()}")
-
             
+            valid_num = None
             results = face_recognition.compare_faces([_f['matrix'] for _f in faces.get("nums")], unknown_encoding,tolerance)
             valid_indexes = [i for i, x in enumerate(results) if x]
             for idx,x in enumerate(valid_indexes):
                 if idx==0:
                     result=True
+                    valid_num=faces.get("nums")[x].get("num")
                     request.data['filter']["num"] = faces.get("nums")[x].get("num")
                     filepath=filePathByNum(fotos_base_path,faces.get("nums")[x].get("num"))
                 else:
-                    valid_nums.append(faces.get("nums")[x].get("num"))
-                    valid_filepaths.append(filePathByNum(fotos_base_path,faces.get("nums")[x].get("num")))    
-
+                    if faces.get("nums")[x].get("num") != valid_num:
+                        valid_nums.append(faces.get("nums")[x].get("num"))
+                        valid_filepaths.append(filePathByNum(fotos_base_path,faces.get("nums")[x].get("num")))
 
             print(f"5. {datetime.now()}")
             if len(valid_nums):
@@ -649,6 +652,7 @@ def AutoCapture(request, format=None):
                 return Response({"status": "error", "title": "O sistema não o(a) identificou!"})
             return Response({**response,"result":result,"num":request.data['filter'].get("num"),"foto":filepath,"valid_nums":valid_nums,"valid_filepaths":valid_filepaths,"valid_names":valid_names,"config":getConfig()})
     except Exception as error:
+        print(error)
         return Response({"status": "error", "title": str(error)})
 
 def BiometriasList(request, format=None):

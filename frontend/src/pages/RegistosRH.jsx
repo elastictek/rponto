@@ -269,8 +269,8 @@ const Biometrias = ({ parameters }) => {
   const columns = [
     { key: 'num', width: 125, name: 'Número', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> },
     { key: 't_stamp', width: 150, name: 'Data', sortable: false, formatter: p => moment(p.row.t_stamp).format(DATETIME_FORMAT) },
-    { key: 'file', name: 'Ficheiro', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.file}</div> },
-    { key: 'pic', sortable: false, minWidth: 35, width: 35, name: "", formatter: p => <CameraOutlined style={{ cursor: "pointer" }} />, editor: (p) => { return <Pic p={p} path={`${FILES_URL}/static/${p.row.file}`} column="" title="Registo Visual" /> }, editorOptions: { editOnClick: true } },
+    { key: 'file', name: 'Ficheiro', width: 155, sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.file}</div> },
+    { key: 'pic', sortable: false, minWidth: 35, width: 35, name: "", formatter: p => <CameraOutlined style={{ cursor: "pointer" }} />, editor: (p) => { return <Pic p={p} path={`${FILES_URL}/static/faces/${p.row.file}`} column="" title="Registo Visual" /> }, editorOptions: { editOnClick: true } },
     { key: 'baction', name: '', minWidth: 40, maxWidth: 40, formatter: p => <Button icon={<DeleteTwoTone />} size="small" onClick={() => onDelFace(p.row)} /> },
   ];
 
@@ -444,7 +444,7 @@ const InvalidRecords = ({ parameters }) => {
             <>
               <Col xs='content'>
                 <Field name="fnum" label={{ enabled: true, text: "Número", pos: "top", padding: "0px" }}>
-                  <Input size='small' allowClear style={{width:"70px"}} />
+                  <Input size='small' allowClear style={{ width: "70px" }} />
                 </Field>
               </Col>
               <Col xs='content'>
