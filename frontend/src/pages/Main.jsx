@@ -23,7 +23,7 @@ const StyledButton = styled(Button)`
 	font-weight:700;
 	width:150px!important;
 	height:70px!important;
-	font-size:25px;
+	font-size:28px !important;
 `;
 const StyledAlert = styled.div`
 	.ant-alert{
@@ -200,7 +200,7 @@ const BlockNumPad = ({ auto, data, submitting, reset, capture, onNumPadClick }) 
 				</Row>
 				<Row gutterWidth={2}>
 					<Col></Col>
-					<Col xs="content"><StyledButton disabled={data.snapshot || submitting.state} onTouchStart={() => onNumPadClick('C')} size="large">C</StyledButton></Col>
+					<Col xs="content"><StyledButton style={{color:"#ed143d"}} disabled={data.snapshot || submitting.state} onTouchStart={() => onNumPadClick('C')} size="large">C</StyledButton></Col>
 					<Col xs="content"><StyledButton disabled={submitting.state} onTouchStart={() => onNumPadClick(0)} size="large">0</StyledButton></Col>
 					<Col xs="content">
 						{!data.snapshot && <StyledButton disabled={!parseInt(data.num) || submitting.state} onTouchStart={capture} size="large"><CameraTwoTone style={{ fontSize: "48px" }} /></StyledButton>}

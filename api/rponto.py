@@ -58,8 +58,8 @@ records_base_path = '../records'
 records_invalid_base_path = '../records_invalid'
 faces_base_path = 'faces'
 cropped_faces_base_path = 'cropped_faces'
-tolerance = 0.4
-jitters = 1
+tolerance = 0.45
+jitters = 2
 model = 'large'
 
 
@@ -253,6 +253,31 @@ def preProcessImage(filepath,radius=None,brightness_factor=None):
 
 @api_view(['GET'])
 @renderer_classes([JSONRenderer])
+def SimulateRecordAdd(request, format=None):
+
+    target_datetime = datetime.today()
+    func_num = 30
+    datetime_input = datetime.strptime("2022-01-19 23:40:00", "%Y-%m-%d %H:%M:%S")
+    datetime_input_fw = datetime_input + timedelta(hours = 2)
+    datetime_input_bw = datetime_input - timedelta(hours = 2)
+    week_fw = datetime_input_fw.isocalendar().week
+    week_bw = datetime_input_bw.isocalendar().week
+    day_fw = datetime_input_fw.weekday()
+    day_bw = datetime_input_bw.weekday()
+
+
+    return Response({
+        "datetime_input":datetime_input.strftime("%Y-%m-%d %H:%M:%S"),
+        "datetime_input_fw":datetime_input_fw.strftime("%Y-%m-%d %H:%M:%S"),
+        "datetime_input_bw":datetime_input_bw.strftime("%Y-%m-%d %H:%M:%S"),
+        "week_fw":week_fw,
+        "week_bw":week_bw,
+        "day_fw":day_fw,
+        "day_bw":day_bw
+        })
+
+@api_view(['GET'])
+@renderer_classes([JSONRenderer])
 def PreProcessImages(request, format=None):
     faces ={}
     for filename in os.listdir(faces_base_path):
@@ -385,19 +410,25 @@ def SetUser(request, format=None):
         else:
             existsInBd = True
             result = False
+            unknown_encoding = 0
+            unknown_image = None
             filepath = filePathByNum(fotos_base_path,filter["num"])
             faces = loadFaces(faces_base_path)
             tmp = tempfile.NamedTemporaryFile(delete=False)
             try:
                 tmp.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
-                preProcessImage(tmp.name).save(tmp.name,"JPEG")
+                ppi = preProcessImage(tmp.name)
+                if ppi is not None:
+                    ppi.save(tmp.name,"JPEG")
+                    unknown_image = face_recognition.load_image_file(tmp)
+                #preProcessImage(tmp.name).save(tmp.name,"JPEG")
                 #unknown_image = face_recognition.api.load_image_file(preProcessImage(tmp.name))
                 unknown_image = face_recognition.load_image_file(tmp)
             finally:
                 tmp.close()
                 os.unlink(tmp.name)
-            
-            unknown_encoding = face_recognition.face_encodings(unknown_image,None,jitters,model)
+            if unknown_image is not None:
+                unknown_encoding = face_recognition.face_encodings(unknown_image,None,jitters,model)
             if len(unknown_encoding)==0:
                 saveSnapshot(records_invalid_base_path,data["snapshot"],ts,"no_face",filter["num"])
                 return Response({"status": "error", "title": "Não foi reconhecida nenhuma face!"})
@@ -568,6 +599,8 @@ def AutoCapture(request, format=None):
         else:
             existsInBd = True
             result = False
+            unknown_encoding = 0
+            unknown_image = None
             #filepath = filePathByNum(fotos_base_path,filter["num"])
             filepath = None
             print(f"1. {datetime.now()}")
@@ -576,14 +609,17 @@ def AutoCapture(request, format=None):
             tmp = tempfile.NamedTemporaryFile(delete=False)
             try:
                 tmp.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
-                preProcessImage(tmp.name).save(tmp.name,"JPEG")
-                unknown_image = face_recognition.load_image_file(tmp)
+                ppi = preProcessImage(tmp.name)
+                if ppi is not None:
+                    ppi.save(tmp.name,"JPEG")
+                    unknown_image = face_recognition.load_image_file(tmp)
                 #unknown_image = face_recognition.load_image_file(tmp)
             finally:
                 tmp.close()
                 os.unlink(tmp.name)
             print(f"3. {datetime.now()}")
-            unknown_encoding = face_recognition.face_encodings(unknown_image,None,jitters,model)
+            if unknown_image is not None:
+                unknown_encoding = face_recognition.face_encodings(unknown_image,None,jitters,model)
             if len(unknown_encoding)==0:
                 saveSnapshot(records_invalid_base_path,data["snapshot"],ts,"no_face")
                 return Response({"status": "error", "title": "Não foi reconhecida nenhuma face!"})
@@ -597,6 +633,18 @@ def AutoCapture(request, format=None):
             
             valid_num = None
             results = face_recognition.compare_faces([_f['matrix'] for _f in faces.get("nums")], unknown_encoding,tolerance)
+
+            # distances = face_recognition.face_distance([_f['matrix'] for _f in faces.get("nums")], unknown_encoding)
+            # items=[]
+            # for idx,x in enumerate(distances):
+            #     if x<=0.6:
+            #         items.append({"num":faces.get("nums")[idx].get("num"),"distance":x})
+            # items = sorted(items, key=lambda x: x["distance"])
+            # print("#####################-------############################")
+            # print(items)
+            # print("#####################-------############################")
+            
+
             valid_indexes = [i for i, x in enumerate(results) if x]
             for idx,x in enumerate(valid_indexes):
                 if idx==0:
