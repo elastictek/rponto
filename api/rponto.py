@@ -59,7 +59,7 @@ records_invalid_base_path = '../records_invalid'
 faces_base_path = 'faces'
 cropped_faces_base_path = 'cropped_faces'
 tolerance = 0.45
-jitters = 2
+jitters = 1
 model = 'large'
 
 
