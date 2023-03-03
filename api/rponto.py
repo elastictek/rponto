@@ -260,10 +260,36 @@ def SimulateRecordAdd(request, format=None):
     datetime_input = datetime.strptime("2022-01-19 23:40:00", "%Y-%m-%d %H:%M:%S")
     datetime_input_fw = datetime_input + timedelta(hours = 2)
     datetime_input_bw = datetime_input - timedelta(hours = 2)
-    week_fw = datetime_input_fw.isocalendar().week
-    week_bw = datetime_input_bw.isocalendar().week
+    week_fw = datetime_input_fw.isocalendar().week-1
+    week_bw = datetime_input_bw.isocalendar().week-1
     day_fw = datetime_input_fw.weekday()
     day_bw = datetime_input_bw.weekday()
+
+    sql = f"""
+    
+        select * from (
+        select
+        {datetime_input_bw.strftime("%Y-%m-%d")} dt,{week_bw+1} WEEK,YEA_0, REFNUM_0,
+        STRTIM0_{day_bw} STR1, ENDTIM0_{day_bw} END1,STRTIM1_{day_bw} STR2, ENDTIM1_{day_bw} END2
+        from x3peoplesql.[PEOPLELTEK].[EMPLOCTR] CT
+        JOIN x3peoplesql.[PEOPLELTEK].PLANTYP PT ON PT.COD_0 = CT.PLNTYP_0
+        JOIN x3peoplesql.[PEOPLELTEK].TYPWEEK PW ON PW.COD_0 = PT.WEKTYP_{week_bw}
+        WHERE CT.REFNUM_0 = 'F{str(func_num).zfill(5)}' AND YEA_0={datetime_input_bw.strftime("%Y")}
+        union
+        select
+        {datetime_input_fw.strftime("%Y-%m-%d")} dt,{week_fw+1} WEEK,YEA_0, REFNUM_0,
+        STRTIM0_{day_fw} STR1, ENDTIM0_{day_fw} END1,STRTIM1_{day_fw} STR2, ENDTIM1_{day_fw} END2
+        from x3peoplesql.[PEOPLELTEK].[EMPLOCTR] CT
+        JOIN x3peoplesql.[PEOPLELTEK].PLANTYP PT ON PT.COD_0 = CT.PLNTYP_0
+        JOIN x3peoplesql.[PEOPLELTEK].TYPWEEK PW ON PW.COD_0 = PT.WEKTYP_{week_fw}
+        WHERE CT.REFNUM_0 = 'F{str(func_num).zfill(5)}' AND YEA_0={datetime_input_fw.strftime("%Y")}
+        ) PLN
+        UNPIVOT
+        (
+        PLN FOR reg IN (STR1,END1,STR2,END2)
+        ) AS unpvt;
+    
+    """
 
 
     return Response({
@@ -273,7 +299,8 @@ def SimulateRecordAdd(request, format=None):
         "week_fw":week_fw,
         "week_bw":week_bw,
         "day_fw":day_fw,
-        "day_bw":day_bw
+        "day_bw":day_bw,
+        "sql":sql
         })
 
 @api_view(['GET'])
@@ -410,7 +437,7 @@ def SetUser(request, format=None):
         else:
             existsInBd = True
             result = False
-            unknown_encoding = 0
+            unknown_encoding = []
             unknown_image = None
             filepath = filePathByNum(fotos_base_path,filter["num"])
             faces = loadFaces(faces_base_path)
@@ -599,7 +626,7 @@ def AutoCapture(request, format=None):
         else:
             existsInBd = True
             result = False
-            unknown_encoding = 0
+            unknown_encoding = []
             unknown_image = None
             #filepath = filePathByNum(fotos_base_path,filter["num"])
             filepath = None
