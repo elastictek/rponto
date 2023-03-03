@@ -503,8 +503,8 @@ def SetUser(request, format=None):
                         fname = f"""{filter["num"]}_{int(datetime.timestamp(datetime.now()))}.jpg"""
                         with open(f"""{faces_base_path}/{fname}""", "wb") as fh:
                             fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
-                        preProcessImage(fname).save(os.path.join(cropped_faces_base_path,fname),"JPEG")
-                        addFace(cropped_faces_base_path,fname)
+                        preProcessImage(f"""{faces_base_path}/{fname}""").save(os.path.join(cropped_faces_base_path,fname),"JPEG")
+                        added = addFace(cropped_faces_base_path,fname)
                     return Response({"status": "error", "title": f"""O colaborador indicado não existe no sistema! {"A recolha dos dados biométricos foi efetuada." if added else ""}"""})                
 
             f = Filters(request.data['filter'])
