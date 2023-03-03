@@ -254,7 +254,7 @@ def preProcessImage(filepath,radius=None,brightness_factor=None):
 @api_view(['GET'])
 @renderer_classes([JSONRenderer])
 def SimulateRecordAdd(request, format=None):
-
+    connection = connections[connMssqlName].cursor()
     target_datetime = datetime.today()
     func_num = 30
     datetime_input = datetime.strptime("2022-01-19 23:40:00", "%Y-%m-%d %H:%M:%S")
@@ -269,16 +269,16 @@ def SimulateRecordAdd(request, format=None):
     
         select * from (
         select
-        {datetime_input_bw.strftime("%Y-%m-%d")} dt,{week_bw+1} WEEK,YEA_0, REFNUM_0,
-        STRTIM0_{day_bw} STR1, ENDTIM0_{day_bw} END1,STRTIM1_{day_bw} STR2, ENDTIM1_{day_bw} END2
+        '{datetime_input_bw.strftime("%Y-%m-%d")}' dt,{week_bw+1} WEEK,YEA_0, REFNUM_0,
+        STUFF(STRTIM0_{day_bw}, 3, 0, ':') STR1, STUFF(ENDTIM0_{day_bw}, 3, 0, ':') END1, STUFF(STRTIM1_{day_bw}, 3, 0, ':') STR2, STUFF(ENDTIM1_{day_bw}, 3, 0, ':') END2
         from x3peoplesql.[PEOPLELTEK].[EMPLOCTR] CT
         JOIN x3peoplesql.[PEOPLELTEK].PLANTYP PT ON PT.COD_0 = CT.PLNTYP_0
         JOIN x3peoplesql.[PEOPLELTEK].TYPWEEK PW ON PW.COD_0 = PT.WEKTYP_{week_bw}
         WHERE CT.REFNUM_0 = 'F{str(func_num).zfill(5)}' AND YEA_0={datetime_input_bw.strftime("%Y")}
         union
         select
-        {datetime_input_fw.strftime("%Y-%m-%d")} dt,{week_fw+1} WEEK,YEA_0, REFNUM_0,
-        STRTIM0_{day_fw} STR1, ENDTIM0_{day_fw} END1,STRTIM1_{day_fw} STR2, ENDTIM1_{day_fw} END2
+        '{datetime_input_fw.strftime("%Y-%m-%d")}' dt,{week_fw+1} WEEK,YEA_0, REFNUM_0,
+        STUFF(STRTIM0_{day_fw}, 3, 0, ':') STR1, STUFF(ENDTIM0_{day_fw}, 3, 0, ':') END1, STUFF(STRTIM1_{day_fw}, 3, 0, ':') STR2, STUFF(ENDTIM1_{day_fw}, 3, 0, ':') END2
         from x3peoplesql.[PEOPLELTEK].[EMPLOCTR] CT
         JOIN x3peoplesql.[PEOPLELTEK].PLANTYP PT ON PT.COD_0 = CT.PLNTYP_0
         JOIN x3peoplesql.[PEOPLELTEK].TYPWEEK PW ON PW.COD_0 = PT.WEKTYP_{week_fw}
@@ -286,11 +286,19 @@ def SimulateRecordAdd(request, format=None):
         ) PLN
         UNPIVOT
         (
-        PLN FOR reg IN (STR1,END1,STR2,END2)
-        ) AS unpvt;
+        REC FOR reg IN (STR1,END1,STR2,END2)
+        ) AS unpvt
     
     """
 
+    reg = dbmssql.executeSimpleList(lambda: (sql), connection, {})['rows']
+    t = [{}]
+    if reg and len(reg)>0:
+        for itm in reg:
+            t.append({
+                "picou em":datetime_input.strftime("%Y-%m-%d %H:%M:%S"),
+                "plan-date": f"""{itm.get("dt")} {itm.get("REC")}"""
+                })
 
     return Response({
         "datetime_input":datetime_input.strftime("%Y-%m-%d %H:%M:%S"),
@@ -300,7 +308,7 @@ def SimulateRecordAdd(request, format=None):
         "week_bw":week_bw,
         "day_fw":day_fw,
         "day_bw":day_bw,
-        "sql":sql
+        "t":t
         })
 
 @api_view(['GET'])
@@ -354,7 +362,7 @@ def filePathByNum(path,num):
     return None
 
 def SetUser(request, format=None):
-    connection = connections[connMssqlName].cursor()    
+    connection = connections[connMssqlName].cursor()
     data = request.data['parameters']
     filter = request.data['filter']
     ts = datetime.now()
@@ -369,7 +377,7 @@ def SetUser(request, format=None):
                     fname = f"""{filter["num"]}_{int(datetime.timestamp(datetime.now()))}.jpg"""
                     with open(f"""{faces_base_path}/{fname}""", "wb") as fh:
                         fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
-                    preProcessImage(fname).save(os.path.join(cropped_faces_base_path,fname),"JPEG")
+                    preProcessImage(f"""{faces_base_path}/{fname}""").save(os.path.join(cropped_faces_base_path,fname),"JPEG")
                     addFace(cropped_faces_base_path,fname)
                 try:
                     os.makedirs(f"""{records_base_path}/{ts.strftime("%Y%m%d")}""")
