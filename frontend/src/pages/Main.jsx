@@ -10,9 +10,12 @@ import { API_URL } from "config";
 import { fetchPost } from "utils/fetch";
 import Logo from 'assets/logo.svg';
 import dayjs from 'dayjs';
-import { DATETIME_FORMAT, STAND_STILL_DURATION, AUTO_SAMPLE_INTERVAL, AUTO_MOTION_TOLERANCE, ON_CONFIRM_TIMEOUT, ON_END_MESSAGE_TIMEOUT } from 'config';
+import { DATETIME_FORMAT, STAND_STILL_DURATION, AUTO_SAMPLE_INTERVAL, AUTO_MOTION_TOLERANCE, ON_CONFIRM_TIMEOUT, ON_END_MESSAGE_TIMEOUT,ON_BEFORECONFIRM_TIMEOUT } from 'config';
 import { useImmer } from "use-immer";
 import pixelMatch from 'pixelmatch';
+import { CameraOptions, useFaceDetection } from 'react-use-face-detection';
+import FaceDetection from '@mediapipe/face_detection';
+import { Camera } from '@mediapipe/camera_utils';
 
 const videoConstraints = {
 	width: 1280,
@@ -153,7 +156,7 @@ const BlockError = ({ submitting, error, reset }) => {
 						showIcon
 						description={<div style={{ fontSize: "16px" }}>{error?.text}</div>}
 						type="error"
-						action={<Button disabled={submitting.state} onTouchStart={()=>!submitting.state && reset()} size="small" fill='none' color='danger'>Tentar novamente</Button>}
+						action={<Button disabled={submitting.state} onTouchStart={() => !submitting.state && reset()} size="small" fill='none' color='danger'>Tentar novamente</Button>}
 					/>
 				</StyledAlert>
 			</Col>
@@ -200,11 +203,11 @@ const BlockNumPad = ({ auto, data, submitting, reset, capture, onNumPadClick }) 
 				</Row>
 				<Row gutterWidth={2}>
 					<Col></Col>
-					<Col xs="content"><StyledButton style={{color:"#ed143d"}} disabled={data.snapshot || submitting.state} onTouchStart={() => !(data.snapshot || submitting.state) && onNumPadClick('C')} size="large">C</StyledButton></Col>
+					<Col xs="content"><StyledButton style={{ color: "#ed143d" }} disabled={data.snapshot || submitting.state} onTouchStart={() => !(data.snapshot || submitting.state) && onNumPadClick('C')} size="large">C</StyledButton></Col>
 					<Col xs="content"><StyledButton disabled={submitting.state} onTouchStart={() => !submitting.state && onNumPadClick(0)} size="large">0</StyledButton></Col>
 					<Col xs="content">
-						{!data.snapshot && <StyledButton disabled={!parseInt(data.num) || submitting.state} onTouchStart={()=>!(!parseInt(data.num) || submitting.state) && capture()} size="large"><CameraTwoTone style={{ fontSize: "48px" }} /></StyledButton>}
-						{data.snapshot && <StyledButton disabled={submitting.state} onTouchStart={()=>!submitting.state && reset()} icon={<RedoOutlined />} size="large" />}
+						{!data.snapshot && <StyledButton disabled={!parseInt(data.num) || submitting.state} onTouchStart={() => !(!parseInt(data.num) || submitting.state) && capture()} size="large"><CameraTwoTone style={{ fontSize: "48px" }} /></StyledButton>}
+						{data.snapshot && <StyledButton disabled={submitting.state} onTouchStart={() => !submitting.state && reset()} icon={<RedoOutlined />} size="large" />}
 					</Col>
 					<Col></Col>
 				</Row>
@@ -326,19 +329,35 @@ const BlockIdentity = ({ data }) => {
 	</>);
 }
 
-const BlockWebcam = React.forwardRef(({ data }, ref) => {
+const BlockWebcam = React.forwardRef(({ data, boundingBox }, ref) => {
 	return (<>
-		{!data.snapshot && <Webcam
-			minScreenshotWidth={1280}
-			minScreenshotHeight={720}
-			audio={false}
-			ref={ref}
-
-			height={320}
-			screenshotFormat="image/jpeg"
-			videoConstraints={videoConstraints}
-			style={{ borderRadius: "5px", /* boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" */ }}
-		/>}
+		<div style={{ display: data.snapshot && "none" }}>
+			{boundingBox.map((box, index) => (
+				<div
+					key={`${index + 1}`}
+					style={{
+						border: '4px solid #52c41a',
+						borderRadius: "5px",
+						position: 'absolute',
+						top: `${box.yCenter * 100}%`,
+						left: `${box.xCenter * 100}%`,
+						width: `${box.width * 100}%`,
+						height: `${box.height * 100}%`,
+						zIndex: 1,
+					}}
+				/>
+			))}
+			<Webcam
+				minScreenshotWidth={1280}
+				minScreenshotHeight={720}
+				audio={false}
+				ref={ref}
+				height={320}
+				screenshotFormat="image/jpeg"
+				videoConstraints={videoConstraints}
+				style={{ borderRadius: "5px", /* boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" */ }}
+			/>
+		</div>
 	</>);
 });
 
@@ -348,7 +367,7 @@ const BlockMessageStandStill = ({ submitting, data, auto, capturing, standStillC
 			{(auto && data.level == 0 && capturing && !submitting.state && !data.error.status) &&
 				<Row gutterWidth={2} style={{ marginTop: "30px", marginBottom: "30px" }}>
 					<Col></Col>
-					<Col xs="content" style={{ fontWeight: 200, fontSize: "25px", display: "flex", flexDirection: "column", alignItems: "center" }}>Por favor, <span style={{ fontWeight: 700 }}>permaneça imóvel</span> em frente à câmera por {standStillCounter-1} segundos...</Col>
+					<Col xs="content" style={{ fontWeight: 200, fontSize: "25px", display: "flex", flexDirection: "column", alignItems: "center" }}>Por favor, <span style={{ fontWeight: 700 }}>permaneça imóvel</span> em frente à câmera por {standStillCounter - 1} segundos...</Col>
 					<Col></Col>
 				</Row>
 			}
@@ -360,8 +379,8 @@ const BlockCaptureAuto = ({ auto, onCaptureAuto, capturing, data, submitting }) 
 	return (<>
 		{(auto && data.level == 0 && !capturing && !submitting.state && !data.error.status) &&
 
-			<Row style={{marginTop:"20px"}}>
-				<Col><Button block onTouchStart={onCaptureAuto} size="large"><CameraTwoTone style={{ fontSize: "52px" }} /></Button></Col>
+			<Row style={{ marginTop: "20px" }}>
+				<Col><Button style={{height:"250px"}} block onTouchStart={onCaptureAuto} size="large"><CameraTwoTone style={{ fontSize: "52px" }} /></Button></Col>
 			</Row>
 
 		}
@@ -381,21 +400,40 @@ const clearTimer = (timer, timeout = true) => {
 }
 
 export default ({ }) => {
+	const autoTriggered = React.useRef(false);
+	const { webcamRef, boundingBox, isLoading, detected, facesDetected } = useFaceDetection({
+		faceDetectionOptions: {
+			model: 'short',
+		},
+		faceDetection: new FaceDetection.FaceDetection({
+			locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`,
+		}),
+		camera: ({ mediaSrc, onFrame, width, height }) =>
+			new Camera(mediaSrc, {
+				onFrame,
+				width,
+				height,
+			}),
+	});
+
+
+
 	const submitting = useSubmitting(false);
-	const webcamRef = React.useRef(null);
+	//const webcamRef = React.useRef(null);
 	const timeout = React.useRef(null);
+	const beforeConfirmTimeout = React.useRef(null);
 	const [capturing, setCapturing] = useState(false);
 
-	const [motionDetected, setMotionDetected] = useState(0);
+	// const [motionDetected, setMotionDetected] = useState(0);
 	const [standStillCounter, setStandStillCounter] = useState(STAND_STILL_DURATION + 1);
 	const standStillTimer = React.useRef(null);
 	const autoTimer = React.useRef(null);
-	const autoSampleTimer = React.useRef(null);
+	// const autoSampleTimer = React.useRef(null);
 
 	// const canvasRef = useRef(null);
 	const [auto, setAuto] = useState(false);
 	const [data, updateData] = useImmer({
-		existsInBd:false,
+		existsInBd: false,
 		level: 0,
 		num: '',
 		nome: '',
@@ -417,51 +455,61 @@ export default ({ }) => {
 		request();
 		return setInterval(request, 1000);
 	}
-	const initMotionDetection = () => {
-		const canvas = canvasRef.current;
-		const ctx = canvas.getContext('2d', { willReadFrequently: true });
-		let lastImageData;
+	// const initMotionDetection = () => {
+	// 	const canvas = canvasRef.current;
+	// 	const ctx = canvas.getContext('2d', { willReadFrequently: true });
+	// 	let lastImageData;
 
-		// Request access to the user's webcam
-		navigator.mediaDevices.getUserMedia({ video: true })
-			.then(stream => {
-				const video = document.createElement('video');
-				video.srcObject = stream;
-				video.autoplay = true;
+	// 	// Request access to the user's webcam
+	// 	navigator.mediaDevices.getUserMedia({ video: true })
+	// 		.then(stream => {
+	// 			const video = document.createElement('video');
+	// 			video.srcObject = stream;
+	// 			video.autoplay = true;
 
-				// Check for motion every 100 milliseconds
-				autoSampleTimer.current = setInterval(() => {
-					// Capture the current frame from the video
-					canvas.width = video.videoWidth;
-					canvas.height = video.videoHeight;
-					ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-					const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-					if (lastImageData) {
-						// Calculate the difference between the current frame and the previous frame
-						const diff = pixelMatch(imageData.data, lastImageData.data, null, canvas.width, canvas.height, { threshold: 0.2 });
+	// 			// Check for motion every 100 milliseconds
+	// 			autoSampleTimer.current = setInterval(() => {
+	// 				// Capture the current frame from the video
+	// 				canvas.width = video.videoWidth;
+	// 				canvas.height = video.videoHeight;
+	// 				ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+	// 				const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	// 				if (lastImageData) {
+	// 					// Calculate the difference between the current frame and the previous frame
+	// 					const diff = pixelMatch(imageData.data, lastImageData.data, null, canvas.width, canvas.height, { threshold: 0.2 });
 
-						// If there is motion, start the timer
-						//setLog(`----diff>${diff}`);
-						if (diff > AUTO_MOTION_TOLERANCE) {
+	// 					// If there is motion, start the timer
+	// 					//setLog(`----diff>${diff}`);
+	// 					if (diff > AUTO_MOTION_TOLERANCE) {
 
-							setMotionDetected(Date.now());
-						}
-					}
+	// 						setMotionDetected(Date.now());
+	// 					}
+	// 				}
 
-					// Save the current frame's data for comparison in the next loop
-					lastImageData = imageData;
-				}, AUTO_SAMPLE_INTERVAL);
-			})
-			.catch(error => {
-				console.error('Error accessing webcam:', error);
-			});
-	}
+	// 				// Save the current frame's data for comparison in the next loop
+	// 				lastImageData = imageData;
+	// 			}, AUTO_SAMPLE_INTERVAL);
+	// 		})
+	// 		.catch(error => {
+	// 			console.error('Error accessing webcam:', error);
+	// 		});
+	// }
 	useEffect(() => {
 		//const controller = new AbortController();
 		const interval = loadInterval();
 		//initMotionDetection();
-		return (() => { clearInterval(interval); clearTimer(autoSampleTimer, false); clearTimer(autoTimer); });
+		return (() => { clearInterval(interval); /* clearTimer(autoSampleTimer, false); */ clearTimer(autoTimer); });
 	}, []);
+
+
+	useEffect(() => {
+		if (auto && detected && !autoTriggered.current) {
+			autoTriggered.current=true;
+			onCaptureAuto();
+			//setTimeout(()=>{ detected && onCaptureAuto();},5000);
+		}
+	}, [detected]);
+
 	// useEffect(() => {
 	// 	// Start the timer when motion is detected
 	// 	if (motionDetected > 0) {
@@ -483,24 +531,27 @@ export default ({ }) => {
 	// 	}
 	// }
 	const onCaptureAuto = () => {
-		if (!capturing) {
-			standStillTimer.current = setInterval(() => { setStandStillCounter(prev => prev - 1); }, 1000);
-			setCapturing(true);
-			autoTimer.current = setTimeout(() => autoCapture(), STAND_STILL_DURATION * 1000);
+		if (auto) {
+			if (!capturing) {
+				standStillTimer.current = setInterval(() => { setStandStillCounter(prev => prev - 1); }, 1000);
+				setCapturing(true);
+				autoTimer.current = setTimeout(() => autoCapture(), STAND_STILL_DURATION * 1000);
+			}
 		}
 	}
 	const reset = () => {
 		clearTimer(timeout);
+		clearTimer(beforeConfirmTimeout);
 		setStandStillCounter(STAND_STILL_DURATION + 1);
 		setCapturing(false);
 		clearTimer(standStillTimer, false);
-		clearTimer(autoSampleTimer, false);
+		// clearTimer(autoSampleTimer, false);
 		/* 		if (auto) {
 					initMotionDetection();
 				} */
 		//TODO - FALTA OS RESTANTES TIMERS...
 		updateData(draft => {
-			draft.existsInBd=false;
+			draft.existsInBd = false;
 			draft.config = {};
 			draft.level = 0;
 			draft.num = '';
@@ -516,6 +567,7 @@ export default ({ }) => {
 			draft.valid_nums = [];
 			draft.valid_names = [];
 		});
+		autoTriggered.current=false;
 		submitting.end();
 	}
 	const onNumPadClick = (v) => {
@@ -531,7 +583,7 @@ export default ({ }) => {
 	}
 	const autoCapture = async () => {
 		if (!auto) { return; }
-		clearTimer(autoSampleTimer, false);
+		// clearTimer(autoSampleTimer, false);
 		setStandStillCounter(STAND_STILL_DURATION + 1);
 		clearTimer(standStillTimer, false);
 		setCapturing(false);
@@ -567,6 +619,7 @@ export default ({ }) => {
 			updateData(draft => { draft.error = { status: true, text: e.message } });
 			submitting.end();
 		};
+		beforeConfirmTimeout.current = setTimeout(reset, ON_BEFORECONFIRM_TIMEOUT);
 	}
 	const capture = React.useCallback(
 		async () => {
@@ -606,11 +659,12 @@ export default ({ }) => {
 		[webcamRef, data.num]
 	);
 	const onConfirm = async (v) => {
+		clearTimer(beforeConfirmTimeout);
 		if (v === true) {
 			submitting.trigger();
 			try {
 				const vals = { num: data.num.startsWith("F") ? data.num : `F${data.num.padStart(5, '0')}` };
-				const learn = (data?.existsInBd===true && Array.isArray(data?.valid_nums) && data.valid_nums.length===0 && !data?.recon ) ? true : false;
+				const learn = (data?.existsInBd === true && Array.isArray(data?.valid_nums) && data.valid_nums.length === 0 && !data?.recon) ? true : false;
 				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", save: true, learn, snapshot: data.snapshot, timestamp: dayjs(data.date).format(DATETIME_FORMAT) } });
 				if (response.data.status !== "error" && response.data.hsh) {
 					updateData(draft => {
@@ -662,7 +716,8 @@ export default ({ }) => {
 		if (auto === false) {
 			// initMotionDetection();
 		} else {
-			clearTimer(autoSampleTimer, false);
+			// clearTimer(autoSampleTimer, false);
+			clearTimer(beforeConfirmTimeout);
 			clearTimer(autoTimer);
 			clearTimer(standStillTimer, false);
 			setCapturing(false);
@@ -683,7 +738,7 @@ export default ({ }) => {
 						<Row gutterWidth={15}>
 							<Col xs="content" style={{ height: "100%", alignSelf: "center" }}></Col>
 							<Col xs="content" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-								<BlockWebcam data={data} ref={webcamRef} />
+								<BlockWebcam data={data} ref={webcamRef} boundingBox={boundingBox} />
 								<BlockSnapshot data={data} />
 								<BlockFoto data={data} />
 								<BlockIdentity data={data} />

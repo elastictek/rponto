@@ -81,6 +81,7 @@
     "react-responsive": "^9.0.0-beta.10",
     "react-router": "^6.4.0",
     "react-router-dom": "^6.4.0",
+    "react-use-face-detection": "^1.0.1",
     "react-use-websocket": "^4.2.0",
     "react-webcam": "^7.0.1",
     "react-webdatarocks": "^1.4.6",
