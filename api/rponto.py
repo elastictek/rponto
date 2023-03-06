@@ -230,13 +230,25 @@ def loadFaces(path,sync=False):
             pickle.dump(faces, faces_file)
         return faces
 
+def getBiggestFace(face_locations):
+    max_size = 0
+    max_location = None
+    for location in face_locations:
+        top, right, bottom, left = location
+        size = (bottom - top) * (right - left)
+        if size > max_size:
+            max_size = size
+            max_location = location
+    return max_location
+
 def preProcessImage(filepath,radius=None,brightness_factor=None):
     #f = os.path.join(faces_base_path, filename)
     if os.path.isfile(filepath):
         image = face_recognition.load_image_file(filepath)
         face_locations = face_recognition.face_locations(image)
         if face_locations and len(face_locations) > 0:
-            top, right, bottom, left = face_locations[0]
+            top, right, bottom, left = getBiggestFace(face_locations)
+            #top, right, bottom, left = face_locations[0]
             # Crop the face from the image
             face_image = Image.fromarray(image[top:bottom, left:right])
             gray_image = face_image.convert('L')
@@ -256,8 +268,8 @@ def preProcessImage(filepath,radius=None,brightness_factor=None):
 def SimulateRecordAdd(request, format=None):
     #for testes only to remove from here
     connection = connections[connMssqlName].cursor()
-    num ="F00160"
-    record = processRecord(num,datetime(2022, 1, 19, 23, 50,00)) #saveRecord("F00160",datetime(2023, 3, 3, 13, 44,00),None,{"type":"in","timestamp":datetime.today().strftime("%Y-%m-%d %H:%M:%S")})
+    num ="F00030"
+    record = processRecord(num,datetime(2022, 1, 19, 23, 00,00)) #saveRecord("F00160",datetime(2023, 3, 3, 13, 44,00),None,{"type":"in","timestamp":datetime.today().strftime("%Y-%m-%d %H:%M:%S")})
     #reg = [{"id":242,"num":"F00030","dt":"2022-01-20","dts":"2022-01-20","nt":2,"ts_01":"2022-01-019 23:50:03","ss_01":"2022-01-019 23:50:03","ty_01":"in","ts_02":None,"ss_02":None,"ty_02":None,"ts_03":None,"ss_03":None,"ty_03":None,"ts_04":None,"ss_04":None,"ty_04":None,"ts_05":None,"ss_05":None,"ty_05":None,"ts_06":None,"ss_06":None,"ty_06":None,"ts_07":None,"ss_07":None,"ty_07":None,"ts_08":None,"ss_08":None,"ty_08":None,"status":1}]
     #n_records = 8
     #for n in reversed(range(8)):
@@ -294,14 +306,14 @@ def processRecord(num,ts):
     sql = f"""    
         select * from (
         select
-        '{ts_bw.strftime("%Y-%m-%d")}' dt,{week_bw+1} WEEK,YEA_0, REFNUM_0, STUFF(STRTIM0_{day_bw}, 3, 0, ':') STR1, STUFF(ENDTIM0_{day_bw}, 3, 0, ':') END1, STUFF(STRTIM1_{day_bw}, 3, 0, ':') STR2, STUFF(ENDTIM1_{day_bw}, 3, 0, ':') END2
+        '{ts_bw.strftime("%Y-%m-%d")}' dt,{week_bw+1} WEEK,YEA_0, REFNUM_0,PLNTYP_0, STUFF(STRTIM0_{day_bw}, 3, 0, ':') STR1, STUFF(ENDTIM0_{day_bw}, 3, 0, ':') END1, STUFF(STRTIM1_{day_bw}, 3, 0, ':') STR2, STUFF(ENDTIM1_{day_bw}, 3, 0, ':') END2
         from x3peoplesql.[PEOPLELTEK].[EMPLOCTR] CT
         JOIN x3peoplesql.[PEOPLELTEK].PLANTYP PT ON PT.COD_0 = CT.PLNTYP_0
         JOIN x3peoplesql.[PEOPLELTEK].TYPWEEK PW ON PW.COD_0 = PT.WEKTYP_{week_bw}
         WHERE CT.REFNUM_0 = '{num}' AND YEA_0={ts_bw.strftime("%Y")}
         union
         select
-        '{ts_fw.strftime("%Y-%m-%d")}' dt,{week_fw+1} WEEK,YEA_0, REFNUM_0, STUFF(STRTIM0_{day_fw}, 3, 0, ':') STR1, STUFF(ENDTIM0_{day_fw}, 3, 0, ':') END1, STUFF(STRTIM1_{day_fw}, 3, 0, ':') STR2, STUFF(ENDTIM1_{day_fw}, 3, 0, ':') END2
+        '{ts_fw.strftime("%Y-%m-%d")}' dt,{week_fw+1} WEEK,YEA_0, REFNUM_0,PLNTYP_0, STUFF(STRTIM0_{day_fw}, 3, 0, ':') STR1, STUFF(ENDTIM0_{day_fw}, 3, 0, ':') END1, STUFF(STRTIM1_{day_fw}, 3, 0, ':') STR2, STUFF(ENDTIM1_{day_fw}, 3, 0, ':') END2
         from x3peoplesql.[PEOPLELTEK].[EMPLOCTR] CT
         JOIN x3peoplesql.[PEOPLELTEK].PLANTYP PT ON PT.COD_0 = CT.PLNTYP_0
         JOIN x3peoplesql.[PEOPLELTEK].TYPWEEK PW ON PW.COD_0 = PT.WEKTYP_{week_fw}
@@ -313,40 +325,42 @@ def processRecord(num,ts):
         ) AS unpvt    
     """
     reg = dbmssql.executeSimpleList(lambda: (sql), connection, {})['rows']
-    t = []
     previous_date = None
     exit_tolerance = 15 #minutes
-    record={"type_mov":None,"date_ref":None,"date_plan":None,"period":-1,"item":ts}
+    #record={"type_mov":None,"date_ref":None,"date_plan":None,"period":-1,"item":ts}
+    record={"date_ref":None}
     if reg and len(reg)>0:
         for idx,itm in enumerate(reg):
-            if idx==0:
-                min_date = datetime.strptime(f"""{itm.get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M") - timedelta(hours = 2)
-                max_date = datetime.strptime(f"""{reg[idx+1].get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M")
-            elif idx==len(reg)-2 and (idx % 2) == 0:
-                min_date = datetime.strptime(f"""{itm.get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M")
-                max_date = datetime.strptime(f"""{reg[idx+1].get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M") + timedelta(hours = 2)
-            elif (idx % 2) == 0:
-                min_date = datetime.strptime(f"""{itm.get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M")
-                max_date = datetime.strptime(f"""{reg[idx+1].get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M")           
-            if (idx % 2) == 0:
-                print("#############################")
-                print(itm)
-                if ts>=min_date:
-                    record["date_ref"] = datetime.strptime(f"""{itm.get("dt")}""","%Y-%m-%d")
-                    record["date_plan"] = datetime.strptime(f"""{itm.get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M")
-                    record["item"] = ts
-                    record["min"] = min_date
-                    record["max"] = max_date
-                    #record["period"] = record["period"] + 1
-                    #record["type_mov"] = "in" if (record["period"] % 2) == 0 else "out"
 
+            if idx==0:
+                 min_date = datetime.strptime(f"""{itm.get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M") - timedelta(hours = 2)
+                 max_date = datetime.strptime(f"""{reg[idx+1].get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M")
+            elif idx==len(reg)-2 and (idx % 2) == 0:
+                 min_date = datetime.strptime(f"""{itm.get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M")
+                 max_date = datetime.strptime(f"""{reg[idx+1].get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M") + timedelta(hours = 2)
+            elif (idx % 2) == 0:
+                 min_date = datetime.strptime(f"""{itm.get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M")
+                 max_date = datetime.strptime(f"""{reg[idx+1].get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M")           
+            if (idx % 2) == 0:
+                  if ts>=min_date:
+                     record["date_ref"] = datetime.strptime(f"""{itm.get("dt")}""","%Y-%m-%d")
+            #         record["date_plan"] = datetime.strptime(f"""{itm.get("dt")} {itm.get("REC")}""","%Y-%m-%d %H:%M")
+            #         record["item"] = ts
+            #         record["min"] = min_date
+            #         record["max"] = max_date
+            #         #record["period"] = record["period"] + 1
+            #         #record["type_mov"] = "in" if (record["period"] % 2) == 0 else "out"
+    if record.get("date_ref") is None:
+        record["date_ref"]=ts.strftime("%Y-%m-%d")
     return record
 
 def saveRecord(num,ts,hsh,data):
     pln = processRecord(num,ts)
     connection = connections[connMssqlName].cursor()
     if hsh is None:
-        f = Filters({"num": num,"dts": ts.strftime("%Y-%m-%d") })
+        f = Filters({"num": num,"dts": pln.get("date_ref") 
+        #ts.strftime("%Y-%m-%d") 
+        })
         f.where()
         f.add(f'num = :num', True)
         f.add(f'dts = :dts', True)
@@ -357,14 +371,14 @@ def saveRecord(num,ts,hsh,data):
                 "num":f.parameters["num"],
                 "nt": 1,
                 "hsh":hashlib.md5(f"""{f.parameters["num"]}-{ts.strftime("%Y-%m-%d")}""".encode('utf-8')).hexdigest(),
-                "dts":ts.strftime("%Y-%m-%d"),
-                "dt":datetime.strptime(data["timestamp"],"%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d"),
+                "dts": pln.get("date_ref"), #ts.strftime("%Y-%m-%d"),
+                "dt": pln.get("date_ref"), #datetime.strptime(data["timestamp"],"%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d"),
                 f"ss_01":ts.strftime("%Y-%m-%d %H:%M:%S"),
                 f"ts_01":data["timestamp"],
                 f"ty_01":"in",
             }
             dml = dbmssql.dml(TypeDml.INSERT, dti, "rponto.dbo.time_registration",None,None,False)
-            #dbmssql.execute(dml.statement, connection, dml.parameters)
+            dbmssql.execute(dml.statement, connection, dml.parameters)
             return {"status":"success","hsh":dti.get("hsh")}
         else:               
             nt = reg[0].get("nt")
@@ -382,7 +396,7 @@ def saveRecord(num,ts,hsh,data):
             f.add(f'hsh = :hsh', True)
             f.value("and")
             dml = dbmssql.dml(TypeDml.UPDATE, dti, "rponto.dbo.time_registration",f.parameters,None,False)
-            #dbmssql.execute(dml.statement, connection, dml.parameters)
+            dbmssql.execute(dml.statement, connection, dml.parameters)
             return {"status":"success","hsh":reg[0].get("hsh")}
     else:
         f = Filters({"num": num,"hsh": hsh })
@@ -395,7 +409,7 @@ def saveRecord(num,ts,hsh,data):
             nt = reg[0].get("nt")
             dti = {f"ty_{str(nt).zfill(2)}":data.get("type")}
             dml = dbmssql.dml(TypeDml.UPDATE, dti, "rponto.dbo.time_registration",f.parameters,None,False)
-            #dbmssql.execute(dml.statement, connection, dml.parameters)
+            dbmssql.execute(dml.statement, connection, dml.parameters)
             return {"status":"success"}
 
 @api_view(['GET'])
@@ -626,58 +640,59 @@ def AutoCapture(request, format=None):
                 with open(f"""{records_base_path}/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""", "wb") as fh:
                     fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
             
-                f = Filters({"num": filter["num"],"dts": ts.strftime("%Y-%m-%d") })
-                f.where()
-                f.add(f'num = :num', True)
-                f.add(f'dts = :dts', True)
-                f.value("and")
-                reg = dbmssql.executeSimpleList(lambda: (f'SELECT * from rponto.dbo.time_registration {f.text}'), connection, f.parameters)['rows']
-                if len(reg)==0:
-                    dti = {
-                        "num":f.parameters["num"],
-                        "nt": 1,
-                        "hsh":hashlib.md5(f"""{f.parameters["num"]}-{ts.strftime("%Y-%m-%d")}""".encode('utf-8')).hexdigest(),
-                        "dts":ts.strftime("%Y-%m-%d"),
-                        "dt":datetime.strptime(data["timestamp"],"%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d"),
-                        f"ss_01":ts.strftime("%Y-%m-%d %H:%M:%S"),
-                        f"ts_01":data["timestamp"],
-                        f"ty_01":"in",
-                    }
-                    dml = dbmssql.dml(TypeDml.INSERT, dti, "rponto.dbo.time_registration",None,None,False)
-                    dbmssql.execute(dml.statement, connection, dml.parameters)
-                    return Response({"status":"success","hsh":dti.get("hsh")})
-                else:               
-                    nt = reg[0].get("nt")
-                    if nt==8:
-                        saveSnapshot(records_invalid_base_path,data["snapshot"],ts,"max_records")
-                        raise Exception("Atingiu o número máximo de registos! Por favor entre em contacto com os Recursos Humanos.")
-                    dti = {
-                        "nt": nt+1,
-                        f"ss_{str(nt+1).zfill(2)}":ts.strftime("%Y-%m-%d %H:%M:%S"),
-                        f"ts_{str(nt+1).zfill(2)}":data["timestamp"],
-                        f"ty_{str(nt+1).zfill(2)}":"in" if reg[0].get(f"ty_{str(nt).zfill(2)}") == "out" else "out"
-                    }
-                    f = Filters({"num": filter["num"],"hsh": reg[0].get("hsh")})
-                    f.where()
-                    f.add(f'num = :num', True)
-                    f.add(f'hsh = :hsh', True)
-                    f.value("and")
-                    dml = dbmssql.dml(TypeDml.UPDATE, dti, "rponto.dbo.time_registration",f.parameters,None,False)
-                    dbmssql.execute(dml.statement, connection, dml.parameters)
-                    return Response({"status":"success","hsh":reg[0].get("hsh")})
-            else:
-                f = Filters({"num": filter["num"],"hsh": hsh })
-                f.where()
-                f.add(f'num = :num', True)
-                f.add(f'hsh = :hsh', True)
-                f.value("and")
-                reg = dbmssql.executeSimpleList(lambda: (f'SELECT * from rponto.dbo.time_registration {f.text}'), connection, f.parameters)['rows']
-                if len(reg)>0:
-                    nt = reg[0].get("nt")
-                    dti = {f"ty_{str(nt).zfill(2)}":data.get("type")}
-                    dml = dbmssql.dml(TypeDml.UPDATE, dti, "rponto.dbo.time_registration",f.parameters,None,False)
-                    dbmssql.execute(dml.statement, connection, dml.parameters)
-                    return Response({"status":"success"})
+            return(Response(saveRecord(filter["num"],ts,hsh,data)))
+                # f = Filters({"num": filter["num"],"dts": ts.strftime("%Y-%m-%d") })
+                # f.where()
+                # f.add(f'num = :num', True)
+                # f.add(f'dts = :dts', True)
+                # f.value("and")
+                # reg = dbmssql.executeSimpleList(lambda: (f'SELECT * from rponto.dbo.time_registration {f.text}'), connection, f.parameters)['rows']
+                # if len(reg)==0:
+                #     dti = {
+                #         "num":f.parameters["num"],
+                #         "nt": 1,
+                #         "hsh":hashlib.md5(f"""{f.parameters["num"]}-{ts.strftime("%Y-%m-%d")}""".encode('utf-8')).hexdigest(),
+                #         "dts":ts.strftime("%Y-%m-%d"),
+                #         "dt":datetime.strptime(data["timestamp"],"%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d"),
+                #         f"ss_01":ts.strftime("%Y-%m-%d %H:%M:%S"),
+                #         f"ts_01":data["timestamp"],
+                #         f"ty_01":"in",
+                #     }
+                #     dml = dbmssql.dml(TypeDml.INSERT, dti, "rponto.dbo.time_registration",None,None,False)
+                #     dbmssql.execute(dml.statement, connection, dml.parameters)
+                #     return Response({"status":"success","hsh":dti.get("hsh")})
+                # else:               
+                #     nt = reg[0].get("nt")
+                #     if nt==8:
+                #         saveSnapshot(records_invalid_base_path,data["snapshot"],ts,"max_records")
+                #         raise Exception("Atingiu o número máximo de registos! Por favor entre em contacto com os Recursos Humanos.")
+                #     dti = {
+                #         "nt": nt+1,
+                #         f"ss_{str(nt+1).zfill(2)}":ts.strftime("%Y-%m-%d %H:%M:%S"),
+                #         f"ts_{str(nt+1).zfill(2)}":data["timestamp"],
+                #         f"ty_{str(nt+1).zfill(2)}":"in" if reg[0].get(f"ty_{str(nt).zfill(2)}") == "out" else "out"
+                #     }
+                #     f = Filters({"num": filter["num"],"hsh": reg[0].get("hsh")})
+                #     f.where()
+                #     f.add(f'num = :num', True)
+                #     f.add(f'hsh = :hsh', True)
+                #     f.value("and")
+                #     dml = dbmssql.dml(TypeDml.UPDATE, dti, "rponto.dbo.time_registration",f.parameters,None,False)
+                #     dbmssql.execute(dml.statement, connection, dml.parameters)
+                #     return Response({"status":"success","hsh":reg[0].get("hsh")})
+            # else:
+            #     f = Filters({"num": filter["num"],"hsh": hsh })
+            #     f.where()
+            #     f.add(f'num = :num', True)
+            #     f.add(f'hsh = :hsh', True)
+            #     f.value("and")
+            #     reg = dbmssql.executeSimpleList(lambda: (f'SELECT * from rponto.dbo.time_registration {f.text}'), connection, f.parameters)['rows']
+            #     if len(reg)>0:
+            #         nt = reg[0].get("nt")
+            #         dti = {f"ty_{str(nt).zfill(2)}":data.get("type")}
+            #         dml = dbmssql.dml(TypeDml.UPDATE, dti, "rponto.dbo.time_registration",f.parameters,None,False)
+            #         dbmssql.execute(dml.statement, connection, dml.parameters)
+            #         return Response({"status":"success"})
         else:
             existsInBd = True
             result = False

@@ -3,13 +3,18 @@ body {
     overflow: hidden;
     font-size:11px !important;
 	font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji' !important;
-	/* overflow: hidden; */
+	margin:0px;
+    /* overflow: hidden; */
 }
 
 /*.ant-modal-confirm-body>.anticon+.ant-modal-confirm-title+.ant-modal-confirm-content {
     margin-left: 0px !important;
 }*/
 
+/* @layer Root {.r104f42s7-0-0-beta-26 {
+    block-size:100% !important;
+    height:100% !important;
+}} */
 
 .react-grid-item.react-grid-placeholder {
   background:#b8e6ff !important;

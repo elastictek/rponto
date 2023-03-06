@@ -1,12 +1,13 @@
 import React, { useEffect, useState, Suspense, lazy, useContext } from 'react';
 //import ReactDOM from "react-dom";
 import * as ReactDOM from 'react-dom/client';
+import 'react-data-grid/lib/styles.css';
 import { Route, Routes, useRoutes, BrowserRouter, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Spin, Input, Modal } from 'antd';
 import { useMediaQuery } from 'react-responsive';
 import './app.css';
 import { json } from "utils/object";
-import 'antd/dist/antd.compact.less';
+//import 'antd/dist/antd.compact.less';
 import { SOCKET } from 'config';
 import useWebSocket from 'react-use-websocket';
 import { useImmer } from "use-immer";

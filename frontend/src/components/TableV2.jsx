@@ -27,13 +27,9 @@ const Table = styled(DataGrid).withConfig({
     shouldForwardProp: (prop) =>
         !['height', 'pagination', 'minHeight','userSelect'].includes(prop)
 })`
-    block-size:${props => {
-        const h = props?.height ? props.height : "100%";
-        const p = props.paginationPos === 'both' ? "90px" : "45px";
-        return props?.pagination ? `calc(${h} - ${p})` : h;
-    }};
+
+    
     user-select:${({ userSelect }) => (userSelect) ? 'text' : "none"};
-    min-height:${({ minHeight }) => (minHeight) ? minHeight : "180px"};
     scrollbar-color:rgba(105,112,125,.5) transparent;
     scrollbar-width:thin;
     -webkit-mask-image:linear-gradient(180deg,rgba(255,0,0,.1) 0 7.5px calc(100%-7.5px),rgba(255,0,0,.1));
@@ -63,11 +59,23 @@ const Table = styled(DataGrid).withConfig({
         vertical-align:0px;
     }
 
+     .r104f42s7-0-0-beta-26{
+        block-size:300px !important;
+        height:300px !important;
+        background-color:red;
+    }
+/*     .rdg.fill-grid {
+        block-size: 50%;
+    } */
     .rdg-header-row{
         ${({ headerStyle }) => (headerStyle) ? css`${headerStyle}` : css`
             color: #fff!important;
             background-color: #262626!important;
-            font-size:12px;`
+            font-size:12px;
+            position:sticky;
+            inset-block-start: 0;
+            z-index: 1;
+            `
     }
     }
     .rdg-row{
@@ -348,12 +356,14 @@ export default ({ dataAPI, loadOnInit = false, loading,onPageChange, columns: co
                 rows={dataAPI.hasData() ? dataAPI.getData().rows : []}
                 rowHeight={React.isValidElement(actionColumn) ? 26 : 24}
                 headerRowHeight={24}
+                //style={{height:"100%"}}
+                style={{ /* contain: "none", */ height: !dataAPI.hasData() || dataAPI.getData().rows === 0 ? 28 : (dataAPI.getData().rows.length + 1) * 28 }}
                 defaultColumnOptions={{ sortable: true, resizable: true }}
                 onColumnResize={onColumnResize}
                 onSortColumnsChange={onSortColumnsChange}
                 pagination={dataAPI.getPagination(true).enabled}
                 paginationPos={paginationPos}
-                height="100%"
+/*                 height="100%" */
                 userSelect={userSelect}
                 columns={columns}
                 onCopy={handleCopy}

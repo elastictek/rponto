@@ -11,8 +11,8 @@ const { Header, Content, Footer } = Layout;
 export const LayoutContext = React.createContext({});
 
 const StyledDrawer = styled(Drawer)`
-    .ant-drawer-content{
-        background:#2a3142;
+    .ant-drawer-wrapper-body{
+        background:#2a3142 !important;
     }
     .ant-drawer-header{
         border-bottom:none;
@@ -105,7 +105,7 @@ export default () => {
 				>
 					<MainMenu dark onToggleDrawer={onToggleDrawer} auth={auth} handleLogout={handleLogout} />
 				</StyledDrawer>
-				<Header style={{ lineHeight: "32px", height: "32px", display: "flex", alignItems: "center", padding: "0px 0px" }}>
+				<Header style={{ lineHeight: "32px", height: "32px", display: "flex", alignItems: "center", padding: "0px 10px" }}>
 					<Logo style={{ width: "100px", height: "24px", cursor: "pointer" }} onClick={onToggleDrawer} />
 					<Menu
 						theme="dark"

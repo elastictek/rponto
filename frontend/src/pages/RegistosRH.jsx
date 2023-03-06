@@ -269,9 +269,9 @@ const Biometrias = ({ parameters }) => {
   const columns = [
     { key: 'num', width: 125, name: 'Número', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> },
     { key: 't_stamp', width: 150, name: 'Data', sortable: false, formatter: p => moment(p.row.t_stamp).format(DATETIME_FORMAT) },
-    { key: 'file', name: 'Ficheiro', width: 155, sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.file}</div> },
+    { key: 'file', name: 'Ficheiro', width: '0.93fr', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.file}</div> },
     { key: 'pic', sortable: false, minWidth: 35, width: 35, name: "", formatter: p => <CameraOutlined style={{ cursor: "pointer" }} />, editor: (p) => { return <Pic p={p} path={`${FILES_URL}/static/faces/${p.row.file}`} column="" title="Registo Visual" /> }, editorOptions: { editOnClick: true } },
-    { key: 'baction', name: '', minWidth: 40, maxWidth: 40, formatter: p => <Button icon={<DeleteTwoTone />} size="small" onClick={() => onDelFace(p.row)} /> },
+    { key: 'baction', name: '', minWidth: 45, maxWidth: 40, formatter: p => <Button icon={<DeleteTwoTone />} size="small" onClick={() => onDelFace(p.row)} /> },
   ];
 
   const syncAll = async () => {
@@ -387,9 +387,9 @@ const InvalidRecords = ({ parameters }) => {
   }
 
   const columns = [
-    { key: 'num', width: 125, name: 'Número', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> },
-    { key: 'name', name: 'Ficheiro', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.name}</div> },
-    { key: 'type', name: 'Evento', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.type}</div> },
+    { key: 'num', width: 80, name: 'Número',frozen:true, sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> },
+    { key: 'name',width: "0.94fr", name: 'Ficheiro', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.name}</div> },
+    { key: 'type',width: 100, name: 'Evento', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.type}</div> },
     { key: 'pic', sortable: false, minWidth: 35, width: 35, name: "", formatter: p => <CameraOutlined style={{ cursor: "pointer" }} />, editor: (p) => { return <Pic p={p} column="" title="Registo Visual" /> }, editorOptions: { editOnClick: true } }
   ];
 
@@ -767,10 +767,10 @@ export default ({ setFormTitle, ...props }) => {
   }
 
   const columns = [
-    ...(isRH(auth, num)) ? [{ key: 'baction', name: '', minWidth: 40, maxWidth: 40, formatter: p => <Button icon={<EditOutlined />} size="small" onClick={() => onFix(p.row)} /> }] : [],
     ...isRH(auth, num) ? [{ key: 'num', name: 'Número', frozen: true, width: 90, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> }] : [],
     { key: 'dts', width: 100, name: 'Data', frozen: true, formatter: p => moment(p.row.dts).format(DATE_FORMAT) },
-    ...isRH(auth, num) ? [{ key: 'SRN_0', name: 'Nome', formatter: p => <div style={{ fontWeight: 700 }}>{`${p.row.SRN_0} ${p.row.NAM_0}`}</div> }] : [],
+    ...(isRH(auth, num)) ? [{ key: 'baction', name: '', minWidth: 45, maxWidth: 40, formatter: p => <Button icon={<EditOutlined />} size="small" onClick={() => onFix(p.row)} /> }] : [],
+    ...isRH(auth, num) ? [{ key: 'SRN_0', name: 'Nome',width: '0.94fr', formatter: p => <div style={{ fontWeight: 700 }}>{`${p.row.SRN_0} ${p.row.NAM_0}`}</div> }] : [],
     { key: 'nt', name: 'Picagens', width: 80, formatter: p => p.row.nt },
     { key: 'ty_01', name: '', hidden: true, reportTitle: "es_01", minWidth: 35, width: 35, formatter: p => p.row.ty_01?.trim() === 'in' ? "E" : "S" },
     { key: 'ss_01', width: 130, name: 'P01', formatter: p => p.row.ss_01 && moment(p.row.ss_01).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_01) },

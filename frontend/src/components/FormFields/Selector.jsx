@@ -77,7 +77,7 @@ const Popup = ({ params, keyField, columns, filters, moreFilters, onSelect, clos
         setVisible(prev => ({ ...prev, [component]: { open: false } }));
     }
     const onRowClick = (row, col) => {
-        onSelect(row);
+        onSelect(row.row);
         closeSelf();
     }
     const onFilterFinish = (type, values) => {
@@ -102,7 +102,7 @@ const Popup = ({ params, keyField, columns, filters, moreFilters, onSelect, clos
 
     return (<YScroll>
         <Table
-            onRowClick={onRowClick}
+            onCellClick={onRowClick}
             rowStyle={`cursor:pointer;font-size:12px;`}
             headerStyle={`background-color:#f0f0f0;font-size:10px;`}
             loadOnInit={false}
