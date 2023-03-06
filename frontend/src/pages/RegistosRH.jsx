@@ -533,12 +533,15 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
     const v = schema().validate(values, { abortEarly: false, messages: validateMessages, context: {} });
     let { errors, warnings, value, ...status } = getStatus(v);
     const vals = { ...values };
+    let nt=0;
     if (errors === 0) {
       for (let i = 1; i < 8; i++) {
         vals[`ss_${`${i}`.padStart(2, '0')}`] = vals[`ss_${`${i}`.padStart(2, '0')}`] && dayjs(vals[`ss_${`${i}`.padStart(2, '0')}`]).format(DATETIME_FORMAT);
         let v1 = values[`ss_${`${i}`.padStart(2, '0')}`];
         let v2 = values[`ss_${`${i + 1}`.padStart(2, '0')}`];
-        console.log("##",v1,v2);
+        if (v1){
+          nt++;
+        }
         v1 = v1 && v1.unix();//dayjs.duration(v1.format(TIME_FORMAT)).asSeconds();
         v2 = v2 && v2.unix();//dayjs.duration(v2.format(TIME_FORMAT)).asSeconds();
         if (v1 && !values[`ty_${`${i}`.padStart(2, '0')}`]) {
@@ -559,6 +562,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
     setFormStatus({ ...status.formStatus });
     if (errors === 0) {
       try {
+        vals["nt"]=nt;
         let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials: true, filter: {}, parameters: { method: "UpdateRecords", values: vals } });
         if (response.data.status !== "error") {
           parameters.openNotification(response.data.status, 'top', "Notificação", response.data.title);
