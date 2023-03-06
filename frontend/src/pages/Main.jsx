@@ -329,10 +329,10 @@ const BlockIdentity = ({ data }) => {
 	</>);
 }
 
-const BlockWebcam = React.forwardRef(({ data, boundingBox }, ref) => {
+const BlockWebcam = React.forwardRef(({ auto, data, boundingBox }, ref) => {
 	return (<>
 		<div style={{ display: data.snapshot && "none" }}>
-			{boundingBox.map((box, index) => (
+			{auto && boundingBox.map((box, index) => (
 				<div
 					key={`${index + 1}`}
 					style={{
@@ -738,7 +738,7 @@ export default ({ }) => {
 						<Row gutterWidth={15}>
 							<Col xs="content" style={{ height: "100%", alignSelf: "center" }}></Col>
 							<Col xs="content" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-								<BlockWebcam data={data} ref={webcamRef} boundingBox={boundingBox} />
+								<BlockWebcam auto={auto} data={data} ref={webcamRef} boundingBox={boundingBox} />
 								<BlockSnapshot data={data} />
 								<BlockFoto data={data} />
 								<BlockIdentity data={data} />

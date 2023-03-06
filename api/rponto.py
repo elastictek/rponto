@@ -291,11 +291,13 @@ def processRecord(num,ts):
     target_datetime = datetime.today()
     ts_fw = ts + timedelta(hours = 2)
     ts_bw = ts - timedelta(hours = 2)
-    week_fw = ts_fw.isocalendar().week-1
-    week_bw = ts_bw.isocalendar().week-1
+    week_fw = ts_fw.isocalendar()[1]-1
+    week_bw = ts_bw.isocalendar()[1]-1
+    #week_fw = ts_fw.isocalendar().week-1
+    #week_bw = ts_bw.isocalendar().week-1
     day_fw = ts_fw.weekday()
     day_bw = ts_bw.weekday()
-
+    
     f = Filters({"num": num,"dts": ts.strftime("%Y-%m-%d") })
     f.where()
     f.add(f'num = :num', True)
@@ -324,6 +326,8 @@ def processRecord(num,ts):
         REC FOR reg IN (STR1,END1,STR2,END2)
         ) AS unpvt    
     """
+    print(sql)
+    return
     reg = dbmssql.executeSimpleList(lambda: (sql), connection, {})['rows']
     previous_date = None
     exit_tolerance = 15 #minutes
