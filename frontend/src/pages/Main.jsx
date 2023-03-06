@@ -332,7 +332,7 @@ const BlockIdentity = ({ data }) => {
 const BlockWebcam = React.forwardRef(({ auto, data, boundingBox }, ref) => {
 	return (<>
 		<div style={{ display: data.snapshot && "none" }}>
-			{auto && boundingBox.map((box, index) => (
+			{/* {auto && boundingBox.map((box, index) => (
 				<div
 					key={`${index + 1}`}
 					style={{
@@ -346,7 +346,7 @@ const BlockWebcam = React.forwardRef(({ auto, data, boundingBox }, ref) => {
 						zIndex: 1,
 					}}
 				/>
-			))}
+			))} */}
 			<Webcam
 				minScreenshotWidth={1280}
 				minScreenshotHeight={720}
@@ -401,7 +401,9 @@ const clearTimer = (timer, timeout = true) => {
 
 export default ({ }) => {
 	const autoTriggered = React.useRef(false);
-	const { webcamRef, boundingBox, isLoading, detected, facesDetected } = useFaceDetection({
+	const [detected, setDetected] = useState(false);
+	const boundingBox = [];
+/* 	const { webcamRef, boundingBox, isLoading, detected, facesDetected } = useFaceDetection({
 		faceDetectionOptions: {
 			model: 'short',
 		},
@@ -414,12 +416,12 @@ export default ({ }) => {
 				width,
 				height,
 			}),
-	});
+	}); */
 
 
 
 	const submitting = useSubmitting(false);
-	//const webcamRef = React.useRef(null);
+	const webcamRef = React.useRef(null);
 	const timeout = React.useRef(null);
 	const beforeConfirmTimeout = React.useRef(null);
 	const [capturing, setCapturing] = useState(false);
