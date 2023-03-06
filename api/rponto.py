@@ -326,8 +326,6 @@ def processRecord(num,ts):
         REC FOR reg IN (STR1,END1,STR2,END2)
         ) AS unpvt    
     """
-    print(sql)
-    return
     reg = dbmssql.executeSimpleList(lambda: (sql), connection, {})['rows']
     previous_date = None
     exit_tolerance = 15 #minutes
