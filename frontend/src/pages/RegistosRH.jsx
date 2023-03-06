@@ -538,8 +538,9 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
         vals[`ss_${`${i}`.padStart(2, '0')}`] = vals[`ss_${`${i}`.padStart(2, '0')}`] && dayjs(vals[`ss_${`${i}`.padStart(2, '0')}`]).format(DATETIME_FORMAT);
         let v1 = values[`ss_${`${i}`.padStart(2, '0')}`];
         let v2 = values[`ss_${`${i + 1}`.padStart(2, '0')}`];
-        v1 = v1 && dayjs.duration(v1.format(TIME_FORMAT)).asSeconds();
-        v2 = v2 && dayjs.duration(v2.format(TIME_FORMAT)).asSeconds();
+        console.log("##",v1,v2);
+        v1 = v1 && v1.unix();//dayjs.duration(v1.format(TIME_FORMAT)).asSeconds();
+        v2 = v2 && v2.unix();//dayjs.duration(v2.format(TIME_FORMAT)).asSeconds();
         if (v1 && !values[`ty_${`${i}`.padStart(2, '0')}`]) {
           errors = 1;
           status.fieldStatus[`ty_${`${i}`.padStart(2, '0')}`] = { status: "error", messages: [{ message: `[Picagem ${`${i}`.padStart(2, '0')}] o tipo tem de estar preenchido!` }] };

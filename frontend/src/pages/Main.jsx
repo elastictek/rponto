@@ -258,8 +258,8 @@ const BlockIO = ({ submitting, data, onFinish }) => {
 			{(data.level == 2 && data.nome) && <>
 				<Row style={{ margin: "20px 0px" }} gutterWidth={25}>
 					<Col></Col>
-					<Col xs="content"><Button disabled={submitting.state} onTouchStart={() => !submitting.state && onFinish('in')} shape='rounded' style={{ minWidth: "130px", minHeight: "130px", background: "#52c41a", color: "#fff", fontSize: "20px" }}>Entrada</Button></Col>
-					<Col xs="content"><Button disabled={submitting.state} onTouchStart={() => !submitting.state && onFinish("out")} shape='rounded' style={{ minWidth: "130px", minHeight: "130px", background: "#f5222d", color: "#fff", fontSize: "20px" }}>Saída</Button></Col>
+					<Col xs="content"><Button disabled={submitting.state} onTouchStart={() => !submitting.state && onFinish('in')}  shape="circle" style={{ minWidth: "130px", minHeight: "130px", background: "#52c41a", color: "#fff", fontSize: "20px" }}>Entrada</Button></Col>
+					<Col xs="content"><Button disabled={submitting.state} onTouchStart={() => !submitting.state && onFinish("out")}  shape="circle" style={{ minWidth: "130px", minHeight: "130px", background: "#f5222d", color: "#fff", fontSize: "20px" }}>Saída</Button></Col>
 					<Col></Col>
 				</Row>
 			</>}
