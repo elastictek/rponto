@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Button } from "antd-mobile";
-import { Alert } from "antd";
+//import { Button } from "antd-mobile/cjs";
+import { Alert, Button } from "antd";
 import { Container, Row, Col } from 'react-grid-system';
 import styled from 'styled-components';
 import { EnterOutlined, RedoOutlined, CloseCircleOutlined, CheckCircleOutlined, CameraTwoTone, CameraFilled, PlayCircleFilled, StopFilled } from '@ant-design/icons';
@@ -134,7 +134,7 @@ const Toolbar = ({ data, auto, onAuto }) => {
 									})}</Col>
 							</Row>
 							<Row gutterWidth={10} style={{ display: "flex", justifyContent: "end" }}>
-								<Col xs="content"><Button style={{ padding: "0px" }} fill='none' onTouchStart={onAuto}>{auto ? <StopFilled /> : <PlayCircleFilled style={{ fontSize: "16px" }} />}</Button></Col>
+								<Col xs="content"><Button style={{ padding: "0px 10px" }} fill='none' onTouchStart={onAuto}>{auto ? <StopFilled /> : <PlayCircleFilled style={{ fontSize: "16px" }} />}</Button></Col>
 							</Row>
 						</Col>
 					</Row>

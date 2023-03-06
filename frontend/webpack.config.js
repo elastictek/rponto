@@ -6,6 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const baseTheme = require('./src/baseTheme');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const VersionFile = require('webpack-version-file');
+const AntdMomentWebpackPlugin = require('@ant-design/moment-webpack-plugin');
 
 const rootPath = __dirname;
 const baseFolder = "src";
@@ -57,6 +58,7 @@ module.exports = (env, argv) => {
             chunkFilename: isDevMode ? '[id].css' : '[id].[contenthash].css',
             ignoreOrder: true
         }),
+        // new AntdMomentWebpackPlugin()
         /*new AntdDayjsWebpackPlugin({
             replaceMoment: true, plugins: [
                 'isSameOrBefore',

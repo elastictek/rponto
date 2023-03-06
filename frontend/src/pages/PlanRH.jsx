@@ -2,7 +2,8 @@ import React, { useEffect, useState, useCallback, useRef, useContext } from 'rea
 import { createUseStyles } from 'react-jss';
 import styled from 'styled-components';
 import Joi, { alternatives } from 'joi';
-import moment from 'moment';
+//import moment from 'moment';
+import dayjs from 'dayjs';
 import { useNavigate, useLocation } from "react-router-dom";
 import { fetch, fetchPost } from "utils/fetch";
 import { getSchema, pick, getStatus, validateMessages } from "utils/schemaValidator";
@@ -201,10 +202,9 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
       <AlertsContainer /* id="el-external" */ mask fieldStatus={fieldStatus} formStatus={formStatus} portal={false} />
       <FormContainer initialValues={{}} id="LAY-PRT" fluid loading={submitting.state} wrapForm={true} form={form} fieldStatus={fieldStatus} setFieldStatus={setFieldStatus} onFinish={onFinish} onValuesChange={onValuesChange} schema={schemaRPD} wrapFormItem={true} forInput={true} alert={{ tooltip: true, pos: "none" }}>
         <Row style={{}} gutterWidth={10}>
-          <Col xs="content">
+          <Col>
             <Field wrapFormItem={true} name="num" label={{ enabled: true, text: "Número" }}>
               <Selector
-                size="small"
                 title="Colaboradores"
                 params={{ payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: { method: "EmployeesLookup" }, pagination: { enabled: false, limit: 150 }, filter: {}, sort: [{ column: "REFNUM_0", direction: "ASC" }] } }}
                 keyField={["REFNUM_0"]}
@@ -214,7 +214,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
                   { key: 'REFNUM_0', name: 'Número', width: 90 },
                   { key: 'FULLNAME', name: 'Nome' }
                 ]}
-                filters={{ fmulti: { type: "any", width: 150, text: "Colaborador" } }}
+                filters={{ fmulti: { type: "any", width: 150, text: "Colaborador", autoFocus: true } }}
                 moreFilters={{}}
               />
             </Field>
@@ -226,7 +226,7 @@ const PrintRPD = ({ closeSelf, parentRef, parameters, ...props }) => {
             <SelectMultiField allowClear data={[{ key: 1, value: 1 }, { key: 2, value: 2 }, { key: 3, value: 3 }, { key: 4, value: 4 }, { key: 5, value: 5 }, { key: 6, value: 6 }, { key: 7, value: 7 }, { key: 8, value: 8 }, { key: 9, value: 9 }, { key: 10, value: 10 }, { key: 11, value: 11 }, { key: 12, value: 12 }]} />
           </Field>
           </Col>
-          <Col xs="content"><Field wrapFormItem={true} name="year" label={{ enabled: true, text: "Ano" }}><InputNumber size="small" min={2015} max={(new Date()).getFullYear} /></Field></Col>
+          <Col xs="content"><Field wrapFormItem={true} name="year" label={{ enabled: true, text: "Ano" }}><InputNumber min={2015} max={(new Date()).getFullYear} /></Field></Col>
         </Row>
       </FormContainer>
       {props?.extraRef && <Portal elId={props?.extraRef.current}>
@@ -291,7 +291,7 @@ export default ({ setFormTitle, ...props }) => {
   const columns = [
     /* { key: 'bprint', name: '', ignoreReport: true, minWidth: 40, maxWidth: 40, formatter: p => <Button icon={<PrinterOutlined />} size="small" onClick={() => onFix(p.row)} /> }, */
     ...isRH(auth, num) ? [{ key: 'REFNUM_0', name: 'Número', width: 90, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.REFNUM_0}</div> }] : [],
-    { key: 'date', width: 100, name: 'Data', formatter: p => moment(p.row.date).format(DATE_FORMAT) },
+    { key: 'date', width: 100, name: 'Data', formatter: p => dayjs(p.row.date).format(DATE_FORMAT) },
     { key: 'WEEK', width: 100, name: 'Semana', formatter: p => p.row.WEEK },
     { key: 'wdayname', width: 100, name: 'Dia Semana', formatter: p => p.row.wdayname },
     ...isRH(auth, num) ? [{ key: 'FULLNAME', width: "1fr", name: 'Nome', formatter: p => <div style={{ fontWeight: 700 }}>{`${p.row.SRN_0} ${p.row.NAM_0}`}</div> }] : [],

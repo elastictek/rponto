@@ -162,7 +162,6 @@ def Sync(request, format=None):
     faces = loadFaces(faces_base_path,True)
     return Response({"status":"success","nums":faces.get("nums"),"matrix":faces.get("matrix")})
 
-
 def EmployeesLookup(request, format=None):
     connection = connections[connMssqlName].cursor()
     f = Filters(request.data['filter'])
@@ -861,20 +860,29 @@ def UpdateRecords(request, format=None):
         with transaction.atomic():
             with connections[connMssqlName].cursor() as cursor:                  
                 dml = dbmssql.dml(TypeDml.UPDATE,{
+                    "nt":values.get("nt"),
                     "ss_01":values.get("ss_01"),
+                    "ts_01":values.get("ts_01"),
                     "ty_01":values.get("ty_01"),
                     "ss_02":values.get("ss_02"),
+                    "ts_02":values.get("ts_02"),
                     "ty_02":values.get("ty_02"),
+                    "ts_03":values.get("ts_03"),
                     "ss_03":values.get("ss_03"),
                     "ty_03":values.get("ty_03"),
+                    "ts_04":values.get("ts_04"),
                     "ss_04":values.get("ss_04"),
                     "ty_04":values.get("ty_04"),
+                    "ts_05":values.get("ts_05"),
                     "ss_05":values.get("ss_05"),
                     "ty_05":values.get("ty_05"),
+                    "ts_06":values.get("ts_06"),
                     "ss_06":values.get("ss_06"),
                     "ty_06":values.get("ty_06"),
+                    "ts_07":values.get("ts_07"),
                     "ss_07":values.get("ss_07"),
                     "ty_07":values.get("ty_07"),
+                    "ts_08":values.get("ts_08"),
                     "ss_08":values.get("ss_08"),
                     "ty_08":values.get("ty_08")
                     }, "rponto.dbo.time_registration",{"id":f'=={values.get("id")}'},None,False)
