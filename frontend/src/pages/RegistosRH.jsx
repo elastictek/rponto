@@ -199,7 +199,7 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
   };
 
   return (
-    <Drawer push={false} title={title && title} open={visible} destroyOnClose onClose={onCancel} width="550px">
+    // <Drawer push={false} title={title && title} open={visible} destroyOnClose onClose={onCancel} width="550px">
       <YScroll>
         <Container>
           <Row>
@@ -214,7 +214,7 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
           </Row>
         </Container>
       </YScroll>
-    </Drawer>
+    // </Drawer>
   );
 }
 
@@ -755,6 +755,7 @@ export default ({ setFormTitle, ...props }) => {
 
     const content = () => {
       switch (modalParameters.content) {
+        case "viewregistosvisuais" : return <RegistosVisuaisViewer p={modalParameters.parameters.p} column="" parameters={modalParameters.parameters} />;
         case "viewbiometrias": return <Biometrias parameters={modalParameters.parameters} />;
         case "viewinvalidrecords": return <InvalidRecords parameters={modalParameters.parameters} />;
         case "fix": return <Fix parameters={modalParameters.parameters} loadParentData={modalParameters.loadData} />;
@@ -808,11 +809,12 @@ export default ({ setFormTitle, ...props }) => {
     { key: 'ss_08', width: 130, name: 'P08', formatter: p => p.row.ss_08 && dayjs(p.row.ss_08).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_08) },
     ...(isRH(auth, num)) ? [{
       key: 'pic', sortable: false,
-      minWidth: 35, width: 35,
+      minWidth: 45, width: 45,
       name: "",
-      formatter: p => <CameraOutlined style={{ cursor: "pointer" }} />,
-      editor: (p) => { return <RegistosVisuaisViewer p={p} column="" title="Registos Visuais" /> },
-      editorOptions: { editOnClick: true },
+      formatter: p => <Button icon={<CameraOutlined />} size="small" onClick={() => onRegistosVisuais(p)} />
+      //formatter: p => <CameraOutlined style={{ cursor: "pointer" }} onClick={() => <RegistosVisuaisViewer p={p} column="" title="Registos Visuais" />} />,
+      //editor: (p) => { return <RegistosVisuaisViewer p={p} column="" title="Registos Visuais" /> },
+      //editorOptions: { editOnClick: true },
     }] : []
 
   ];
@@ -876,6 +878,11 @@ export default ({ setFormTitle, ...props }) => {
 
   const onFix = (row) => {
     setModalParameters({ content: "fix", type: "drawer", title: `Corrigir Registo de Picagem`, push: false, width: "90%", loadData: () => dataAPI.fetchPost(), parameters: { openNotification, row } });
+    showModal();
+  }
+
+  const onRegistosVisuais = (p) => {
+    setModalParameters({ content: "viewregistosvisuais", type: "drawer", title: `Registos Visuais`, push: false, width: "550px", loadData: () => dataAPI.fetchPost(), parameters: { openNotification, p } });
     showModal();
   }
 
