@@ -239,9 +239,9 @@ const Pic = ({ p, path, title, ...props }) => {
 
   return (
     <>
-    {/* <Modal footer={null} title={title && title} open={visible} destroyOnClose onCancel={onCancel} bodyStyle={{ height: 400, display: "flex", justifyContent: "center" }} > */}
+      {/* <Modal footer={null} title={title && title} open={visible} destroyOnClose onCancel={onCancel} bodyStyle={{ height: 400, display: "flex", justifyContent: "center" }} > */}
       <Image src={path ? path : p.row.path} height={350} />
-{/*     </Modal> */}
+      {/*     </Modal> */}
     </>
   );
 }
@@ -253,6 +253,22 @@ const Biometrias = ({ parameters }) => {
   const defaultSort = [];
   const dataAPI = useDataAPI({ payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: {}, pagination: { enabled: false }, filter: defaultFilters, sort: [] } });
   const submitting = useSubmitting(true);
+
+  const [modalParameters, setModalParameters] = useState({});
+  const [showModal, hideModal] = useModal(({ in: open, onExited }) => {
+
+    const content = () => {
+      switch (modalParameters.content) {
+        case "viewbiometria": return <Pic p={modalParameters.parameters.p} path={modalParameters.parameters.path} column="" parameters={modalParameters.parameters} />;
+      }
+    }
+
+    return (
+      <ResponsiveModal title={modalParameters?.title} type={modalParameters?.type} push={modalParameters?.push} onCancel={hideModal} width={modalParameters.width} height={modalParameters.height} footer="ref" extra="ref" yScroll>
+        {content()}
+      </ResponsiveModal>
+    );
+  }, [modalParameters]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -272,9 +288,19 @@ const Biometrias = ({ parameters }) => {
     { key: 'num', width: 125, name: 'Número', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> },
     { key: 't_stamp', width: 150, name: 'Data', sortable: false, formatter: p => dayjs(p.row.t_stamp).format(DATETIME_FORMAT) },
     { key: 'file', name: 'Ficheiro', width: '0.93fr', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.file}</div> },
-    { key: 'pic', sortable: false, minWidth: 35, width: 35, name: "", formatter: p => <CameraOutlined style={{ cursor: "pointer" }} />, editor: (p) => { return <Pic p={p} path={`${FILES_URL}/static/faces/${p.row.file}`} column="" title="Registo Visual" /> }, editorOptions: { editOnClick: true } },
+    {
+      key: 'pic', sortable: false, minWidth: 45, width: 45, name: "",
+      formatter: p => <Button icon={<CameraOutlined />} size="small" onClick={() => onViewPic(p)} /* onClick={() => onRegistosVisuais(p)} */ />,//<CameraOutlined style={{ cursor: "pointer" }} />,
+      //editor: (p) => { return <Pic p={p} column="" title="Registo Visual" /> },
+      //editorOptions: { editOnClick: true }
+    },
     { key: 'baction', name: '', minWidth: 45, maxWidth: 40, formatter: p => <Button icon={<DeleteTwoTone />} size="small" onClick={() => onDelFace(p.row)} /> },
   ];
+
+  const onViewPic = (p) => {
+    setModalParameters({ content: "viewbiometria", type: "modal", title: `Registo Visual`, push: false, width: "550px", parameters: { p, path: `${FILES_URL}/static/faces/${p.row.file}` } });
+    showModal();
+  }
 
   const syncAll = async () => {
     submitting.trigger();
@@ -412,7 +438,7 @@ const InvalidRecords = ({ parameters }) => {
     { key: 'type', width: 100, name: 'Evento', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.type}</div> },
     {
       key: 'pic', sortable: false, minWidth: 45, width: 45, name: "",
-      formatter: p => <Button icon={<CameraOutlined />} size="small" onClick={()=>onViewPic(p)} /* onClick={() => onRegistosVisuais(p)} */ />,//<CameraOutlined style={{ cursor: "pointer" }} />,
+      formatter: p => <Button icon={<CameraOutlined />} size="small" onClick={() => onViewPic(p)} /* onClick={() => onRegistosVisuais(p)} */ />,//<CameraOutlined style={{ cursor: "pointer" }} />,
       //editor: (p) => { return <Pic p={p} column="" title="Registo Visual" /> },
       //editorOptions: { editOnClick: true }
     }
