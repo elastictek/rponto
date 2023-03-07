@@ -3,7 +3,8 @@ import { createUseStyles } from 'react-jss';
 import styled from 'styled-components';
 import Joi, { alternatives } from 'joi';
 import classNames from "classnames";
-import moment from 'moment';
+//import moment from 'moment';
+import dayjs from 'dayjs';
 import { useNavigate, useLocation } from "react-router-dom";
 import { fetch, fetchPost, cancelToken } from "utils/fetch";
 import { getSchema, pick, getStatus, validateMessages } from "utils/schemaValidator";
@@ -211,7 +212,7 @@ export const InputNumberEditor = ({ field, p, onChange, ...props }) => {
     return <InputNumber style={{ width: "100%", padding: "3px" }} keyboard={false} controls={false} bordered={true} size="small" value={p.row[field]} ref={focus} onChange={onChange ? v => onChange(p, v) : (e) => p.onRowChange({ ...p.row, valid: p.row[field] !== e ? 0 : null, [field]: e }, true)} {...props} />
 }
 export const DateTimeEditor = ({ field, p, onChange, ...props }) => {
-    return <DatePicker showTime size="small" format={DATETIME_FORMAT} value={moment(p.row[field])} ref={focus} onChange={onChange ? v => onChange(p, v) : (e) => p.onRowChange({ ...p.row, valid: p.row[field] !== e ? 0 : null, [field]: e }, true)} {...props}><Input /></DatePicker>
+    return <DatePicker showTime size="small" format={DATETIME_FORMAT} value={dayjs(p.row[field])} ref={focus} onChange={onChange ? v => onChange(p, v) : (e) => p.onRowChange({ ...p.row, valid: p.row[field] !== e ? 0 : null, [field]: e }, true)} {...props}><Input /></DatePicker>
 }
 export const SelectDebounceEditor = ({ field, keyField, textField, p, ...props }) => {
     return (<SelectDebounceField

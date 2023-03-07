@@ -6,7 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const baseTheme = require('./src/baseTheme');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const VersionFile = require('webpack-version-file');
-const AntdMomentWebpackPlugin = require('@ant-design/moment-webpack-plugin');
+//const AntdMomentWebpackPlugin = require('@ant-design/moment-webpack-plugin');
 
 const rootPath = __dirname;
 const baseFolder = "src";

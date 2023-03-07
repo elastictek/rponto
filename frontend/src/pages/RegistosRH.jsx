@@ -375,6 +375,7 @@ const InvalidRecords = ({ parameters }) => {
   const loadData = async ({ init = false, signal } = {}) => {
     if (init) {
       let { filterValues, fieldValues } = fixRangeDates(['fdata'], { fdata: [`>=${dayjs().format(DATE_FORMAT)}`, `<=${dayjs().format(DATE_FORMAT)}`] });
+      console.log("loading--->",fieldValues,filterValues)
       formFilter.setFieldsValue({ ...fieldValues });
       dataAPI.addFilters({ ...filterValues }, true, false);
 

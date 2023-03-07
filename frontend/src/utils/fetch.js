@@ -1,7 +1,7 @@
 import axios, { CancelToken } from 'axios';
 import { features } from './fetchModel';
 import { mergeDeepRight } from "ramda";
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { DATETIME_FORMAT } from 'config';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -16,7 +16,7 @@ const dateTransformer = (data, dates, key) => {
   if (key && dates && dates.length > 0) {
     const f = dates.find(v => v.key === key);
     if (f) {
-      return moment(data).format(f.format);
+      return dayjs(data).format(f.format);
     }
   }
   if (Array.isArray(data)) {
