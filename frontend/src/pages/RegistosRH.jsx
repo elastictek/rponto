@@ -13,7 +13,7 @@ import { API_URL, ROOT_URL, FILES_URL } from "config";
 import { useDataAPI, getLocalStorage } from "utils/useDataAPI";
 import { getFilterRangeValues, getFilterValue, secondstoDay } from "utils";
 import Portal from "components/portal";
-import { Button, Spin, Form, Space, Input, Typography, Modal, Select, Tag, Alert, Drawer, Image, TimePicker, InputNumber,DatePicker } from "antd";
+import { Button, Spin, Form, Space, Input, Typography, Modal, Select, Tag, Alert, Drawer, Image, TimePicker, InputNumber, DatePicker } from "antd";
 const { TextArea } = Input;
 import ToolbarTitle from './commons/ToolbarTitle';
 const { Title } = Typography;
@@ -200,20 +200,20 @@ const RegistosVisuaisViewer = ({ p, column, title, forInput, ...props }) => {
 
   return (
     // <Drawer push={false} title={title && title} open={visible} destroyOnClose onClose={onCancel} width="550px">
-      <YScroll>
-        <Container>
-          <Row>
-            {records.map((v, i) => {
-              const dt = v.tstamp; //p.row[`ss_${`${i + 1}`.padStart(2, '0')}`];
-              //const type = p.row[`ty_${`${i + 1}`.padStart(2, '0')}`]?.trim();
-              return (<Col xs="content" key={`img-${i}`} style={{ marginBottom: "15px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <div style={{ padding: "2px", fontSize: "10px", /* ...type && { background: type == "in" ? "#95de64" : "#ff7875" } */ }}><b>{i + 1}.</b> {dt && dayjs(dt).format(DATETIME_FORMAT)}</div>
-                <Image width="106px" src={`${FILES_URL}/static/records/${v.filename}`} />
-              </Col>);
-            })}
-          </Row>
-        </Container>
-      </YScroll>
+    <YScroll>
+      <Container>
+        <Row>
+          {records.map((v, i) => {
+            const dt = v.tstamp; //p.row[`ss_${`${i + 1}`.padStart(2, '0')}`];
+            //const type = p.row[`ty_${`${i + 1}`.padStart(2, '0')}`]?.trim();
+            return (<Col xs="content" key={`img-${i}`} style={{ marginBottom: "15px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div style={{ padding: "2px", fontSize: "10px", /* ...type && { background: type == "in" ? "#95de64" : "#ff7875" } */ }}><b>{i + 1}.</b> {dt && dayjs(dt).format(DATETIME_FORMAT)}</div>
+              <Image width="106px" src={`${FILES_URL}/static/records/${v.filename}`} />
+            </Col>);
+          })}
+        </Row>
+      </Container>
+    </YScroll>
     // </Drawer>
   );
 }
@@ -238,9 +238,11 @@ const Pic = ({ p, path, title, ...props }) => {
   };
 
   return (
-    <Modal footer={null} title={title && title} open={visible} destroyOnClose onCancel={onCancel} bodyStyle={{ height: 400, display: "flex", justifyContent: "center" }} >
+    <>
+    {/* <Modal footer={null} title={title && title} open={visible} destroyOnClose onCancel={onCancel} bodyStyle={{ height: 400, display: "flex", justifyContent: "center" }} > */}
       <Image src={path ? path : p.row.path} height={350} />
-    </Modal>
+{/*     </Modal> */}
+    </>
   );
 }
 
@@ -348,6 +350,23 @@ const InvalidRecords = ({ parameters }) => {
   const dataAPI = useDataAPI({ payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: {}, pagination: { enabled: false }, filter: defaultFilters, sort: [] } });
   const submitting = useSubmitting(true);
 
+  const [modalParameters, setModalParameters] = useState({});
+  const [showModal, hideModal] = useModal(({ in: open, onExited }) => {
+
+    const content = () => {
+      switch (modalParameters.content) {
+        case "viewinvalidpic": return <Pic p={modalParameters.parameters.p} column="" parameters={modalParameters.parameters} />;
+      }
+    }
+
+    return (
+      <ResponsiveModal title={modalParameters?.title} type={modalParameters?.type} push={modalParameters?.push} onCancel={hideModal} width={modalParameters.width} height={modalParameters.height} footer="ref" extra="ref" yScroll>
+        {content()}
+      </ResponsiveModal>
+    );
+  }, [modalParameters]);
+
+
   useEffect(() => {
     const controller = new AbortController();
     const interval = loadData({ init: true, signal: controller.signal });
@@ -375,7 +394,7 @@ const InvalidRecords = ({ parameters }) => {
   const loadData = async ({ init = false, signal } = {}) => {
     if (init) {
       let { filterValues, fieldValues } = fixRangeDates(['fdata'], { fdata: [`>=${dayjs().format(DATE_FORMAT)}`, `<=${dayjs().format(DATE_FORMAT)}`] });
-      console.log("loading--->",fieldValues,filterValues)
+      console.log("loading--->", fieldValues, filterValues)
       formFilter.setFieldsValue({ ...fieldValues });
       dataAPI.addFilters({ ...filterValues }, true, false);
 
@@ -388,10 +407,15 @@ const InvalidRecords = ({ parameters }) => {
   }
 
   const columns = [
-    { key: 'num', width: 80, name: 'Número',frozen:true, sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> },
-    { key: 'name',width: "0.94fr", name: 'Ficheiro', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.name}</div> },
-    { key: 'type',width: 100, name: 'Evento', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.type}</div> },
-    { key: 'pic', sortable: false, minWidth: 35, width: 35, name: "", formatter: p => <CameraOutlined style={{ cursor: "pointer" }} />, editor: (p) => { return <Pic p={p} column="" title="Registo Visual" /> }, editorOptions: { editOnClick: true } }
+    { key: 'num', width: 80, name: 'Número', frozen: true, sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> },
+    { key: 'name', width: "0.94fr", name: 'Ficheiro', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.name}</div> },
+    { key: 'type', width: 100, name: 'Evento', sortable: false, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.type}</div> },
+    {
+      key: 'pic', sortable: false, minWidth: 45, width: 45, name: "",
+      formatter: p => <Button icon={<CameraOutlined />} size="small" onClick={()=>onViewPic(p)} /* onClick={() => onRegistosVisuais(p)} */ />,//<CameraOutlined style={{ cursor: "pointer" }} />,
+      //editor: (p) => { return <Pic p={p} column="" title="Registo Visual" /> },
+      //editorOptions: { editOnClick: true }
+    }
   ];
 
   const onFilterFinish = (type, values) => {
@@ -417,6 +441,11 @@ const InvalidRecords = ({ parameters }) => {
         navigate("/app/picking/picknwlist", { state: { ...location?.state, ...formFilter.getFieldsValue(true), type: changedValues.type, tstamp: Date.now() }, replace: true });
     } */
   };
+
+  const onViewPic = (p) => {
+    setModalParameters({ content: "viewinvalidpic", type: "modal", title: `Registo Visual`, push: false, width: "550px", parameters: { p } });
+    showModal();
+  }
 
   return (
     <YScroll>
@@ -492,14 +521,14 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
   const loadData = async ({ signal } = {}) => {
     submitting.trigger();
     let nt = 0;
-    if (parameters.row.ss_01){nt+=1;}
-    if (parameters.row.ss_02){nt+=1;}
-    if (parameters.row.ss_03){nt+=1;}
-    if (parameters.row.ss_04){nt+=1;}
-    if (parameters.row.ss_05){nt+=1;}
-    if (parameters.row.ss_06){nt+=1;}
-    if (parameters.row.ss_07){nt+=1;}
-    if (parameters.row.ss_08){nt+=1;}
+    if (parameters.row.ss_01) { nt += 1; }
+    if (parameters.row.ss_02) { nt += 1; }
+    if (parameters.row.ss_03) { nt += 1; }
+    if (parameters.row.ss_04) { nt += 1; }
+    if (parameters.row.ss_05) { nt += 1; }
+    if (parameters.row.ss_06) { nt += 1; }
+    if (parameters.row.ss_07) { nt += 1; }
+    if (parameters.row.ss_08) { nt += 1; }
 
 
     const vals = {
@@ -534,13 +563,13 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
     const v = schema().validate(values, { abortEarly: false, messages: validateMessages, context: {} });
     let { errors, warnings, value, ...status } = getStatus(v);
     const vals = { ...values };
-    let nt=0;
+    let nt = 0;
     if (errors === 0) {
       for (let i = 1; i < 8; i++) {
         vals[`ss_${`${i}`.padStart(2, '0')}`] = vals[`ss_${`${i}`.padStart(2, '0')}`] && dayjs(vals[`ss_${`${i}`.padStart(2, '0')}`]).format(DATETIME_FORMAT);
         let v1 = values[`ss_${`${i}`.padStart(2, '0')}`];
         let v2 = values[`ss_${`${i + 1}`.padStart(2, '0')}`];
-        if (v1){
+        if (v1) {
           nt++;
         }
         v1 = v1 && v1.unix();//dayjs.duration(v1.format(TIME_FORMAT)).asSeconds();
@@ -563,7 +592,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
     setFormStatus({ ...status.formStatus });
     if (errors === 0) {
       try {
-        vals["nt"]=nt;
+        vals["nt"] = nt;
         let response = await fetchPost({ url: `${API_URL}/rponto/sqlp/`, withCredentials: true, filter: {}, parameters: { method: "UpdateRecords", values: vals } });
         if (response.data.status !== "error") {
           parameters.openNotification(response.data.status, 'top', "Notificação", response.data.title);
@@ -661,7 +690,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<BsFillEraserFill />} onClick={() => erase(1)} /></Col>
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button disabled size="small" icon={<CaretUpOutlined />} onClick={() => up(1)} /></Col>
           <Col width={20} style={{ marginRight: "10px", alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretDownOutlined />} onClick={() => down(1)} /></Col>
-          <Col width={200}><Field wrapFormItem={true} name="ss_01" label={{ enabled: false, text: "Picagem 01" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime/></Field></Col>
+          <Col width={200}><Field wrapFormItem={true} name="ss_01" label={{ enabled: false, text: "Picagem 01" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime /></Field></Col>
           <Col xs="content"><Field wrapFormItem={true} name="ty_01" label={{ enabled: false, text: "Tipo" }}><SelectField style={{ width: "90px" }} size="small" keyField="value" textField="label" data={typeList} /></Field></Col>
         </Row>
         <Row style={{}} gutterWidth={10}>
@@ -669,7 +698,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<BsFillEraserFill />} onClick={() => erase(2)} /></Col>
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretUpOutlined />} onClick={() => up(2)} /></Col>
           <Col width={20} style={{ marginRight: "10px", alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretDownOutlined />} onClick={() => down(2)} /></Col>
-          <Col width={200}><Field wrapFormItem={true} name="ss_02" label={{ enabled: false, text: "Picagem 02" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime/></Field></Col>
+          <Col width={200}><Field wrapFormItem={true} name="ss_02" label={{ enabled: false, text: "Picagem 02" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime /></Field></Col>
           <Col xs="content"><Field wrapFormItem={true} name="ty_02" label={{ enabled: false, text: "Tipo" }}><SelectField style={{ width: "90px" }} size="small" keyField="value" textField="label" data={typeList} /></Field></Col>
         </Row>
         <Row style={{}} gutterWidth={10}>
@@ -677,7 +706,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<BsFillEraserFill />} onClick={() => erase(3)} /></Col>
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretUpOutlined />} onClick={() => up(3)} /></Col>
           <Col width={20} style={{ marginRight: "10px", alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretDownOutlined />} onClick={() => down(3)} /></Col>
-          <Col width={200}><Field wrapFormItem={true} name="ss_03" label={{ enabled: false, text: "Picagem 03" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime/></Field></Col>
+          <Col width={200}><Field wrapFormItem={true} name="ss_03" label={{ enabled: false, text: "Picagem 03" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime /></Field></Col>
           <Col xs="content"><Field wrapFormItem={true} name="ty_03" label={{ enabled: false, text: "Tipo" }}><SelectField style={{ width: "90px" }} size="small" keyField="value" textField="label" data={typeList} /></Field></Col>
         </Row>
         <Row style={{}} gutterWidth={10}>
@@ -685,7 +714,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<BsFillEraserFill />} onClick={() => erase(4)} /></Col>
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretUpOutlined />} onClick={() => up(4)} /></Col>
           <Col width={20} style={{ marginRight: "10px", alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretDownOutlined />} onClick={() => down(4)} /></Col>
-          <Col width={200}><Field wrapFormItem={true} name="ss_04" label={{ enabled: false, text: "Picagem 04" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime/></Field></Col>
+          <Col width={200}><Field wrapFormItem={true} name="ss_04" label={{ enabled: false, text: "Picagem 04" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime /></Field></Col>
           <Col xs="content"><Field wrapFormItem={true} name="ty_04" label={{ enabled: false, text: "Tipo" }}><SelectField style={{ width: "90px" }} size="small" keyField="value" textField="label" data={typeList} /></Field></Col>
         </Row>
         <Row style={{}} gutterWidth={10}>
@@ -693,7 +722,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<BsFillEraserFill />} onClick={() => erase(5)} /></Col>
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretUpOutlined />} onClick={() => up(5)} /></Col>
           <Col width={20} style={{ marginRight: "10px", alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretDownOutlined />} onClick={() => down(5)} /></Col>
-          <Col width={200}><Field wrapFormItem={true} name="ss_05" label={{ enabled: false, text: "Picagem 05" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime/></Field></Col>
+          <Col width={200}><Field wrapFormItem={true} name="ss_05" label={{ enabled: false, text: "Picagem 05" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime /></Field></Col>
           <Col xs="content"><Field wrapFormItem={true} name="ty_05" label={{ enabled: false, text: "Tipo" }}><SelectField style={{ width: "90px" }} size="small" keyField="value" textField="label" data={typeList} /></Field></Col>
         </Row>
         <Row style={{}} gutterWidth={10}>
@@ -701,7 +730,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<BsFillEraserFill />} onClick={() => erase(6)} /></Col>
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretUpOutlined />} onClick={() => up(6)} /></Col>
           <Col width={20} style={{ marginRight: "10px", alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretDownOutlined />} onClick={() => down(6)} /></Col>
-          <Col width={200}><Field wrapFormItem={true} name="ss_06" label={{ enabled: false, text: "Picagem 06" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime/></Field></Col>
+          <Col width={200}><Field wrapFormItem={true} name="ss_06" label={{ enabled: false, text: "Picagem 06" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime /></Field></Col>
           <Col xs="content"><Field wrapFormItem={true} name="ty_06" label={{ enabled: false, text: "Tipo" }}><SelectField style={{ width: "90px" }} size="small" keyField="value" textField="label" data={typeList} /></Field></Col>
         </Row>
         <Row style={{}} gutterWidth={10}>
@@ -709,7 +738,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<BsFillEraserFill />} onClick={() => erase(7)} /></Col>
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretUpOutlined />} onClick={() => up(7)} /></Col>
           <Col width={20} style={{ marginRight: "10px", alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretDownOutlined />} onClick={() => down(7)} /></Col>
-          <Col width={200}><Field wrapFormItem={true} name="ss_07" label={{ enabled: false, text: "Picagem 07" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime/></Field></Col>
+          <Col width={200}><Field wrapFormItem={true} name="ss_07" label={{ enabled: false, text: "Picagem 07" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime /></Field></Col>
           <Col xs="content"><Field wrapFormItem={true} name="ty_07" label={{ enabled: false, text: "Tipo" }}><SelectField style={{ width: "90px" }} size="small" keyField="value" textField="label" data={typeList} /></Field></Col>
         </Row>
         <Row style={{}} gutterWidth={10}>
@@ -717,7 +746,7 @@ const Fix = ({ closeSelf, parentRef, parameters, ...props }) => {
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<BsFillEraserFill />} onClick={() => erase(8)} /></Col>
           <Col width={20} style={{ alignSelf: "end", padding: "3px" }}><Button size="small" icon={<CaretUpOutlined />} onClick={() => up(8)} /></Col>
           <Col width={20} style={{ marginRight: "10px", alignSelf: "end", padding: "3px" }}><Button size="small" disabled icon={<CaretDownOutlined />} onClick={() => down(8)} /></Col>
-          <Col width={200}><Field wrapFormItem={true} name="ss_08" label={{ enabled: false, text: "Picagem 08" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime/></Field></Col>
+          <Col width={200}><Field wrapFormItem={true} name="ss_08" label={{ enabled: false, text: "Picagem 08" }}><DatePicker format={DATETIME_FORMAT} size="small" showTime /></Field></Col>
           <Col xs="content"><Field wrapFormItem={true} name="ty_08" label={{ enabled: false, text: "Tipo" }}><SelectField style={{ width: "90px" }} size="small" keyField="value" textField="label" data={typeList} /></Field></Col>
         </Row>
       </FormContainer>
@@ -755,7 +784,7 @@ export default ({ setFormTitle, ...props }) => {
 
     const content = () => {
       switch (modalParameters.content) {
-        case "viewregistosvisuais" : return <RegistosVisuaisViewer p={modalParameters.parameters.p} column="" parameters={modalParameters.parameters} />;
+        case "viewregistosvisuais": return <RegistosVisuaisViewer p={modalParameters.parameters.p} column="" parameters={modalParameters.parameters} />;
         case "viewbiometrias": return <Biometrias parameters={modalParameters.parameters} />;
         case "viewinvalidrecords": return <InvalidRecords parameters={modalParameters.parameters} />;
         case "fix": return <Fix parameters={modalParameters.parameters} loadParentData={modalParameters.loadData} />;
@@ -789,7 +818,7 @@ export default ({ setFormTitle, ...props }) => {
     ...isRH(auth, num) ? [{ key: 'num', name: 'Número', frozen: true, width: 90, formatter: p => <div style={{ fontWeight: 700 }}>{p.row.num}</div> }] : [],
     { key: 'dts', width: 100, name: 'Data', frozen: true, formatter: p => dayjs(p.row.dts).format(DATE_FORMAT) },
     ...(isRH(auth, num)) ? [{ key: 'baction', name: '', minWidth: 45, maxWidth: 40, formatter: p => <Button icon={<EditOutlined />} size="small" onClick={() => onFix(p.row)} /> }] : [],
-    ...isRH(auth, num) ? [{ key: 'SRN_0', name: 'Nome',width: '0.94fr', formatter: p => <div style={{ fontWeight: 700 }}>{`${p.row.SRN_0} ${p.row.NAM_0}`}</div> }] : [],
+    ...isRH(auth, num) ? [{ key: 'SRN_0', name: 'Nome', width: '0.94fr', formatter: p => <div style={{ fontWeight: 700 }}>{`${p.row.SRN_0} ${p.row.NAM_0}`}</div> }] : [],
     { key: 'nt', name: 'Picagens', width: 80, formatter: p => p.row.nt },
     { key: 'ty_01', name: '', hidden: true, reportTitle: "es_01", minWidth: 35, width: 35, formatter: p => p.row.ty_01?.trim() === 'in' ? "E" : "S" },
     { key: 'ss_01', width: 130, name: 'P01', formatter: p => p.row.ss_01 && dayjs(p.row.ss_01).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_01) },
@@ -885,8 +914,6 @@ export default ({ setFormTitle, ...props }) => {
     setModalParameters({ content: "viewregistosvisuais", type: "drawer", title: `Registos Visuais`, push: false, width: "550px", loadData: () => dataAPI.fetchPost(), parameters: { openNotification, p } });
     showModal();
   }
-
-
 
   return (
     <>
