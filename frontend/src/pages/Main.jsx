@@ -667,7 +667,7 @@ export default ({ }) => {
 			try {
 				const vals = { num: data.num.startsWith("F") ? data.num : `F${data.num.padStart(5, '0')}` };
 				const learn = (data?.existsInBd === true && Array.isArray(data?.valid_nums) && data.valid_nums.length === 0 && !data?.recon) ? true : false;
-				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser", save: true, learn, snapshot: data.snapshot, timestamp: dayjs(data.date).format(DATETIME_FORMAT) } });
+				let response = await fetchPost({ url: `${API_URL}/rponto/sql/`, filter: { ...vals }, parameters: { method: "SetUser",auto, save: true, learn, snapshot: data.snapshot, timestamp: dayjs(data.date).format(DATETIME_FORMAT) } });
 				if (response.data.status !== "error" && response.data.hsh) {
 					updateData(draft => {
 						draft.level = 2;

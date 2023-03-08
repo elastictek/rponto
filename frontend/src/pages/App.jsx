@@ -25,6 +25,7 @@ const NotFound = lazy(() => import('./404'));
 const Main = lazy(() => import('./Main'));
 const Login = lazy(() => import('./Login'));
 const RegistosRH = lazy(() => import('./RegistosRH'));
+const RegistosRHv3 = lazy(() => import('./RegistosRHv3'));
 const PlanRH = lazy(() => import('./PlanRH'));
 
 
@@ -46,6 +47,7 @@ const RenderRouter = () => {
                 { path: "login", element: <Suspense fallback={<Spin />}><Login /></Suspense> },
                 /* { path: "layout", element: <Suspense fallback={<Spin />}><GridLayout /></Suspense> }, */
                 { path: "rh/registos", element: <Suspense fallback={<Spin />}><RegistosRH key="lst-rp-rh" id="lst-rp-rh" /></Suspense> },
+                { path: "rh/registosv3", element: <Suspense fallback={<Spin />}><RegistosRHv3 key="lst-rp-rh3" id="lst-rp-rh3" /></Suspense> },
                 { path: "rh/plan", element: <Suspense fallback={<Spin />}><PlanRH key="lst-pl-rh" id="lst-pl-rh" /></Suspense> },
                 { path: "rh/registospessoal", element: <Suspense fallback={<Spin />}><RegistosRH key="lst-rp-pri" id ="lst-rp-pri" /></Suspense> },
                 { path: "rh/planpessoal", element: <Suspense fallback={<Spin />}><PlanRH  key="lst-pl-pri" id="lst-pl-pri" /></Suspense> }

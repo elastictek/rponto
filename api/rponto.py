@@ -129,11 +129,21 @@ def rangeP2(data, key, field1, field2, fieldDiff=None):
                 ret[f'{key}_{i}'] = {"key": key, "value": v, "field": field1 if field is False else field2}
     return ret
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR',None)
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR',None)
+        if not ip:
+            ip = request.META.get('HTTP_X_REAL_IP', None)
+    return ip
+
 @api_view(['POST'])
 @renderer_classes([JSONRenderer])
 def Sql(request, format=None):
     ips_allowed = ["*","192.168.0.254"]
-    ip_address = request.META.get("HTTP_X_REAL_IP")
+    #ip_address = request.META.get("HTTP_X_REAL_IP")
     if "*" not in ips_allowed and ip_address not in ips_allowed:
         return Response({"status": "error", "title": "Erro de acesso!"})
     if "parameters" in request.data and "method" in request.data["parameters"]:
@@ -355,7 +365,7 @@ def processRecord(num,ts):
         record["date_ref"]=ts.strftime("%Y-%m-%d")
     return record
 
-def saveRecord(num,ts,hsh,data):
+def saveRecord(num,ts,hsh,data,ip):
     pln = processRecord(num,ts)
     connection = connections[connMssqlName].cursor()
     if hsh is None:
@@ -377,6 +387,8 @@ def saveRecord(num,ts,hsh,data):
                 f"ss_01":ts.strftime("%Y-%m-%d %H:%M:%S"),
                 f"ts_01":data["timestamp"],
                 f"ty_01":"in",
+                f"auto_01": 1 if data.get("auto") else 0,
+                f"source_01":ip
             }
             dml = dbmssql.dml(TypeDml.INSERT, dti, "rponto.dbo.time_registration",None,None,False)
             dbmssql.execute(dml.statement, connection, dml.parameters)
@@ -389,7 +401,9 @@ def saveRecord(num,ts,hsh,data):
                 "nt": nt+1,
                 f"ss_{str(nt+1).zfill(2)}":ts.strftime("%Y-%m-%d %H:%M:%S"),
                 f"ts_{str(nt+1).zfill(2)}":data["timestamp"],
-                f"ty_{str(nt+1).zfill(2)}":"in" if reg[0].get(f"ty_{str(nt).zfill(2)}") == "out" else "out"
+                f"ty_{str(nt+1).zfill(2)}":"in" if reg[0].get(f"ty_{str(nt).zfill(2)}") == "out" else "out",
+                f"auto_{str(nt+1).zfill(2)}": 1 if data.get("auto") else 0,
+                f"source_{str(nt+1).zfill(2)}": ip
             }
             f = Filters({"num": num,"hsh": reg[0].get("hsh")})
             f.where()
@@ -492,8 +506,8 @@ def SetUser(request, format=None):
 
                 with open(f"""{records_base_path}/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""", "wb") as fh:
                     fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
-                                    
-            return(Response(saveRecord(filter["num"],ts,hsh,data)))
+                                 
+            return(Response(saveRecord(filter["num"],ts,hsh,data,get_client_ip(request))))
         else:
             existsInBd = True
             result = False
@@ -641,7 +655,7 @@ def AutoCapture(request, format=None):
                 with open(f"""{records_base_path}/{ts.strftime("%Y%m%d")}/{filter["num"]}/{ts.strftime("%Y%m%d.%H%M%S")}.jpg""", "wb") as fh:
                     fh.write(base64.b64decode(data["snapshot"].replace('data:image/jpeg;base64,','')))
             
-            return(Response(saveRecord(filter["num"],ts,hsh,data)))
+            return(Response(saveRecord(filter["num"],ts,hsh,data,get_client_ip(request))))
                 # f = Filters({"num": filter["num"],"dts": ts.strftime("%Y-%m-%d") })
                 # f.where()
                 # f.add(f'num = :num', True)

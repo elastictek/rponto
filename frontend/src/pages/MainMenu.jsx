@@ -104,6 +104,7 @@ export default ({ dark = false, onToggleDrawer, handleLogout, auth }) => {
                 {isRH(auth) && <Panel header={<b>Recursos Humanos</b>} key="2" style={{ marginBottom: "5px" }}>
                     <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { window.location.assign(ROOT_URL); }}>Aplicação de Registo de Ponto</Button>
                     <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/registos', { replace: true, state: { num: null, tstamp: Date.now() } }); onToggleDrawer(); }}>Registo de Picagens</Button>
+                    <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/registosv3', { replace: true, state: { num: null, tstamp: Date.now() } }); onToggleDrawer(); }}>Registo de Picagens V3</Button>
                     <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/plan', { replace: true, state: { num: null, tstamp: Date.now() } }); onToggleDrawer(); }}>Plano de Horários</Button>
                 </Panel>
                 }
