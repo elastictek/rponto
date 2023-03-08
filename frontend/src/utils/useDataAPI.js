@@ -311,25 +311,31 @@ export const useDataAPI = ({ payload, id, useStorage = true, fnPostProcess } = {
         const payload = { ...getPayload(fromSate), tstamp: Date.now() };
         setIsLoading(true);
         return (async () => {
-            let ok = true;
+            let ret = null;
+            //let ok = true;
             if (id && useStorage) {
                 localStorage.setItem(`dapi-${id}`, JSON.stringify(payload));
             }
             try {
                 const dt = (await fetchPost({ url: _url, ...(_withCredentials !== null && { withCredentials: _withCredentials }), ...payload, ...((signal) ? { signal } : { cancelToken: token }) })).data;
                 if (typeof rowFn === "function") {
-                    setData(await rowFn(dt), payload);
+                    ret = await rowFn(dt);
+                    setData(ret, payload);
                 } else if (typeof fnPostProcess === "function") {
-                    setData(await fnPostProcess(dt), payload);
+                    ret = await fnPostProcess(dt);
+                    setData(ret, payload);
                 } else {
-                    setData(dt, payload);
+                    ret = dt;
+                    setData(ret, payload);
                 }
             } catch (e) {
                 Modal.error({ content: e.message });
-                ok = false;
+                //ok = false;
+                ret = null;
             }
             setIsLoading(false);
-            return ok;
+            return ret;
+            //return ok;
         })();
     }
 

@@ -12,7 +12,7 @@ import YScroll from "components/YScroll";
 import { Button, Select, Typography, Card, Collapse, Space, Modal } from "antd";
 const { Panel } = Collapse;
 import { LogoutOutlined } from '@ant-design/icons';
-import {isRH,isPrivate} from "./commons";
+import { isRH, isPrivate, isAdmin } from "./commons";
 // import ResponsiveModal from 'components/Modal';
 // import { usePermission, Permissions } from "utils/usePermission";
 
@@ -104,7 +104,7 @@ export default ({ dark = false, onToggleDrawer, handleLogout, auth }) => {
                 {isRH(auth) && <Panel header={<b>Recursos Humanos</b>} key="2" style={{ marginBottom: "5px" }}>
                     <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { window.location.assign(ROOT_URL); }}>Aplicação de Registo de Ponto</Button>
                     <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/registos', { replace: true, state: { num: null, tstamp: Date.now() } }); onToggleDrawer(); }}>Registo de Picagens</Button>
-                    <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/registosv3', { replace: true, state: { num: null, tstamp: Date.now() } }); onToggleDrawer(); }}>Registo de Picagens V3</Button>
+                    {isRH(auth) && <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/registosv3', { replace: true, state: { num: null, tstamp: Date.now() } }); onToggleDrawer(); }}>Registo de Picagens V3</Button>}
                     <Button block style={{ textAlign: "left" }} size='large' type="link" onClick={() => { navigate('/app/rh/plan', { replace: true, state: { num: null, tstamp: Date.now() } }); onToggleDrawer(); }}>Plano de Horários</Button>
                 </Panel>
                 }

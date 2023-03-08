@@ -402,25 +402,135 @@ function checkboxFormatter({ disabled, onChange, ...props }, ref) {
 //     );
 // }
 
+const DEFAULT_ACTIVE_CELL = [0, 0];
 
-export default ({ dataAPI, columns, ...props }) => {
-    const gridStyle = { minHeight: 400, fontSize: "12px" };
-    const dataSource = useCallback(async ({skip, limit, sortInfo,...rest}) => {
-        console.log(skip,limit)
-        if (dataAPI.hasData()) {
-            return Promise.resolve({ data: dataAPI.getData().rows, count: dataAPI.getData().total });
+export default ({ dataAPI, columns, modeEdit, loadOnInit = false, onPageChange, ...props }) => {
+    const gridStyle = { minHeight: '80%', fontSize: "12px" };
+    const [initLoaded, setInitLoaded] = useState(false); //Indica se a datagrid já fez o load inicial
+    const [gridRef, setGridRef] = useState(null);
+    const action = useRef(null);
 
+    // useEffect(() => {
+    //     if (loadOnInit && !initLoaded) {
+    //         setInitLoaded(true);
+    //         dataAPI.fetchPost();
+    //     }
+    // }, []);
+
+    const dataSource = useCallback(async ({ skip, limit, sortInfo, ...rest }) => {
+        console.log("entrei-->", dataAPI.getTimeStamp(), skip, limit, action.current)
+        let dt = { data: [], count: 0 };
+        if (["page", "pagesize"].includes(action?.current)) {
+            dataAPI.pageSize(limit);
+            dataAPI.currentPage(skip / limit);
+            const _v = await dataAPI.fetchPost();
+            dt = { data: _v?.rows ? _v?.rows : [], count: _v?.total ? _v?.total : 0 };
         } else {
-            return Promise.resolve({ data: [], count: 0 });
+            if (loadOnInit && !initLoaded) {
+                setInitLoaded(true);
+                const _v = await dataAPI.fetchPost();
+                dt = { data: _v?.rows ? _v?.rows : [], count: _v?.total ? _v?.total : 0 };
+            }
         }
-    }, [dataAPI.getTimeStamp()]);
+        action.current = null;
+        return dt;
+    }, []);
+
+    // const dataSource = useCallback(async ({ skip, limit, sortInfo, ...rest }) => {
+    //     await dataAPI.fetchPost();
+    //     if (dataAPI.hasData()) {
+    //         return Promise.resolve({ data: dataAPI.getData().rows, count: dataAPI.getData().total });
+
+    //     } else {
+    //         return Promise.resolve({ data: [], count: 0 });
+    //     }
+    // }, [dataAPI.getTimeStamp()]);
+
+    /* 
+        const dataSource = async ({ skip, limit, sortInfo, ...rest }) => {
+            if ((!initLoaded && loadOnInit) || initLoaded){
+                await dataAPI.fetchPost();
+            }
+    
+            console.log(skip, limit,initLoaded)
+            if (dataAPI.hasData()) {
+                return { data: dataAPI.getData().rows, count: dataAPI.getData().total };
+    
+            } else {
+                return { data: [], count: 0 };
+            }
+        }; */
+
+    const onKeyDown = (event) => {
+        if (modeEdit) {
+            return
+        }
+        const grid = gridRef.current
+        let [rowIndex, colIndex] = grid.computedActiveCell
+
+        if (event.key === ' ' || event.key === 'Enter') {
+            const column = grid.getColumnBy(colIndex)
+            grid.startEdit({ columnId: column.name, rowIndex })
+            event.preventDefault()
+            return
+        }
+        if (event.key !== 'Tab') {
+            return
+        }
+        event.preventDefault()
+        event.stopPropagation()
+
+        const direction = event.shiftKey ? -1 : 1
+
+        const columns = grid.visibleColumns
+        const rowCount = grid.count
+
+        colIndex += direction
+        if (colIndex === -1) {
+            colIndex = columns.length - 1
+            rowIndex -= 1
+        }
+        if (colIndex === columns.length) {
+            rowIndex += 1
+            colIndex = 0
+        }
+        if (rowIndex < 0 || rowIndex === rowCount) {
+            return
+        }
+
+        grid.setActiveCell([rowIndex, colIndex])
+    }
+
+    const onSkipChange = (skip) => {
+        action.current = "page";
+        /* dataAPI.currentPage((skip / dataAPI.getPageSize()) + 1, true);
+        if (typeof onPageChange === "function") {
+            onPageChange();
+        } else {
+            dataAPI.fetchPost();
+        }
+
+        console.log("SKIP-CHANGE", skip, dataAPI.getPageSize(),gridRef) */
+
+    }
+    const onLimitChange = (limit) => {
+        action.current = "pagesize";
+        /*         console.log("LIMIT-CHANGE", limit)
+                dataAPI.pageSize(limit, false); */
+    }
+
     return (
         <ReactDataGrid
+            handle={setGridRef}
             idProperty="id"
             columns={columns}
             rowHeight={28}
             dataSource={dataSource}
             style={gridStyle}
+            defaultActiveCell={DEFAULT_ACTIVE_CELL}
+            onKeyDown={onKeyDown}
+            onSkipChange={onSkipChange}
+            onLimitChange={onLimitChange}
             {...props}
         />
     );

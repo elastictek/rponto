@@ -802,7 +802,7 @@ export default ({ setFormTitle, ...props }) => {
   const defaultFilters = {};
   const defaultParameters = { method: "RegistosRH" };
   const defaultSort = [{ column: "dts", direction: "DESC" }, { column: "num", direction: "ASC" }];
-  const dataAPI = useDataAPI({ id: props.id, payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: {}, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: [] } });
+  const dataAPI = useDataAPI({ id: props.id, payload: { url: `${API_URL}/rponto/sqlp/`, withCredentials: true, parameters: defaultParameters, pagination: { enabled: true, page: 1, pageSize: 20 }, filter: defaultFilters, sort: defaultSort } });
   const submitting = useSubmitting(true);
   const [num, setNum] = useState(null);
 
@@ -876,27 +876,27 @@ export default ({ setFormTitle, ...props }) => {
   // ];
 
   const columns = [
-    ...isRH(auth, num) ? [{ name: 'num', header: 'Número', defaultLocked:true, frozen: true, width: 70, render: (p) => <div style={{ fontWeight: 900 }}>{p.data?.num}</div> }] : [],
-    { name: 'dts', width: 100, header: 'Data', frozen: true, render: p => dayjs(p.data.dts).format(DATE_FORMAT) },
+    ...isRH(auth, num) ? [{ name: 'num', header: 'Número', userSelect: true, defaultLocked: true, frozen: true, width: 70, render: (p) => <div style={{ fontWeight: 900 }}>{p.data?.num}</div> }] : [],
+    { name: 'dts', width: 100, header: 'Data', userSelect: true, frozen: true, render: p => dayjs(p.data.dts).format(DATE_FORMAT) },
     ...(isRH(auth, num)) ? [{ name: 'baction', header: '', minWidth: 45, maxWidth: 45, render: p => <Button icon={<EditOutlined />} size="small" onClick={() => onFix(p.data)} /> }] : [],
-    ...isRH(auth, num) ? [{ name: 'SRN_0', header: 'Nome', defaultFlex:1,minWidth: 350, render: p => <div style={{ fontWeight: 700 }}>{`${p.data.SRN_0} ${p.data.NAM_0}`}</div> }] : [],
-    { name: 'nt', header: 'Picagens', width: 80, render: p => p.data.nt },
-    { name: 'ty_01', header: '', hidden: true, reportTitle: "es_01", minWidth: 35, width: 35, render: p => p.data.ty_01?.trim() === 'in' ? "E" : "S" },
-    { name: 'ss_01', width: 130, header: 'P01', render: p => p.data.ss_01 && dayjs(p.data.ss_01).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_01) },
-    { name: 'ty_02', header: '', hidden: true, reportTitle: "es_02", minWidth: 35, width: 35, render: p => p.data.ty_02?.trim() === 'in' ? "E" : "S" },
-    { name: 'ss_02', width: 130, header: 'P02', render: p => p.data.ss_02 && dayjs(p.data.ss_02).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_02) },
-    { name: 'ty_03', header: '', hidden: true, reportTitle: "es_03", minWidth: 35, width: 35, render: p => p.data.ty_03?.trim() === 'in' ? "E" : "S" },
-    { name: 'ss_03', width: 130, header: 'P03', render: p => p.data.ss_03 && dayjs(p.data.ss_03).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_03) },
-    { name: 'ty_04', header: '', hidden: true, reportTitle: "es_04", minWidth: 35, width: 35, render: p => p.data.ty_04?.trim() === 'in' ? "E" : "S" },
-    { name: 'ss_04', width: 130, header: 'P04', render: p => p.data.ss_04 && dayjs(p.data.ss_04).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_04) },
-    { name: 'ty_05', header: '', hidden: true, reportTitle: "es_05", minWidth: 35, width: 35, render: p => p.data.ty_05?.trim() === 'in' ? "E" : "S" },
-    { name: 'ss_05', width: 130, header: 'P05', render: p => p.data.ss_05 && dayjs(p.data.ss_05).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_05) },
-    { name: 'ty_06', header: '', hidden: true, reportTitle: "es_06", minWidth: 35, width: 35, render: p => p.data.ty_06?.trim() === 'in' ? "E" : "S" },
-    { name: 'ss_06', width: 130, header: 'P06', render: p => p.data.ss_06 && dayjs(p.data.ss_06).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_06) },
-    { name: 'ty_07', header: '', hidden: true, reportTitle: "es_07", minWidth: 35, width: 35, render: p => p.data.ty_07?.trim() === 'in' ? "E" : "S" },
-    { name: 'ss_07', width: 130, header: 'P07', render: p => p.data.ss_07 && dayjs(p.data.ss_07).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_07) },
-    { name: 'ty_08', header: '', hidden: true, reportTitle: "es_08", minWidth: 35, width: 35, render: p => p.data.ty_08?.trim() === 'in' ? "E" : "S" },
-    { name: 'ss_08', width: 130, header: 'P08', render: p => p.data.ss_08 && dayjs(p.data.ss_08).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_08) },
+    ...isRH(auth, num) ? [{ name: 'SRN_0', header: 'Nome', userSelect: true, defaultFlex: 1, minWidth: 350, render: p => <div style={{ fontWeight: 700 }}>{`${p.data.SRN_0} ${p.data.NAM_0}`}</div> }] : [],
+    { name: 'nt', header: 'Picagens', userSelect: true, width: 80, render: p => p.data.nt },
+    { name: 'ty_01', header: '', userSelect: true, hidden: true, reportTitle: "es_01", minWidth: 35, width: 35, render: p => p.data.ty_01?.trim() === 'in' ? "E" : "S" },
+    { name: 'ss_01', width: 130, userSelect: true, header: 'P01', render: p => p.data.ss_01 && dayjs(p.data.ss_01).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_01) },
+    { name: 'ty_02', header: '', userSelect: true, hidden: true, reportTitle: "es_02", minWidth: 35, width: 35, render: p => p.data.ty_02?.trim() === 'in' ? "E" : "S" },
+    { name: 'ss_02', width: 130, userSelect: true, header: 'P02', render: p => p.data.ss_02 && dayjs(p.data.ss_02).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_02) },
+    { name: 'ty_03', header: '', userSelect: true, hidden: true, reportTitle: "es_03", minWidth: 35, width: 35, render: p => p.data.ty_03?.trim() === 'in' ? "E" : "S" },
+    { name: 'ss_03', width: 130, userSelect: true, header: 'P03', render: p => p.data.ss_03 && dayjs(p.data.ss_03).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_03) },
+    { name: 'ty_04', header: '', userSelect: true, hidden: true, reportTitle: "es_04", minWidth: 35, width: 35, render: p => p.data.ty_04?.trim() === 'in' ? "E" : "S" },
+    { name: 'ss_04', width: 130, userSelect: true, header: 'P04', render: p => p.data.ss_04 && dayjs(p.data.ss_04).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_04) },
+    { name: 'ty_05', header: '', userSelect: true, hidden: true, reportTitle: "es_05", minWidth: 35, width: 35, render: p => p.data.ty_05?.trim() === 'in' ? "E" : "S" },
+    { name: 'ss_05', width: 130, userSelect: true, header: 'P05', render: p => p.data.ss_05 && dayjs(p.data.ss_05).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_05) },
+    { name: 'ty_06', header: '', userSelect: true, hidden: true, reportTitle: "es_06", minWidth: 35, width: 35, render: p => p.data.ty_06?.trim() === 'in' ? "E" : "S" },
+    { name: 'ss_06', width: 130, userSelect: true, header: 'P06', render: p => p.data.ss_06 && dayjs(p.data.ss_06).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_06) },
+    { name: 'ty_07', header: '', userSelect: true, hidden: true, reportTitle: "es_07", minWidth: 35, width: 35, render: p => p.data.ty_07?.trim() === 'in' ? "E" : "S" },
+    { name: 'ss_07', width: 130, userSelect: true, header: 'P07', render: p => p.data.ss_07 && dayjs(p.data.ss_07).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_07) },
+    { name: 'ty_08', header: '', userSelect: true, hidden: true, reportTitle: "es_08", minWidth: 35, width: 35, render: p => p.data.ty_08?.trim() === 'in' ? "E" : "S" },
+    { name: 'ss_08', width: 130, userSelect: true, header: 'P08', render: p => p.data.ss_08 && dayjs(p.data.ss_08).format(DATETIME_FORMAT), cellClass: r => editableClass(r, 'ss', r.ty_08) },
     ...(isRH(auth, num)) ? [{
       name: 'pic', sortable: false,
       minWidth: 45, width: 45,
@@ -922,7 +922,7 @@ export default ({ setFormTitle, ...props }) => {
       dataAPI.addFilters({ ...filterValues, ...(_num && { num: _num }) }, true, false);
       dataAPI.setSort(defaultSort, false);
       dataAPI.addParameters(defaultParameters, true, true);
-      dataAPI.fetchPost({ signal });
+      //dataAPI.fetchPost({ signal });
 
     }
     submitting.end();
@@ -978,6 +978,7 @@ export default ({ setFormTitle, ...props }) => {
     <>
       {!setFormTitle && <TitleForm isRH={isRH(auth, num)} />}
       <Table
+        loadOnInit={true}
         pagination="remote"
         defaultLimit={20}
         columns={columns}

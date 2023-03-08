@@ -869,7 +869,6 @@ def InvalidRecordsList(request, format=None):
 
 def UpdateRecords(request, format=None):
     values = request.data["parameters"].get("values")
-    print(values)
     try:
         with transaction.atomic():
             with connections[connMssqlName].cursor() as cursor:                  
@@ -898,7 +897,8 @@ def UpdateRecords(request, format=None):
                     "ty_07":values.get("ty_07"),
                     "ts_08":values.get("ts_08"),
                     "ss_08":values.get("ss_08"),
-                    "ty_08":values.get("ty_08")
+                    "ty_08":values.get("ty_08"),
+                    "edited":1
                     }, "rponto.dbo.time_registration",{"id":f'=={values.get("id")}'},None,False)
                 dbmssql.execute(dml.statement, cursor, dml.parameters)
         return Response({"status": "success", "title":f"""Registo atualizado com sucesso!"""})
@@ -906,8 +906,8 @@ def UpdateRecords(request, format=None):
         return Response({"status": "error", "title": str(error)})
 
 def RegistosRH(request, format=None):
+    print("oiiiiiii")
     connection = connections[connMssqlName].cursor()
-    print(request.data['filter'])
     f = Filters(request.data['filter'])
     f.setParameters({
         **rangeP(f.filterData.get('fdata'), 'dts', lambda k, v: f'CONVERT(DATE, dts)'),
